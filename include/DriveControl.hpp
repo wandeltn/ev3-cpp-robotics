@@ -9,7 +9,7 @@ class DriveControl {
         void resetMotors();
         void driveStraight(int distance, int speed);
         void driveCurve(int speed, int curve);
-        void turnOnSpot(int speed, int rotation);
+        void turnOnSpot(int distance, int direction, int speed);
 
         static int max_speed;
 

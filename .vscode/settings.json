@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "iostream": "cpp",
+        "ev3_timer.h": "c",
+        "ostream": "cpp"
+    }
+}
