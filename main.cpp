@@ -2,6 +2,8 @@
 #include "include/DriveControl.hpp"
 #include "include/SensorControl.hpp"
 #include "include/DisplayDriver.hpp"
+#include "include/Pathfinder.hpp"
+#include "include/Robot.hpp"
 
 #include <thread>
 #include <chrono>
@@ -17,17 +19,17 @@
 #define KEY_REPEAT  2
 #endif
 
-DriveControl motors;
+Robot robot;
 SensorControl sensors;
-DisplayDriver lcdDisplay;
 
 int main() {
-    //sensors.calibrateGyro();
-    lcdDisplay.drawPixel(0, 0, LCD_WHITE);
-    motors.driveStraight(720, motors.max_speed);
-    motors.driveCurve(300, 3);
-    motors.turnOnSpot(90, -1, 300);
-    motors.driveStraight(-720, 500);
+    sensors.calibrateGyro();
+    //robot.moveToPosition(Vector2{1, 10});
+    robot.driveStraight(500, robot.max_speed);
+    robot.driveStraight(-500, 400);
+    // for (;;) {
+    //     std::cout << sensors.getGyroValue() << std::endl;
+    // }
 
     return 0;
 }

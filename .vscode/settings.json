@@ -2,6 +2,13 @@
     "files.associations": {
         "iostream": "cpp",
         "ev3_timer.h": "c",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "chrono": "cpp",
+        "condition_variable": "cpp",
+        "memory_resource": "cpp",
+        "mutex": "cpp",
+        "sstream": "cpp",
+        "stop_token": "cpp",
+        "typeinfo": "cpp"
     }
 }

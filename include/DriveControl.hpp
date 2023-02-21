@@ -10,6 +10,7 @@ class DriveControl {
         void driveStraight(int distance, int speed);
         void driveCurve(int speed, int curve);
         void turnOnSpot(int distance, int direction, int speed);
+        void lineFollow(int distance);
 
         static int max_speed;
 

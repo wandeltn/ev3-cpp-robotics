@@ -1,2 +1,2 @@
 docker run --rm -it -v /home/niklas/Documents/docker/:/src -w /src ev3cc
-arm-linux-gnueabi-g++ -o bin/main main.cpp ev3dev.cpp ./include/DriveControl.cpp ./include/CollisionChecker.cpp ./include/SensorControl.cpp ./include/DisplayDriver.cpp ./include/ev3_lcd.c
+arm-linux-gnueabi-g++ -o bin/main main.cpp ev3dev.cpp ./include/DriveControl.cpp ./include/CollisionChecker.cpp ./include/SensorControl.cpp ./include/DisplayDriver.cpp ./include/ev3_lcd.c ./include/Vector2.cpp ./include/Pathfinder.cpp ./include/Robot.cpp ./include/ToolControl.cpp

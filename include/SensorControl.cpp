@@ -2,6 +2,7 @@
 #include <thread>
 #include <chrono>
 #include <iostream>
+#include <unistd.h>
 
 SensorControl::SensorControl()
 {
@@ -10,22 +11,12 @@ SensorControl::SensorControl()
 
 void SensorControl::calibrateGyro()
 {
-    using namespace std::this_thread;
-
-    ev3dev::lego_port gyro_port = ev3dev::lego_port(ev3dev::INPUT_1);
-    gyro_port.set_mode("other-uart");
-    sleep_until(std::chrono::system_clock::now() + std::chrono::seconds(1));
-    gyro_port.set_mode("auto");
+    _gyro_sensor.set_mode("GYRO-CAL");
 }
 
 int SensorControl::getGyroValue()
 {
-    if (_gyro_sensor.connected()) {
-        return _gyro_sensor.angle();
-    } else {
-        std::cout << _gyro_sensor.address();
-        return 0;
-    }
+    return _gyro_sensor.angle();
 }
 
 int SensorControl::getColorLeftReflect()
