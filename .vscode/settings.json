@@ -9,6 +9,7 @@
         "mutex": "cpp",
         "sstream": "cpp",
         "stop_token": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "iosfwd": "cpp"
     }
 }

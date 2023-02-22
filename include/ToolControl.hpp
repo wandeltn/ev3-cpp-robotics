@@ -6,15 +6,23 @@
 
 enum GearNumber {
     GEAR_0 = 0,
-    GEAR_1 = 1,
-    GEAR_2 = 2,
-    GEAR_3 = 3
+    GEAR_1 = 100,
+    GEAR_2 = 200,
+    GEAR_3 = 300
 };
+
+enum ToolPosition {
+    TOOL_POSITION_DOWN =    0,
+    TOOL_POSITION_UP =      300
+};
+
 
 class ToolControl {
     public:
         ToolControl();
         void setGear(GearNumber newGear);
+        void raiseTool(int position);
+        void setToolPosition(ToolPosition newPosition);
 
     private:
         static GearNumber _current_gear;

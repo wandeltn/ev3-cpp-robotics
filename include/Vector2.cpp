@@ -9,6 +9,6 @@ Vector2::Vector2(int_fast8_t positionX, int_fast8_t positionY)
 
 double Vector2::getDistanceToPoint(Vector2 point)
 {
-    return sqrt(((x - point.x) << 1) + ((y - point.y) << 1));
+    return sqrt(pow((double)(x - point.x), 2.0) + pow((double)(y - point.y), 2.0));
 }
 

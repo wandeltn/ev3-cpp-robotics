@@ -1,23 +1,19 @@
-#include "Robot.cpp"
-#include <chrono>
-#include <iostream>
-#include <cmath>
+#ifndef __ROBOT_H__
+#define __ROBOT_H__
 
-#define START_POSITION_X 20
-#define START_POSITION_Y 20
-#define START_HEADING 90
-#define PI 3.14159265
+#include "DriveControl.hpp"
+#include "SensorControl.hpp"
+#include "Vector2.hpp"
 
-Robot::Robot()
-{
-}
+class Robot: public DriveControl {
+    public:
+        Robot();
+        void moveToPosition(Vector2 destination);
 
-void Robot::moveToPosition(Vector2 destination)
-{
-    double targetAngle = atan((_current_position.x - destination.x) / (_current_position.y - destination.y)) * 180 / PI;
-    
-}
+    private:
+        static SensorControl sensors;
+        static Vector2 _current_position;
+        static int_fast8_t _current_heading;
+};
 
-SensorControl Robot::sensors = SensorControl{};
-Vector2 Robot::_current_position = Vector2{START_POSITION_X, START_POSITION_Y};
-int_fast8_t Robot::_current_heading = START_HEADING;
+#endif // __ROBOT_H__

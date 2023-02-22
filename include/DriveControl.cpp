@@ -8,6 +8,7 @@
 DriveControl::DriveControl()
 {
     //max_speed = _motor_left.max_speed();
+    //cm_to_rot = _motor_left.count_per_rot();
 }
 
 void DriveControl::resetMotors()
@@ -26,9 +27,8 @@ void DriveControl::driveStraight(int distance, int speed)
     _motor_left.set_stop_action("hold");
     _motor_right.set_stop_action("hold");
     //wait until the motors are finished moving before next move
-    while (_motor_right.state().count("running") >= 1 &&
+    while (_motor_right.state().count("running") >= 1 ||
             _motor_left.state().count("running") >= 1) {
-        std::cout << _motor_left.position_sp() << std::endl;
     }
     //register distance to travel
     _motor_left.set_position_sp(_motor_left.position_sp() + distance);
@@ -41,16 +41,6 @@ void DriveControl::driveStraight(int distance, int speed)
     //set speed and start moving
     _motor_left.set_speed_sp(speed).run_to_abs_pos();
     _motor_right.set_speed_sp(speed).run_to_abs_pos();
-
-
-    while (_motor_right.state().count("running") >= 1 &&
-            _motor_left.state().count("running") >= 1) {
-        std::cout << _motor_left.stop_action() << std::endl;
-    }
-
-    for (std::string action : _motor_right.stop_actions()) {
-        std::cout << action << std::endl;
-    }
 }
 
 
@@ -67,7 +57,7 @@ void DriveControl::driveCurve(int speed, int curve)
 void DriveControl::turnOnSpot(int rotation, int direction, int speed)
 {
     //wait until motors are finished with previous move before next move
-    while (_motor_right.state().count("running") >= 1 &&
+    while (_motor_right.state().count("running") >= 1 ||
             _motor_left.state().count("running") >= 1) {
         std::cout << _motor_left.position() << std::endl;
     }
@@ -82,6 +72,36 @@ void DriveControl::turnOnSpot(int rotation, int direction, int speed)
     _motor_right.set_speed_sp(speed).run_to_abs_pos();
 }
 
+void DriveControl::turnToGyro(SensorControl& sensors, int targetAngle)
+{
+    while(
+        _motor_left.state().count("running") >= 1 ||
+        _motor_right.state().count("running") >= 1
+    ) {
+        continue;
+    }
+    _motor_left.set_stop_action("hold");
+    _motor_right.set_stop_action("hold");
+    
+    if (targetAngle > sensors.getGyroValue()) {
+        _motor_left.set_speed_sp(100);
+        _motor_right.set_speed_sp(-100);
+    } else {
+        _motor_left.set_speed_sp(-100);
+        _motor_right.set_speed_sp(100);
+    }
+    _motor_left.run_forever();
+    _motor_right.run_forever();
+
+    while (sensors.getGyroValue() != targetAngle) {
+        std::cout << sensors.getGyroValue() << std::endl;
+    }
+    _motor_left.stop();
+    _motor_right.stop();
+    _motor_left.reset();
+    _motor_right.reset();
+}
+
 void DriveControl::lineFollow(int distance)
 {
     //while (_motor_left.position_sp())
@@ -90,5 +110,6 @@ void DriveControl::lineFollow(int distance)
 
 
 int DriveControl::max_speed = 800;
+int DriveControl::rot_to_steps = 360;
 ev3dev::large_motor DriveControl::_motor_left = ev3dev::large_motor(ev3dev::OUTPUT_A);
 ev3dev::large_motor DriveControl::_motor_right = ev3dev::large_motor(ev3dev::OUTPUT_B);

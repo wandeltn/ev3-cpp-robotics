@@ -4,6 +4,7 @@
 #include "include/DisplayDriver.hpp"
 #include "include/Pathfinder.hpp"
 #include "include/Robot.hpp"
+#include "include/ToolControl.hpp"
 
 #include <thread>
 #include <chrono>
@@ -21,12 +22,19 @@
 
 Robot robot;
 SensorControl sensors;
+ToolControl tools;
 
 int main() {
     sensors.calibrateGyro();
+    robot.resetMotors();
     //robot.moveToPosition(Vector2{1, 10});
-    robot.driveStraight(500, robot.max_speed);
-    robot.driveStraight(-500, 400);
+
+    robot.moveToPosition(Vector2{20, 60});
+    robot.moveToPosition(Vector2{(int_fast8_t)150, 60});
+    robot.moveToPosition(Vector2{(int_fast8_t)150, 20});
+    robot.moveToPosition(Vector2{20, 20});
+    robot.turnToGyro(sensors, 0);
+
     // for (;;) {
     //     std::cout << sensors.getGyroValue() << std::endl;
     // }

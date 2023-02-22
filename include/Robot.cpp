@@ -1,19 +1,30 @@
-#ifndef __ROBOT_H__
-#define __ROBOT_H__
+#include "Robot.hpp"
+#include <iostream>
+#include <cmath>
 
-#include "DriveControl.hpp"
-#include "SensorControl.hpp"
-#include "Vector2.hpp"
+#define START_POSITION_X 20
+#define START_POSITION_Y 20
+#define START_HEADING 90
+#define PI 3.14159265
 
-class Robot: public DriveControl {
-    public:
-        Robot();
-        void moveToPosition(Vector2 destination);
+Robot::Robot()
+{
+    
+}
 
-    private:
-        static SensorControl sensors;
-        static Vector2 _current_position;
-        static int_fast8_t _current_heading;
-};
+void Robot::moveToPosition(Vector2 destination)
+{
+    double targetAngle = atan2(_current_position.y - destination.y, _current_position.x - destination.x) * 180 / PI;
+    int distance = std::round(_current_position.getDistanceToPoint(destination));
 
-#endif // __ROBOT_H__
+    std::cout << "targetAngle: " << targetAngle + _current_heading << " distance: " << distance / 17.6 * 360 << std::endl;
+    turnToGyro(sensors, (int)std::round(targetAngle));
+    driveStraight(distance / 17.6 * rot_to_steps, 500);
+
+    _current_position = destination;
+    _current_heading += targetAngle;
+}
+
+SensorControl Robot::sensors = SensorControl{};
+Vector2 Robot::_current_position = Vector2{START_POSITION_X, START_POSITION_Y};
+int_fast8_t Robot::_current_heading = START_HEADING;
