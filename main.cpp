@@ -5,6 +5,7 @@
 #include "include/Pathfinder.hpp"
 #include "include/Robot.hpp"
 #include "include/ToolControl.hpp"
+#include "include/LineIntersect.hpp"
 
 #include <thread>
 #include <chrono>
@@ -23,21 +24,25 @@
 Robot robot;
 SensorControl sensors;
 ToolControl tools;
+LineIntersect intersect;
 
 int main() {
     sensors.calibrateGyro();
     robot.resetMotors();
     //robot.moveToPosition(Vector2{1, 10});
 
-    robot.moveToPosition(Vector2{20, 60});
-    robot.moveToPosition(Vector2{(int_fast8_t)150, 60});
-    robot.moveToPosition(Vector2{(int_fast8_t)150, 20});
-    robot.moveToPosition(Vector2{20, 20});
-    robot.turnToGyro(sensors, 0);
+    intersect.checkForIntersect();
 
-    // for (;;) {
-    //     std::cout << sensors.getGyroValue() << std::endl;
-    // }
+    //robot.moveToPosition(Vector2{20, 60});
+    //robot.moveToPosition(Vector2{(int_fast8_t)150, 60});
+    //robot.moveToPosition(Vector2{(int_fast8_t)150, 20});
+    //robot.moveToPosition(Vector2{20, 20});
+    //robot.turnToGyro(sensors, 0);
+
+
+    for (;;) {
+        std::cout << "Left: " << sensors.getColorLeftReflect() << " Right: " << sensors.getColorRightReflect() << "\r";
+    }
 
     return 0;
 }
