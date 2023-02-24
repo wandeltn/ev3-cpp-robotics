@@ -41,7 +41,7 @@ int main() {
 
 
     for (;;) {
-        std::cout << "Left: " << sensors.getColorLeftReflect() << " Right: " << sensors.getColorRightReflect() << "\r";
+        std::cout << sensors.getColorLeftReflect() << std::endl;
     }
 
     return 0;

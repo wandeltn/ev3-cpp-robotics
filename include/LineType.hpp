@@ -7,12 +7,13 @@ class LineType {
     public:
         LineType(Vector2 start, Vector2 end);
         LineType(
-            int_fast8_t start_x,
-            int_fast8_t start_y,
-            int_fast8_t end_x,
-            int_fast8_t end_y
+            double start_x,
+            double start_y,
+            double end_x,
+            double end_y
         );
         bool checkForIntersect(LineType line);
+        Vector2 getIntersect(LineType line);
 
     private:
         Vector2 _start;

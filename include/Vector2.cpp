@@ -2,7 +2,12 @@
 #include <cmath>
 #include <iostream>
 
-Vector2::Vector2(int_fast8_t positionX, int_fast8_t positionY)
+
+Vector2::Vector2()
+{
+    std::cerr << "Default constructor of Vector2" << std::endl;
+}
+Vector2::Vector2(double positionX, double positionY)
 {
     x = positionX;
     y = positionY;
