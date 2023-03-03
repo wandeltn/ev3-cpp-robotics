@@ -20,7 +20,6 @@
 #define KEY_PRESS   1
 #define KEY_REPEAT  2
 #endif
-
 Robot robot;
 SensorControl sensors;
 ToolControl tools;
