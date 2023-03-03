@@ -2,15 +2,16 @@
 #define __LINEINTERSECT_H__
 
 #include "Vector2.hpp"
+#include "LineType.hpp"
 
 class LineIntersect {
     public:
         LineIntersect();
 
-        Vector2 checkForIntersect();
+        std::vector<Vector2> checkForIntersects(LineType travelPath);
 
     private:
-        
+        static std::vector<LineType> intersectLines;        
 };
 
 #endif // __LINEINTERSECT_H__

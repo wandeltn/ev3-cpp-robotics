@@ -25,6 +25,12 @@ void Robot::moveToPosition(Vector2 destination)
     _current_heading += targetAngle;
 }
 
+void Robot::moveToPosition(double x, double y)
+{
+    moveToPosition(Vector2{x, y});
+}
+
 SensorControl Robot::sensors = SensorControl{};
+LineIntersect Robot::intersections = LineIntersect{};
 Vector2 Robot::_current_position = Vector2{START_POSITION_X, START_POSITION_Y};
 int_fast8_t Robot::_current_heading = START_HEADING;

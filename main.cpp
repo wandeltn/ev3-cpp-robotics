@@ -29,9 +29,7 @@ LineIntersect intersect;
 int main() {
     sensors.calibrateGyro();
     robot.resetMotors();
-    //robot.moveToPosition(Vector2{1, 10});
-
-    intersect.checkForIntersect();
+    robot.moveToPosition(1, 10);
 
     //robot.moveToPosition(Vector2{20, 60});
     //robot.moveToPosition(Vector2{(int_fast8_t)150, 60});
@@ -39,10 +37,6 @@ int main() {
     //robot.moveToPosition(Vector2{20, 20});
     //robot.turnToGyro(sensors, 0);
 
-
-    for (;;) {
-        std::cout << sensors.getColorLeftReflect() << std::endl;
-    }
 
     return 0;
 }
