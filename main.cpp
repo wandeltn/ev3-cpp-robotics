@@ -1,4 +1,4 @@
-#include "./include/Display.hpp"
+#include "./include/DirectRenderingManager.hpp"
 
 #include <thread>
 #include <chrono>
@@ -13,15 +13,10 @@
 #define KEY_REPEAT  2
 #endif
 
-Display lcdDisplay;
+DirectRenderingManager DRM;
 
 int main() {
-    lcdDisplay.clearScreen();
+    
 
-    lcdDisplay.drawPixel(0, 0, DISPLAY_BLACK);
-    lcdDisplay.drawPixel(178, 128, DISPLAY_BLACK);
-    lcdDisplay.drawPixel(128, 178, DISPLAY_BLACK);
-
-    printf("finished program execution\n");
     while (true){    }
 }

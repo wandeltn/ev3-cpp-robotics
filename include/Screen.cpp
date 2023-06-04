@@ -1,10 +1,11 @@
-#include "Display.hpp"
+#include "Screen.hpp"
 #include <fstream>
+#include <iostream>
 #include <fcntl.h>
 #include <linux/input.h>
 #include <unistd.h>
 
-Display::Display()
+Screen::Screen()
 {
     fbfd = open("/dev/fb0", O_RDWR);
     
@@ -13,6 +14,9 @@ Display::Display()
     }
     printf("The framebuffer device was opened successfully.\n");
     /* Get fixed screen information */
+    struct fb_var_screeninfo finfo;
+    struct fb_var_screeninfo vinfo;
+
     if(ioctl(fbfd, FBIOGET_FSCREENINFO, &finfo) == -1) {
         perror("Error reading fixed information");
     }
@@ -43,25 +47,8 @@ Display::Display()
     height = screensize / vinfo.xres;
 }
 
-Display::~Display()
+Screen::~Screen()
 {
     munmap(fbp, screensize);
     close(fbfd);
-}
-
-void Display::clearScreen()
-{
-    fillScreen(DISPLAY_WHITE);
-}
-
-void Display::fillScreen(DisplayColors color)
-{
-    for (int pixel = 0; pixel <= screensize; pixel++) {
-        fbp[pixel] = color;
-    }
-}
-
-void Display::drawPixel(uint_fast8_t xpos, uint_fast8_t ypos, DisplayColors color)
-{
-    fbp[ypos * width + xpos] = color;
 }

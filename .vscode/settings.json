@@ -3,5 +3,6 @@
         "thread": "cpp",
         "chrono": "cpp",
         "*.tcc": "cpp"
-    }
+    },
+    "C_Cpp.errorSquiggles": "enabled"
 }
