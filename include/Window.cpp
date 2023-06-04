@@ -1,4 +1,5 @@
 #include "Window.hpp"
+#include <unistd.h>
 #include <iostream>
 
 
@@ -13,6 +14,12 @@ Window::Window(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_fast8_t y
             NULL, _screensize, PROT_READ | PROT_WRITE, MAP_SHARED, fbfd, 0
         )
     );
+}
+
+Window::~Window()
+{
+    munmap(_fbp, _screensize);
+    close(fbfd);
 }
 
 void Window::clearScreen()

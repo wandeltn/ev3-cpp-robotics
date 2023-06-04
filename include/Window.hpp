@@ -13,6 +13,7 @@ class Window {
         int fbfd;
     public:
         Window(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_fast8_t y1);
+        ~Window();
 
         void clearScreen();
         void fillScreen(DisplayColors color);
