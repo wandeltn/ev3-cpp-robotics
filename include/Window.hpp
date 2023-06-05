@@ -2,14 +2,12 @@
 #define __WINDOW_H__
 
 #include "Screen.hpp"
+#include <vector>
 
 class Window {
     private:
-        unsigned char* _fbp;
+        std::vector<unsigned char> frameBuffer;
         size_t _screensize;
-        uint_fast8_t _width;
-        uint_fast8_t _height;
-        uint_fast8_t _bits_per_pixel;
         int fbfd;
     public:
         Window(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_fast8_t y1);
@@ -18,11 +16,13 @@ class Window {
         uint_fast8_t startX;
         uint_fast8_t startY;
 
-        unsigned char* getFBP();
+        std::vector<unsigned char> getFBP();
         uint_fast8_t getScreensize();
-        uint_fast8_t getWidth();
-        uint_fast8_t getHeight();
-        uint_fast8_t getBitsPerPixel();
+        uint_fast8_t width;
+        uint_fast8_t height;
+        uint_fast8_t bits_per_pixel;
+
+        DisplayColors getPixel(uint_fast8_t x0, uint_fast8_t y0);
 
         void clearScreen();
         void fillScreen(DisplayColors color);

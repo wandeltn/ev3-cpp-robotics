@@ -17,12 +17,15 @@
 DirectRenderingManager DRM;
 
 int main() {
-    Window* frame = DRM.createWindow(50, 50, 100, 100);
+    Window* frame = DRM.createWindow(, 50, 101, 101);
+    Window* frame2 = DRM.createWindow(100, 100, 150, 120);
 
-    frame->fillScreen(DISPLAY_BLACK);
 
 
     while (true){
+        frame->fillScreen(DISPLAY_BLACK);
+        frame2->fillScreen(DISPLAY_DARK);
+
         DRM.render();
     }
 }

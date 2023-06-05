@@ -7,26 +7,23 @@ Window::Window(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_fast8_t y
 {
     startX = x0;
     startY = y0;
-    _width = x1 - x0;
-    _height = y1 - y0;
-    _bits_per_pixel = 32;
-    _screensize = _width * _height * _bits_per_pixel / 8;
-    _fbp = static_cast<unsigned char*>(
-        mmap(
-            NULL, _screensize, PROT_READ | PROT_WRITE, MAP_SHARED, fbfd, 0
-        )
-    );
+    width = x1 - x0;
+    height = y1 - y0;
+    bits_per_pixel = 32;
+    _screensize = width * height;
+    for (int i = 0; i < _screensize; i++) {
+        frameBuffer.push_back(DISPLAY_BLACK);
+    }
 }
 
 Window::~Window()
 {
-    munmap(_fbp, _screensize);
-    close(fbfd);
+    frameBuffer.clear();
 }
 
-unsigned char* Window::getFBP()
+std::vector<unsigned char> Window::getFBP()
 {
-    return _fbp;
+    return frameBuffer;
 }
 
 uint_fast8_t Window::getScreensize()
@@ -34,19 +31,9 @@ uint_fast8_t Window::getScreensize()
     return _screensize;
 }
 
-uint_fast8_t Window::getWidth()
+DisplayColors Window::getPixel(uint_fast8_t x0, uint_fast8_t y0)
 {
-    return _width;
-}
-
-uint_fast8_t Window::getHeight()
-{
-    return _height;
-}
-
-uint_fast8_t Window::getBitsPerPixel()
-{
-    return _bits_per_pixel;
+    return static_cast<DisplayColors>(frameBuffer[y0 * width + x0]);
 }
 
 void Window::clearScreen()
@@ -56,15 +43,15 @@ void Window::clearScreen()
 
 void Window::fillScreen(DisplayColors color)
 {
-    for (int pixel = 0; pixel <= _screensize; pixel++) {
-        _fbp[pixel] = color;
+    for (int index = 0; index <= frameBuffer.size(); index++) {
+        frameBuffer[index] = color;
     }
 }
 
 void Window::drawPixel(uint_fast8_t xpos, uint_fast8_t ypos, DisplayColors color)
 {
     for (int pixelIndex = 0; pixelIndex <= 4; pixelIndex++) {
-        _fbp[ypos * 178 * 4 + (xpos * 4 + pixelIndex)] = color;
+        frameBuffer[ypos * width + (xpos + pixelIndex)] = color;
     }
 }
 
