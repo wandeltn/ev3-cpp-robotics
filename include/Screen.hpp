@@ -24,7 +24,7 @@ enum DisplayColors {
 
 class Screen
 {
-private:
+protected:
     int fbfd;
     unsigned char *fbp;
     size_t screensize = 0;

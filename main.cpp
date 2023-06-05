@@ -1,4 +1,5 @@
 #include "./include/DirectRenderingManager.hpp"
+#include "./include/Window.hpp"
 
 #include <thread>
 #include <chrono>
@@ -16,7 +17,12 @@
 DirectRenderingManager DRM;
 
 int main() {
-    
+    Window* frame = DRM.createWindow(50, 50, 100, 100);
 
-    while (true){    }
+    frame->fillScreen(DISPLAY_BLACK);
+
+
+    while (true){
+        DRM.render();
+    }
 }

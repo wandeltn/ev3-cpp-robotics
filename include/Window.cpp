@@ -5,6 +5,8 @@
 
 Window::Window(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_fast8_t y1)
 {
+    startX = x0;
+    startY = y0;
     _width = x1 - x0;
     _height = y1 - y0;
     _bits_per_pixel = 32;
@@ -20,6 +22,31 @@ Window::~Window()
 {
     munmap(_fbp, _screensize);
     close(fbfd);
+}
+
+unsigned char* Window::getFBP()
+{
+    return _fbp;
+}
+
+uint_fast8_t Window::getScreensize()
+{
+    return _screensize;
+}
+
+uint_fast8_t Window::getWidth()
+{
+    return _width;
+}
+
+uint_fast8_t Window::getHeight()
+{
+    return _height;
+}
+
+uint_fast8_t Window::getBitsPerPixel()
+{
+    return _bits_per_pixel;
 }
 
 void Window::clearScreen()

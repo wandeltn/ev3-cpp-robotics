@@ -15,6 +15,15 @@ class Window {
         Window(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_fast8_t y1);
         ~Window();
 
+        uint_fast8_t startX;
+        uint_fast8_t startY;
+
+        unsigned char* getFBP();
+        uint_fast8_t getScreensize();
+        uint_fast8_t getWidth();
+        uint_fast8_t getHeight();
+        uint_fast8_t getBitsPerPixel();
+
         void clearScreen();
         void fillScreen(DisplayColors color);
         void drawPixel(uint_fast8_t xpos, uint_fast8_t ypos, DisplayColors color);
