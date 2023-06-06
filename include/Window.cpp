@@ -3,7 +3,7 @@
 #include <iostream>
 
 
-Window::Window(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_fast8_t y1)
+Window::Window(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_fast8_t y1, bool border)
 {
     startX = x0;
     startY = y0;
@@ -11,8 +11,11 @@ Window::Window(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_fast8_t y
     height = y1 - y0;
     bits_per_pixel = 32;
     _screensize = width * height;
-    for (int i = 0; i < _screensize; i++) {
-        frameBuffer.push_back(DISPLAY_BLACK);
+    for (int i = 1; i < _screensize; i++) {
+        frameBuffer.push_back(DISPLAY_WHITE);
+    }
+    if (border) {
+        drawRect(x0, y0, x1, y1, DISPLAY_BLACK);
     }
 }
 
@@ -21,7 +24,7 @@ Window::~Window()
     frameBuffer.clear();
 }
 
-std::vector<unsigned char> Window::getFBP()
+std::vector<unsigned char>& Window::getFBP()
 {
     return frameBuffer;
 }

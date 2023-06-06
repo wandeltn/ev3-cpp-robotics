@@ -10,13 +10,13 @@ class Window {
         size_t _screensize;
         int fbfd;
     public:
-        Window(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_fast8_t y1);
+        Window(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_fast8_t y1, bool border);
         ~Window();
 
         uint_fast8_t startX;
         uint_fast8_t startY;
 
-        std::vector<unsigned char> getFBP();
+        std::vector<unsigned char>& getFBP();
         uint_fast8_t getScreensize();
         uint_fast8_t width;
         uint_fast8_t height;

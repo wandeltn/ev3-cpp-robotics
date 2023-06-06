@@ -4,12 +4,14 @@
 #include <vector>
 #include <math.h>
 
-Window* DirectRenderingManager::createWindow(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_fast8_t y1)
+Window* DirectRenderingManager::createWindow(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_fast8_t y1, bool border)
 {
-    Window* pWindow = new Window(x0, y0, x1, y1);
+    Window* pWindow = new Window(x0, y0, x1, y1, border);
     _current_windows.push_back(pWindow);
     return pWindow;
 }
+
+
 
 void DirectRenderingManager::render()
 {
