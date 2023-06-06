@@ -17,9 +17,10 @@
 
 DirectRenderingManager DRM;
 Ports::Input sensors;
+Ports::Output motors;
 
 int main() {
-
+    std::cout << motors.rotateMotor() << std::endl;
 
 
     while (true){

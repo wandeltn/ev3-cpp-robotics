@@ -15,6 +15,8 @@ class Ports {
         static ev3dev::ultrasonic_sensor _distance_sensor;
         static ev3dev::gyro_sensor _gyro_sensor;
 
+        static ev3dev::large_motor _motor_left;
+
         Ports();
     public:
         class Input {
@@ -24,7 +26,8 @@ class Ports {
                 float getHeading();
         };
         class Output {
-
+            public:
+                int rotateMotor();
         };
 };
 

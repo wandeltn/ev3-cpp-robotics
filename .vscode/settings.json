@@ -2,7 +2,8 @@
     "files.associations": {
         "thread": "cpp",
         "chrono": "cpp",
-        "*.tcc": "cpp"
+        "*.tcc": "cpp",
+        "iosfwd": "cpp"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }
