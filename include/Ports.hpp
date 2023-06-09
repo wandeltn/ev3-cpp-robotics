@@ -21,7 +21,7 @@ class Ports {
     public:
         class Input {
             public:
-                int getUSDistance();
+                float getUSDistance();
                 float getReflect(DEVICE_SIDE side);
                 float getHeading();
         };

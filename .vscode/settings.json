@@ -3,7 +3,8 @@
         "thread": "cpp",
         "chrono": "cpp",
         "*.tcc": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "array": "cpp"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }

@@ -19,12 +19,12 @@ Ports::Ports()
     _motor_left.reset();
 }
 
-int Ports::Input::getUSDistance()
+float Ports::Input::getUSDistance()
 {
     if (_distance_sensor.connected()) {
-        return _distance_sensor.distance_centimeters();
+        return _distance_sensor.float_value();
     } else {
-        return -1;
+        return -1.0f;
     }
 }
 
