@@ -1,3 +1,2 @@
-docker run --rm -it -v /home/niklas/Documents/docker/:/src -w /src ev3cc
-arm-linux-gnueabi-g++ -o hello main.cpp ev3dev.cpp ./include/DriveControl.cpp ./include/CollisionChecker.cpp ./include/SensorControl.cpp
- 
+docker run --rm -it -v ./:/src -w /src ev3cc
+arm-linux-gnueabi-g++ -std=c++17 -o bin/main main.cpp ./include/Screen.cpp include/Window.cpp include/DirectRenderingManager.cpp ev3dev.cpp include/Ports.cpp include/Field.cpp
