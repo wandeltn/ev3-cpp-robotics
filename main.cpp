@@ -23,7 +23,8 @@ int main() {
     std::cout << motors.rotateMotor() << std::endl;
 
 
-    while (true){
+    while (!sensors.getButtonBackPressed()){
         std::cout << sensors.getHeading() << std::endl;
+        DRM.render();
     }
 }

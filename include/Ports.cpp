@@ -6,6 +6,13 @@ ev3dev::gyro_sensor Ports::_gyro_sensor = ev3dev::gyro_sensor(ev3dev::INPUT_2);
 ev3dev::color_sensor Ports::_color_sensor_left = ev3dev::color_sensor(ev3dev::INPUT_3);
 ev3dev::color_sensor Ports::_color_sensor_right = ev3dev::color_sensor(ev3dev::INPUT_4);
 
+ev3dev::button Ports::_button_up = ev3dev::button(ev3dev::button::up);
+ev3dev::button Ports::_button_down = ev3dev::button(ev3dev::button::down);
+ev3dev::button Ports::_button_right = ev3dev::button(ev3dev::button::right);
+ev3dev::button Ports::_button_left = ev3dev::button(ev3dev::button::left);
+ev3dev::button Ports::_button_enter = ev3dev::button(ev3dev::button::enter);
+ev3dev::button Ports::_button_back = ev3dev::button(ev3dev::button::back);
+
 ev3dev::large_motor Ports::_motor_left = ev3dev::large_motor(ev3dev::OUTPUT_A);
 
 Ports::Ports()
@@ -40,6 +47,16 @@ float Ports::Input::getReflect(DEVICE_SIDE side)
 float Ports::Input::getHeading()
 {
     return _gyro_sensor.float_value();
+}
+
+bool Ports::Input::getButtonPressed()
+{
+    return _button_up.process_all();
+}
+
+bool Ports::Input::getButtonBackPressed()
+{
+    return _button_back.process();;
 }
 
 int Ports::Output::rotateMotor()
