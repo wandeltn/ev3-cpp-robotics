@@ -3,10 +3,11 @@
 #include <iostream>
 #include <vector>
 #include <math.h>
+#include <memory>
 
-Window* DirectRenderingManager::createWindow(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_fast8_t y1, bool border)
+std::shared_ptr<Window> DirectRenderingManager::createWindow(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_fast8_t y1, bool border)
 {
-    Window* pWindow = new Window(x0, y0, x1, y1, border);
+    std::shared_ptr<Window> pWindow = std::shared_ptr<Window>(new Window(x0, y0, x1, y1, border));
     _current_windows.push_back(pWindow);
     return pWindow;
 }
@@ -15,7 +16,7 @@ Window* DirectRenderingManager::createWindow(uint_fast8_t x0, uint_fast8_t y0, u
 
 void DirectRenderingManager::render()
 {
-    for(Window* window : _current_windows) {
+    for(std::shared_ptr<Window> window : _current_windows) {
         std::vector<unsigned char> windowBuffer = window->getFBP();
         for (int index = 0; index <= windowBuffer.size(); index++) {
             for (int pixel = 0; pixel < 4; pixel++) {
@@ -34,4 +35,9 @@ void DirectRenderingManager::render()
     }
 }
 
-std::vector<Window*> DirectRenderingManager::_current_windows = {};
+void DirectRenderingManager::clearWindows()
+{
+    _current_windows.clear();
+}
+
+std::vector<std::shared_ptr<Window>> DirectRenderingManager::_current_windows = {};
