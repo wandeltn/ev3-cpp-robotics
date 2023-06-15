@@ -3,6 +3,7 @@
 Task::Task(std::function<void()> function)
 {
     _function = function;
+    _persist_after_complete = false;
 }
 
 Task::Task(std::function<void()> function, bool persist)

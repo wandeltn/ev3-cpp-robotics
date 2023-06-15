@@ -3,16 +3,18 @@
 
 #include <vector>
 #include <functional>
+#include <memory>
 #include "Task.hpp"
 
 class Thread {
     private:
-        std::vector<Task> _current_threads;
+        std::vector<std::shared_ptr<Task>> _current_threads;
 
     public:
         Thread();
 
-        void create(std::function<void()>);
+        std::shared_ptr<Task> create(std::function<void()> callback);
+        std::shared_ptr<Task> create(std::function<void()> callback, bool persist);
         void start();
 };
 
