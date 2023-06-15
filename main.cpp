@@ -6,6 +6,8 @@
 #include <chrono>
 #include <iostream>
 
+#include <thread>
+
 #ifndef NO_LINUX_HEADERS
 #include <unistd.h>
 #include <fcntl.h>
@@ -19,12 +21,12 @@ DirectRenderingManager DRM;
 Ports::Input sensors;
 Ports::Output motors;
 
+ev3dev::power_supply battery;
+
 int main() {
     std::cout << motors.rotateMotor() << std::endl;
 
-
     while (!sensors.getButtonBackPressed()){
         std::cout << sensors.getHeading() << std::endl;
-        DRM.render();
     }
 }

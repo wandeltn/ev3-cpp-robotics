@@ -11,9 +11,14 @@ Window* DirectRenderingManager::createWindow(uint_fast8_t x0, uint_fast8_t y0, u
     return pWindow;
 }
 
+void DirectRenderingManager::registerWindow(Window* window)
+{
+    _current_windows.push_back(window);
+}
 
 
-void DirectRenderingManager::render()
+
+void DirectRenderingManager::pushToScreen()
 {
     for(Window* window : _current_windows) {
         std::vector<unsigned char> windowBuffer = window->getFBP();
