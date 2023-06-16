@@ -21,5 +21,10 @@ std::shared_ptr<Task> Thread::create(std::function<void()> callback, bool persis
 
 void Thread::start()
 {
-
+    for (int thread_index = 0; thread_index <= _current_threads.size(); thread_index++) {
+        _current_threads[thread_index]->execute();
+        if (_current_threads[thread_index]->_persist_after_complete) {
+            _current_threads.erase(_current_threads.begin() + thread_index);
+        }
+    }
 }
