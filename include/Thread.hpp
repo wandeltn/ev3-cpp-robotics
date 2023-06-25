@@ -1,21 +1,20 @@
-#ifndef __THREAD_H__
-#define __THREAD_H__
+#ifndef __Thread_H__
+#define __Thread_H__
 
-#include <vector>
 #include <functional>
-#include <memory>
-#include "Task.hpp"
+#include <vector>
 
 class Thread {
     private:
-        std::vector<std::shared_ptr<Task>> _current_threads;
+        std::function<void()> _function;
 
     public:
-        Thread();
+        bool _persist_after_complete;
 
-        std::shared_ptr<Task> create(std::function<void()> callback);
-        std::shared_ptr<Task> create(std::function<void()> callback, bool persist);
-        void start();
+        Thread(std::function<void()> function);
+        Thread(std::function<void()> function, bool persist);
+
+        void execute();
 };
 
-#endif // __THREAD_H__
+#endif // __Thread_H__

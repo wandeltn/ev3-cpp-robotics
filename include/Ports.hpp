@@ -9,7 +9,7 @@ enum DEVICE_SIDE {
 };
 
 class Ports {
-    private:
+    protected:
         static ev3dev::color_sensor _color_sensor_left;
         static ev3dev::color_sensor _color_sensor_right;
         static ev3dev::ultrasonic_sensor _distance_sensor;
@@ -24,20 +24,8 @@ class Ports {
 
         static ev3dev::large_motor _motor_left;
 
-        Ports();
     public:
-        class Input {
-            public:
-                float getUSDistance();
-                float getReflect(DEVICE_SIDE side);
-                float getHeading();
-                bool getButtonPressed();
-                bool getButtonBackPressed();
-        };
-        class Output {
-            public:
-                int rotateMotor();
-        };
+        Ports();
 };
 
 #endif // __PORTS_H__

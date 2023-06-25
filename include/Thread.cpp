@@ -1,30 +1,18 @@
 #include "Thread.hpp"
 
-Thread::Thread()
+Thread::Thread(std::function<void()> function)
 {
-    
+    _function = function;
+    _persist_after_complete = false;
 }
 
-std::shared_ptr<Task> Thread::create(std::function<void()> callback)
+Thread::Thread(std::function<void()> function, bool persist)
 {
-    std::shared_ptr<Task> thread = std::shared_ptr<Task>(new Task(callback));
-    _current_threads.push_back(thread);
-    return thread;
+    _function = function;
+    _persist_after_complete = persist;
 }
 
-std::shared_ptr<Task> Thread::create(std::function<void()> callback, bool persist)
+void Thread::execute()
 {
-    std::shared_ptr<Task> thread = std::shared_ptr<Task>(new Task(callback, persist));
-    _current_threads.push_back(thread);
-    return thread;
-}
-
-void Thread::start()
-{
-    for (int thread_index = 0; thread_index <= _current_threads.size(); thread_index++) {
-        _current_threads[thread_index]->execute();
-        if (_current_threads[thread_index]->_persist_after_complete) {
-            _current_threads.erase(_current_threads.begin() + thread_index);
-        }
-    }
+    _function();
 }

@@ -1,11 +1,11 @@
-#ifndef __BUTTONNOTIFIABLE_H__
-#define __BUTTONNOTIFIABLE_H__
+#ifndef __ButtonListener_H__
+#define __ButtonListener_H__
 
-class ButtonNotifiable {
+class ButtonListener {
     private:
 
     public:
-        ButtonNotifiable();
+        ButtonListener();
 
         virtual void onButtonBackPressed();
         virtual void onButtonEnterPressed();
@@ -16,4 +16,4 @@ class ButtonNotifiable {
 };
 
 
-#endif // __BUTTONNOTIFIABLE_H__
+#endif // __ButtonListener_H__
