@@ -1,7 +1,7 @@
 #ifndef __PORTS_H__
 #define __PORTS_H__
 
-#include "../ev3dev.hpp"
+#include "../../ev3dev.hpp"
 
 enum DEVICE_SIDE {
     DEVICE_RIGHT = 0,

@@ -5,29 +5,26 @@
 #include "DirectRenderingManager.hpp"
 #include "Window.hpp"
 #include "Ports.hpp"
-#include "ButtonListener.hpp"
-#include "Thread.hpp"
 #include <array>
 
 
-class UserInterface: private ButtonListener {
+class UserInterface {
     private:
         static bool _button_listener_acitve;
         static uint_fast8_t _select_index;
         uint_fast8_t _select_index_max;
-        static Thread _thread;
 
     public:
         UserInterface();
         void render();
         void update();
 
-        void onButtonBackPressed() override;
-        void onButtonEnterPressed() override;
-        void onButtonUpPressed() override;
-        void onButtonDownPressed() override;
-        void onButtonLeftPressed() override;
-        void onButtonRightPressed() override;
+        void onButtonBackPressed();
+        void onButtonEnterPressed();
+        void onButtonUpPressed();
+        void onButtonDownPressed();
+        void onButtonLeftPressed();
+        void onButtonRightPressed();
 };
 
 #endif // __USERINTERFACE_H__

@@ -1,6 +1,6 @@
-#include "include/DirectRenderingManager.hpp"
-#include "include/Window.hpp"
-#include "include/Ports.hpp"
+#include "include/display/DirectRenderingManager.hpp"
+#include "include/display/Window.hpp"
+#include "include/io/Ports.hpp"
 
 #include <thread>
 #include <chrono>

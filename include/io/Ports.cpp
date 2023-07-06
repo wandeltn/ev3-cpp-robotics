@@ -26,10 +26,6 @@ Ports::Ports()
     _motor_left.reset();
 }
 
-Ports::Input::Input()
-{
-    
-}
 
 float Ports::Input::getUSDistance()
 {
