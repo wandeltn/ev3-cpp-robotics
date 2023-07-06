@@ -6,8 +6,6 @@
 #include <chrono>
 #include <iostream>
 
-#include <thread>
-
 #ifndef NO_LINUX_HEADERS
 #include <unistd.h>
 #include <fcntl.h>
@@ -18,15 +16,22 @@
 #endif
 
 DirectRenderingManager DRM;
-Ports::Input sensors;
-Ports::Output motors;
 
-ev3dev::power_supply battery;
+ev3dev::power_supply battery{""};
+
+void test() {
+    while(true) {
+        std::cout << "2" << std::endl;
+        usleep(500);
+    }
+}
 
 int main() {
-    std::cout << motors.rotateMotor() << std::endl;
+    std::thread thread_test = std::thread{&test};
 
-    while (!sensors.getButtonBackPressed()){
-        std::cout << sensors.getHeading() << std::endl;
+
+    while (true){
+        std::cout << "1" << std::endl;
+        usleep(200);
     }
 }

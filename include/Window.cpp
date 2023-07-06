@@ -11,7 +11,7 @@ Window::Window(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_fast8_t y
     height = y1 - y0;
     bits_per_pixel = 32;
     _screensize = width * height;
-    for (int i = 1; i < _screensize; i++) {
+    for (size_t i = 1; i < _screensize; i++) {
         frameBuffer.push_back(DISPLAY_WHITE);
     }
     if (border) {
@@ -46,7 +46,7 @@ void Window::clearScreen()
 
 void Window::fillScreen(DisplayColors color)
 {
-    for (int index = 0; index <= frameBuffer.size(); index++) {
+    for (size_t index = 0; index <= frameBuffer.size(); index++) {
         frameBuffer[index] = color;
     }
 }

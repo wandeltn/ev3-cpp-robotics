@@ -22,7 +22,7 @@ void DirectRenderingManager::pushToScreen()
 {
     for(Window* window : _current_windows) {
         std::vector<unsigned char> windowBuffer = window->getFBP();
-        for (int index = 0; index <= windowBuffer.size(); index++) {
+        for (size_t index = 0; index <= windowBuffer.size(); index++) {
             for (int pixel = 0; pixel < 4; pixel++) {
                 fbp[
                     static_cast<int>(

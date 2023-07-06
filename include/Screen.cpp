@@ -28,7 +28,7 @@ Screen::Screen()
 
     /* Figure out the size of the screen in bytes */
     screensize = vinfo.xres * vinfo.yres * vinfo.bits_per_pixel / 8;
-    printf("Screen size is %ld\n", screensize);
+    printf("Screen size is %ld\n", static_cast<long int>(screensize));
     printf("Vinfo.bpp = %d\n", vinfo.bits_per_pixel);
     printf("Yres = %d\n", vinfo.yres);
     printf("Xres = %d\n", vinfo.xres);

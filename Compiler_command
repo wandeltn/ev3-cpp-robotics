@@ -1,2 +1,3 @@
 docker run --rm -it -v ./:/src -w /src ev3cc
-arm-linux-gnueabi-g++ -std=c++17 -o bin/main main.cpp ./include/Screen.cpp include/Window.cpp include/DirectRenderingManager.cpp ev3dev.cpp include/Ports.cpp include/Field.cpp
+sudo docker run --rm -it --mount type=bind,source="$(pwd)",target=/src ev3cc
+arm-linux-gnueabi-g++ -pthread -Wall -std=c++17 -o bin/main main.cpp ./include/Screen.cpp include/Window.cpp include/DirectRenderingManager.cpp ev3dev.cpp include/Ports.cpp include/Field.cpp
