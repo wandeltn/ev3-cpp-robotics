@@ -3,12 +3,18 @@
 
 #include <thread>
 #include <vector>
-#inc
+#include <functional>
 
 class UserInput {
     private:
         static std::thread button_thread;
-        static volatile std::vector<ev3dev::
+        
+        static std::vector<std::function<void()>> button_listener_back;
+        static std::vector<std::function<void()>> button_listener_enter;
+        static std::vector<std::function<void()>> button_listener_up;
+        static std::vector<std::function<void()>> button_listener_down;
+        static std::vector<std::function<void()>> button_listener_left;
+        static std::vector<std::function<void()>> button_listener_right;
 
     public:
         UserInput();

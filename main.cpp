@@ -1,10 +1,12 @@
 #include "include/display/DirectRenderingManager.hpp"
 #include "include/display/Window.hpp"
-#include "include/io/Ports.hpp"
+#include "include/io/ButtonNotifier.hpp"
+#include "ev3dev.hpp"
 
 #include <thread>
 #include <chrono>
 #include <iostream>
+#include <sys/inotify.h>
 
 #ifndef NO_LINUX_HEADERS
 #include <unistd.h>
@@ -19,19 +21,11 @@ DirectRenderingManager DRM;
 
 ev3dev::power_supply battery{""};
 
-void test() {
-    while(true) {
-        std::cout << "2" << std::endl;
-        usleep(500);
-    }
-}
 
 int main() {
-    std::thread thread_test = std::thread{&test};
-
+    std::unique_ptr<ButtonNotifier>& bl = ButtonNotifier::GetInstance();
 
     while (true){
-        std::cout << "1" << std::endl;
-        usleep(200);
+
     }
 }

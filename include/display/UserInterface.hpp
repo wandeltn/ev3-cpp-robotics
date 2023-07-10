@@ -1,10 +1,9 @@
 #ifndef __USERINTERFACE_H__
 #define __USERINTERFACE_H__
 
-#include "../ev3dev.hpp"
+#include "../../ev3dev.hpp"
 #include "DirectRenderingManager.hpp"
 #include "Window.hpp"
-#include "Ports.hpp"
 #include <array>
 
 
