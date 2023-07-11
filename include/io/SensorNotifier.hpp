@@ -11,6 +11,7 @@
 #include <thread>
 #include <functional>
 #include <vector>
+#include <map>
 
 #define SENSORS_DIRECTORY   "/sys/class/lego-sensor/"
 #define MOTORS_DIRECTORY    "/sys/class/lego-port/"
@@ -61,6 +62,8 @@ private:
     static std::vector<std::function<void(int)>> _output_B_listeners;
     static std::vector<std::function<void(int)>> _output_C_listeners;
     static std::vector<std::function<void(int)>> _output_D_listeners;    
+
+    static std::map<std::string, std::vector<std::function<void(int)>>> _path_listeners;
 
     static void readPorts();
     void Dispatcher();

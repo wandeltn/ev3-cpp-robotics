@@ -31,6 +31,17 @@ std::vector<std::function<void(int)>> SensorNotifier::_output_B_listeners = {};
 std::vector<std::function<void(int)>> SensorNotifier::_output_C_listeners = {};
 std::vector<std::function<void(int)>> SensorNotifier::_output_D_listeners = {}; 
 
+std::map<std::string, std::vector<std::function<void(int)>>> SensorNotifier::_path_listeners = {
+    {SensorNotifier::_input_1_path, SensorNotifier::_input_1_listeners},
+    {SensorNotifier::_input_2_path, SensorNotifier::_input_2_listeners},
+    {SensorNotifier::_input_3_path, SensorNotifier::_input_3_listeners},
+    {SensorNotifier::_input_4_path, SensorNotifier::_input_4_listeners},
+    {SensorNotifier::_output_A_path, SensorNotifier::_output_A_listeners},
+    {SensorNotifier::_output_B_path, SensorNotifier::_output_B_listeners},
+    {SensorNotifier::_output_C_path, SensorNotifier::_output_C_listeners},
+    {SensorNotifier::_output_D_path, SensorNotifier::_output_D_listeners},
+};
+
 
 SensorNotifier::SensorNotifier()
 {
@@ -113,5 +124,27 @@ void SensorNotifier::readPorts()
 
 void SensorNotifier::Dispatcher()
 {
-    
+    for (std::pair<const std::string, std::vector<std::function<void (int)>>> device : _path_listeners) {
+        std::ifstream ifs = std::ifstream{};
+        ifs.open(device.first);
+
+        if (!ifs.is_open()) {
+            throw new std::invalid_argument("failed to open device: " + device.first);
+        }
+
+        std::string readValue;
+        getline(ifs, readValue);
+
+        //check for letters before cast to int
+        if (readValue.find_first_not_of("0123456789") == std::string::npos) {
+            throw new std::invalid_argument("device file contains letters and can not be cast to int: " + device.first);
+        }
+
+        for (std::function<void(int)> listener : device.second) {
+            listener(std::stoi(readValue));
+        }
+
+        ifs.close();
+    }
+    usleep(10);
 }
