@@ -3,6 +3,7 @@
 
 #include <map>
 #include <iostream>
+#include <math.h>
 #include "io/SensorNotifier.hpp"
 
 struct Point
@@ -23,9 +24,11 @@ class LocationTracker {
     private:
         static SensorNotifier _notifier;
 
-        static int _position_x;
-        static int _position_y;
+        static float _position_x;
+        static float _position_y;
         static int _heading;
+
+        static float MotorPulsesToInt(float pulses);
 };
 
 #endif // __LOCATIONTRACKER_H__
