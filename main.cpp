@@ -24,6 +24,7 @@ ev3dev::power_supply battery{""};
 
 int main() {
     std::unique_ptr<ButtonNotifier>& bl = ButtonNotifier::GetInstance();
+    
 
     while (true){
 

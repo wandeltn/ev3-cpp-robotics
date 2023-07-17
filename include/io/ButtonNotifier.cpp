@@ -1,5 +1,5 @@
-
 #include "ButtonNotifier.hpp"
+
 std::thread ButtonNotifier::_listener_thread;
 std::ifstream ButtonNotifier::_ifstream = std::ifstream{};
 bool ButtonNotifier::_exit_thread = false;

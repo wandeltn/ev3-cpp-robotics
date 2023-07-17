@@ -5,6 +5,7 @@
 #include <iostream>
 #include <math.h>
 #include "io/SensorNotifier.hpp"
+#include "io/DeviceCommunicator.hpp"
 
 struct Point
 {
@@ -13,7 +14,7 @@ struct Point
 };
 
 
-class LocationTracker {
+class LocationTracker : private DeviceCommunicator {
     public:
         LocationTracker();
         LocationTracker(int startX, int startY);

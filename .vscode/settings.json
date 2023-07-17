@@ -55,7 +55,12 @@
         "streambuf": "cpp",
         "typeinfo": "cpp",
         "codecvt": "cpp",
-        "iomanip": "cpp"
+        "iomanip": "cpp",
+        "compare": "cpp",
+        "concepts": "cpp",
+        "numbers": "cpp",
+        "semaphore": "cpp",
+        "stop_token": "cpp"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }

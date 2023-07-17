@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __BUTTONNOTIFIER_H__
+#define __BUTTONNOTIFIER_H__ 
 
 #include <thread>
 #include <vector>
@@ -47,3 +48,5 @@ class ButtonNotifier {
 
         static std::unique_ptr<ButtonNotifier>& GetInstance();
 };
+
+#endif
