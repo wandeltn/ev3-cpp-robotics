@@ -33,6 +33,11 @@ void LocationTracker::updateLocation(std::map<subscriber_port&, int> sensor_valu
     _position_y += MotorPulsesToInt(moved_pulses * sin(_heading));
 }
 
+const Point LocationTracker::getLocation()
+{
+    return Point();
+}
+
 float LocationTracker::MotorPulsesToInt(float pulses)
 {
     return ((static_cast<float>(pulses) / 360.0f) + 15.6f);
