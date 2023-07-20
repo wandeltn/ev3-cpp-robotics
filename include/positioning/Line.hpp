@@ -14,6 +14,7 @@ class Line {
         Vector direction_vector;
         
     private:
+        double _length;
 };
 
 #endif // __LINE_H__
