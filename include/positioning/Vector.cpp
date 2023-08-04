@@ -6,6 +6,12 @@ Vector::Vector(double x, double y)
     this->y = y;
 }
 
+double Vector::getDistanceTo(Vector point)
+{
+    Vector distanceBetween = point;
+    return (sqrt(pow(distanceBetween.x, 2) + pow(distanceBetween.y, 2)));
+}
+
 Vector Vector::operator+(const Vector& summand)
 {
     return Vector{x + summand.x, y + summand.y};
@@ -29,4 +35,18 @@ Vector Vector::operator*(const double factor)
 double Vector::operator^(const Vector& multiplicand)
 {
     return (x * multiplicand.x) + (y * multiplicand.y); 
+}
+
+bool Vector::operator==(const Vector& comparison)
+{
+    if (this->x == comparison.x && this->y == comparison.y) {
+        return true;
+    }
+    return false;
+}
+
+std::ostream& operator<<(std::ostream& os, const Vector& vector)
+{
+    os << "x: " << vector.x << "y: " << vector.y;
+    return os;
 }

@@ -1,6 +1,7 @@
 #include "include/display/DirectRenderingManager.hpp"
 #include "include/display/Window.hpp"
 #include "include/io/ButtonNotifier.hpp"
+#include "include/positioning/Pathfind.hpp"
 #include "ev3dev.hpp"
 
 #include <thread>
@@ -17,16 +18,13 @@
 #define KEY_REPEAT  2
 #endif
 
-DirectRenderingManager DRM;
 
-ev3dev::power_supply battery{""};
-
+Pathfind pf{};
 
 int main() {
-    std::unique_ptr<ButtonNotifier>& bl = ButtonNotifier::GetInstance();
-    
+    pf.findPath({3, 8}, {20, 48});
 
-    while (true){
+    // while (true){
 
-    }
+    // }
 }

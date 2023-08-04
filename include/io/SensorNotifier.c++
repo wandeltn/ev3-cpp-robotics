@@ -39,11 +39,11 @@ SensorNotifier::~SensorNotifier()
 
 void SensorNotifier::subscribeToChange(subscriber_port device_port, std::function<void(int)> callback)
 {
-    if (_path_listeners.count(device_port) != 0){
-        _path_listeners[device_port].push_back(callback);
-    } else {
-        throw new std::invalid_argument("device port " + device_port + " not recognized");
-    }
+    //if (_path_listeners.count(device_port) != 0){
+    //    _path_listeners[device_port].push_back(callback);
+    //} else {
+    //    throw new std::invalid_argument("device port " + device_port + " not recognized");
+    //}
 }
 
 void SensorNotifier::subscribeToChange(std::function<void(std::map<subscriber_port&, int>)> callback)
