@@ -11,9 +11,11 @@ class Line {
 
         Vector getIntersect(const Line& line);
         bool checkForIntersect(const Line& line);
+        
+        Line& operator=(const Line& line) = default;
 
-        const Vector start_point;
-        const Vector end_point;
+        Vector start_point;
+        Vector end_point;
         Vector direction_vector;
         
     private:

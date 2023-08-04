@@ -22,7 +22,7 @@
 Pathfind pf{};
 
 int main() {
-    pf.findPath({3, 8}, {20, 48});
+    pf.findPath({3, 8}, {48, 48});
 
     // while (true){
 

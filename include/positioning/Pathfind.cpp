@@ -111,10 +111,10 @@ std::vector<Vector> Pathfind::optimizePath(std::vector<Vector> unoptimizedPath) 
 	for (Vector directTo : unoptimizedPath) {
 		if (collisionDetect.checkForIntersect({currentStart, directTo})) {
 			finalPath.push_back(prevDirectTo);
-
+			currentStart = prevDirectTo;
 		} else {
-			prevDirectTo = directTo;
 		}
+		prevDirectTo = directTo;
 	}
 	finalPath.push_back(unoptimizedPath.back());
 	return finalPath;

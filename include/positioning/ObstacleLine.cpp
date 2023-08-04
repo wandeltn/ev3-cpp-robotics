@@ -2,7 +2,7 @@
 
 ObstacleLine::ObstacleLine(Line line)
 {
-
+    _obstacle = line;
 }
 
 bool ObstacleLine::checkForIntersect(const Line& line)
