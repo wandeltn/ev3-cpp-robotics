@@ -1,5 +1,7 @@
 #include "Pathfind.hpp"
 
+std::shared_ptr<Window> Pathfind::_window = nullptr;
+
 Pathfind::Pathfind()
 {
 }
@@ -95,7 +97,7 @@ std::vector<Vector> Pathfind::reconstruct_path(const std::map<Vector, Vector>& c
 	for (Vector element : total_path) {
 		std::cout << element << std::endl;
 	}
-	std::cout << "---FOUND MORE OPTIMAL PATH:---" << std::endl;
+	std::cout << "---FOUND BETTER PATH:---" << std::endl;
 	total_path = optimizePath(total_path);
 	for (Vector element : total_path) {
 		std::cout << element << std::endl;

@@ -1,4 +1,5 @@
 #include "ObstacleSquare.hpp"
+#include "Line.hpp"
 
 ObstacleSquare::ObstacleSquare(Vector upperLeft, Vector lowerRight)
 {
@@ -8,11 +9,15 @@ ObstacleSquare::ObstacleSquare(Vector upperLeft, Vector lowerRight)
 
 bool ObstacleSquare::checkForIntersect(const Line& line)
 {
+    const Line _leftBound{_upperLeft, {_upperLeft.x, _lowerRight.y}};
+    const Line _rightBound{_lowerRight, {_lowerRight.x, _upperLeft.y}};
+    const Line _upperBound{_upperLeft, {_lowerRight.x, _upperLeft.y}};
+    const Line _lowerBound{_lowerRight, {_upperLeft.x, _lowerRight.y}};
     if (
-        (line.start_point.x >= _upperLeft.x && line.start_point.x <= _lowerRight.x) ||
-        (line.start_point.y <= _upperLeft.y && line.start_point.y >= _lowerRight.y) ||
-        (line.end_point.x >= _upperLeft.x && line.end_point.x <= _lowerRight.x) ||
-        (line.end_point.y <= _upperLeft.y && line.end_point.y >= _lowerRight.y)
+        line.checkForIntersect(_leftBound) ||
+        line.checkForIntersect(_rightBound) ||
+        line.checkForIntersect(_upperBound) ||
+        line.checkForIntersect(_lowerBound)
         ) {
         return true;
     }

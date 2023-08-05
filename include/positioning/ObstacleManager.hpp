@@ -3,8 +3,14 @@
 
 #include <vector>
 #include <memory>
+#include <fstream>
+#include <iostream>
+#include <math.h>
 #include "Line.hpp"
 #include "BaseObstacle.hpp"
+#include "ObstacleLine.hpp"
+#include "ObstacleSquare.hpp"
+
 
 class ObstacleManager {
     private:

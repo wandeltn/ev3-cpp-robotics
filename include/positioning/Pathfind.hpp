@@ -3,6 +3,7 @@
 
 #include "Vector.hpp"
 #include "ObstacleManager.hpp"
+#include "../display/Window.hpp"
 #include <vector>
 #include <list>
 #include <array>
@@ -25,6 +26,7 @@ class Pathfind
 {
 private:
     ObstacleManager collisionDetect{};
+    static std::shared_ptr<Window> _window;
 
 public:
 	Pathfind();

@@ -10,8 +10,8 @@ class Line {
         Line();
 
         Vector getIntersect(const Line& line);
-        bool checkForIntersect(const Line& line);
-        
+        bool checkForIntersect(const Line& line) const;
+
         Line& operator=(const Line& line) = default;
 
         Vector start_point;
@@ -20,6 +20,7 @@ class Line {
         
     private:
         double _length;
+        bool counterclockwise(Vector A, Vector B, Vector C) const;
 };
 
 #endif // __LINE_H__

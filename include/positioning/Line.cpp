@@ -15,30 +15,41 @@ Line::Line(Vector start, Vector end): start_point{start}, end_point{end}
 
 Vector Line::getIntersect(const Line& line)
 {
-    double lambda = (start_point.y * line.direction_vector.x - line.start_point.y * line.direction_vector.x - start_point.x * line.direction_vector.y + line.start_point.x * line.direction_vector.y) /
+    double lambda1 = (start_point.y * line.direction_vector.x - line.start_point.y * line.direction_vector.x - start_point.x * line.direction_vector.y + line.start_point.x * line.direction_vector.y) /
         (line.direction_vector.x * line.direction_vector.y - direction_vector.y * line.direction_vector.x);
-    double intersect_x = start_point.x + lambda * direction_vector.x;
-    double intersect_y = start_point.y + lambda * direction_vector.y;
-    if (lambda < 0 || lambda > _length) {
-        return Vector(std::numeric_limits<double>::max(), std::numeric_limits<double>::max());
+    double intersect_x = start_point.x + lambda1 * direction_vector.x;
+    double intersect_y = start_point.y + lambda1 * direction_vector.y;
+    if (lambda1 < 0 || lambda1 > _length) {
+        // return Vector(std::numeric_limits<double>::max(), std::numeric_limits<double>::max());
     }
     // check lambda of second line
-    lambda = (intersect_y - line.start_point.y) / line.direction_vector.y; 
-    if (lambda < 0 || lambda > _length) {
+    double lambda2 = (intersect_y - line.start_point.y) / line.direction_vector.y; 
+    if ((lambda2 < 0 || lambda2 > line._length) && (lambda1 < 0 || lambda1 > _length)) {
         // direction vector may be 0 in y axis
-        lambda = (intersect_x - line.start_point.x) / line.direction_vector.x; 
-        if (lambda < 0 || lambda > _length) {
+        double lambda2 = (intersect_x - line.start_point.x) / line.direction_vector.x; 
+        if (lambda2 < 0 || lambda2 > _length) {
             return Vector(std::numeric_limits<double>::max(), std::numeric_limits<double>::max());
         }
     }
     return Vector(intersect_x, intersect_y);
 }
 
-bool Line::checkForIntersect(const Line& line)
+bool Line::checkForIntersect(const Line& line) const
 {
-    Vector intersect = getIntersect(line);
-    if ((intersect.x != std::numeric_limits<double>::max()) || (intersect.y != std::numeric_limits<double>::max())) {
-        return true;
-    }
-    return false;
+    //https://bryceboe.com/2006/10/23/line-segment-intersection-algorithm/
+    
+    return counterclockwise(start_point, line.start_point, line.end_point) != 
+            counterclockwise(end_point,line.start_point,line.end_point) && 
+            counterclockwise(start_point,end_point,line.start_point) != 
+            counterclockwise(start_point,end_point,line.end_point);
+    // Vector intersect = getIntersect(line);
+    // if ((intersect.x != std::numeric_limits<double>::max()) || (intersect.y != std::numeric_limits<double>::max())) {
+    //     return true;
+    // }
+    // return false;
+}
+
+bool Line::counterclockwise(Vector A, Vector B, Vector C) const
+{
+    return (C.y-A.y)*(B.x-A.x) > (B.y-A.y)*(C.x-A.x);
 }

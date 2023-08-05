@@ -58,6 +58,7 @@ void Window::drawPixel(uint_fast8_t xpos, uint_fast8_t ypos, DisplayColors color
     }
 }
 
+
 void Window::drawHLine(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_fast8_t y1, DisplayColors color)
 {
     if (x0 != x1) {
