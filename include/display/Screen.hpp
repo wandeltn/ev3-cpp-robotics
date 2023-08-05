@@ -26,7 +26,7 @@ class Screen
 {
 protected:
     int fbfd;
-    unsigned char *fbp;
+    uint32_t *fbp;
     size_t screensize = 0;
 
     unsigned int width;

@@ -11,11 +11,11 @@ Window::Window(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_fast8_t y
     height = y1 - y0;
     bits_per_pixel = 32;
     _screensize = width * height;
-    for (size_t i = 1; i < _screensize; i++) {
+    for (size_t i = 1; i <= _screensize; i++) {
         frameBuffer.push_back(DISPLAY_WHITE);
     }
     if (border) {
-        drawRect(x0, y0, x1, y1, DISPLAY_BLACK);
+        drawRect(x0 +1, y0 +1, x1 -1, y1 -1, DISPLAY_BLACK);
     }
 }
 
@@ -24,7 +24,7 @@ Window::~Window()
     frameBuffer.clear();
 }
 
-std::vector<unsigned char>& Window::getFBP()
+std::vector<uint32_t>& Window::getFBP()
 {
     return frameBuffer;
 }
@@ -54,9 +54,12 @@ void Window::fillScreen(DisplayColors color)
 void Window::drawPixel(uint_fast8_t xpos, uint_fast8_t ypos, DisplayColors color)
 {
     for (int pixelIndex = 0; pixelIndex <= 4; pixelIndex++) {
-        frameBuffer[ypos * width + (xpos + pixelIndex)] = color;
+        // frameBuffer[ypos * width + (xpos + pixelIndex)] = color;
     }
     // frameBuffer[ypos * width + (xpos)] = color;
+    frameBuffer[0] = DISPLAY_BLACK;
+    frameBuffer.back() = DISPLAY_BLACK;
+    std::cout << frameBuffer.size();
 }
 
 void Window::drawPixel(Vector pos, DisplayColors color)

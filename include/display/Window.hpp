@@ -7,7 +7,7 @@
 
 class Window {
     private:
-        std::vector<unsigned char> frameBuffer;
+        std::vector<uint32_t> frameBuffer = {};
         size_t _screensize;
         int fbfd;
     public:
@@ -17,7 +17,7 @@ class Window {
         uint_fast8_t startX;
         uint_fast8_t startY;
 
-        std::vector<unsigned char>& getFBP();
+        std::vector<uint32_t>& getFBP();
         uint_fast8_t getScreensize();
         uint_fast8_t width;
         uint_fast8_t height;

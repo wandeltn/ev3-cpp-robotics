@@ -32,20 +32,20 @@ void DirectRenderingManager::pushToScreen()
 
 void DirectRenderingManager::pushToScreen(std::shared_ptr<Window> window)
 {
-    std::vector<unsigned char> windowBuffer = window->getFBP();
+    std::vector<uint32_t> windowBuffer = window->getFBP();
     for (size_t index = 0; index <= windowBuffer.size(); index++) {
-        for (int pixel = 0; pixel < 4; pixel++) {
+        // for (int pixel = 0; pixel < 4; pixel++) {
             fbp[
                 static_cast<int>(
-                    pixel
-                    + (window->startX) * 4
-                    + (floor(index / window->width)) * ((178 - (window->startX + window->width)) + window->startX)  * 4
+                    // pixel +
+                    (window->startX)
+                    + (floor(index / window->width)) * ((178 - (window->startX + window->width)) + window->startX)
                     //+ floor(index / window->width) * 178
-                    + 178 * window->startY * 4
-                    + index * 4
+                    + 178 * window->startY
+                    + index
                 )
             ] = windowBuffer[index];
-        }
+        // }
     }
 }
 
