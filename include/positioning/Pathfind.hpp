@@ -30,6 +30,7 @@ private:
 
 public:
 	Pathfind();
+    Pathfind(std::shared_ptr<Window> window);
 
 	std::vector<Vector> findPath(Vector start, Vector end);
 	std::vector<Vector> reconstruct_path(const std::map<Vector, Vector>& cameFrom, Vector current);

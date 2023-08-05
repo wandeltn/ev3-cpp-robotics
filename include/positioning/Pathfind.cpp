@@ -4,6 +4,13 @@ std::shared_ptr<Window> Pathfind::_window = nullptr;
 
 Pathfind::Pathfind()
 {
+
+}
+
+Pathfind::Pathfind(std::shared_ptr<Window> window) 
+{
+	_window = window;
+	_window->clearScreen();
 }
 
 std::vector<Vector> Pathfind::findPath(Vector start, Vector end)
@@ -48,10 +55,22 @@ std::vector<Vector> Pathfind::findPath(Vector start, Vector end)
 				currentBestFScore = fScore[openNode];
 			}
 		}
-		std::cout << current << std::endl;
+		_window->drawPixel(current, DISPLAY_LIGHT);
+		if (_window != nullptr) {
+		} else {
+			// std::cout << current << std::endl;
+		}
 
 		if (current == end) {
-			return reconstruct_path(cameFrom, current);
+			std::vector<Vector> final_path = reconstruct_path(cameFrom, current);
+				Vector prevNode = final_path.front();
+				_window->drawLine(final_path.back(), prevNode, DISPLAY_BLACK);
+				for (Vector node : final_path) {
+				}
+			if (_window != nullptr) {
+			}
+			
+			return final_path;
 		}
 
 		openSet.erase(std::remove(openSet.begin(), openSet.end(), current), openSet.end());
@@ -93,15 +112,15 @@ std::vector<Vector> Pathfind::reconstruct_path(const std::map<Vector, Vector>& c
 	}
 	std::reverse(total_path.begin(), total_path.end());
 
-	std::cout << "---FOUND PATH TO DESTINATION:---" << std::endl;
-	for (Vector element : total_path) {
-		std::cout << element << std::endl;
-	}
-	std::cout << "---FOUND BETTER PATH:---" << std::endl;
+	// std::cout << "---FOUND PATH TO DESTINATION:---" << std::endl;
+	// for (Vector element : total_path) {
+	// 	std::cout << element << std::endl;
+	// }
+	// std::cout << "---FOUND BETTER PATH:---" << std::endl;
 	total_path = optimizePath(total_path);
-	for (Vector element : total_path) {
-		std::cout << element << std::endl;
-	}
+	// for (Vector element : total_path) {
+	// 	std::cout << element << std::endl;
+	// }
 	return total_path;
 }
 

@@ -19,11 +19,13 @@
 #endif
 
 
-Pathfind pf{};
-
 int main() {
+    DirectRenderingManager drm{};
+    Pathfind pf{drm.createWindow(0, 0, 200, 100, true)};
     pf.findPath({3, 8}, {48, 48});
+    drm.pushToScreen();
 
+    sleep(10);
     // while (true){
 
     // }

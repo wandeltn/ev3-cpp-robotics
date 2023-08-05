@@ -56,6 +56,12 @@ void Window::drawPixel(uint_fast8_t xpos, uint_fast8_t ypos, DisplayColors color
     for (int pixelIndex = 0; pixelIndex <= 4; pixelIndex++) {
         frameBuffer[ypos * width + (xpos + pixelIndex)] = color;
     }
+    // frameBuffer[ypos * width + (xpos)] = color;
+}
+
+void Window::drawPixel(Vector pos, DisplayColors color)
+{
+    drawPixel(pos.x, pos.y, color);
 }
 
 
@@ -139,6 +145,11 @@ void Window::drawLine(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_fa
             }
         }
     }
+}
+
+void Window::drawLine(Vector start, Vector end, DisplayColors color)
+{
+    drawLine(start.x, start.y, end.x, end.y, color);
 }
 
 void Window::drawCircle(uint_fast8_t x0, uint_fast8_t y0, uint_fast16_t r, DisplayColors color) {
