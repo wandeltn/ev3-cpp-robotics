@@ -18,13 +18,13 @@
 #define KEY_REPEAT  2
 #endif
 
-    DirectRenderingManager drm{};
+    // DirectRenderingManager drm{};
 
 int main() {
-    std::shared_ptr<Window> window = drm.createWindow(0, 0, 200, 100, true);
-    // Pathfind pf{window};
-    // pf.findPath({3, 8}, {48, 48});
-    drm.pushToScreen();
+    // std::shared_ptr<Window> window = drm.createWindow(0, 0, 178, 128, true);
+    Pathfind pf{};
+    pf.findPath({3, 8}, {120, 120});
+    // drm.pushToScreen();
     
     sleep(10);
     // while (true){

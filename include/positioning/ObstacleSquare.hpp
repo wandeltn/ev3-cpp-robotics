@@ -13,6 +13,7 @@ class ObstacleSquare : public BaseObstacle {
         ObstacleSquare(Vector upperLeft, Vector lowerRight);
 
         bool checkForIntersect(const Line& line) override;
+        void paint(std::shared_ptr<Window> window) override;
 };
 
 #endif // __OBSTACLESQUARE_H__

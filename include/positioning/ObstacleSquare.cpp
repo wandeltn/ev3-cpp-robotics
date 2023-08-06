@@ -24,4 +24,9 @@ bool ObstacleSquare::checkForIntersect(const Line& line)
     return false;
 }
 
+void ObstacleSquare::paint(std::shared_ptr<Window> window)
+{
+    window->drawRect(_upperLeft, _lowerRight, DISPLAY_DARK);
+}
+
 

@@ -3,8 +3,9 @@
 #include <iostream>
 
 
-Window::Window(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_fast8_t y1, bool border)
+Window::Window(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_fast8_t y1, bool border, uint32_t* fbp)
 {
+    _fbp = fbp;
     startX = x0;
     startY = y0;
     width = x1 - x0;
@@ -15,7 +16,7 @@ Window::Window(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_fast8_t y
         frameBuffer.push_back(DISPLAY_WHITE);
     }
     if (border) {
-        drawRect(x0 +1, y0 +1, x1 -1, y1 -1, DISPLAY_BLACK);
+        drawRect(x0, y0, x1, y1, DISPLAY_BLACK);
     }
 }
 
@@ -32,6 +33,22 @@ std::vector<uint32_t>& Window::getFBP()
 uint_fast8_t Window::getScreensize()
 {
     return _screensize;
+}
+
+void Window::pushToScreen()
+{
+    for (size_t index = 0; index <= frameBuffer.size(); index++) {
+        // for (int pixel = 0; pixel < 4; pixel++) {
+            _fbp[
+                static_cast<int>(
+                    (startX)
+                    + (floor(index / width)) * ((178 - (startX + width)) + startX)
+                    + 178 * startY
+                    + index
+                )
+            ] = frameBuffer[index];
+        // }
+    }
 }
 
 DisplayColors Window::getPixel(uint_fast8_t x0, uint_fast8_t y0)
@@ -56,10 +73,7 @@ void Window::drawPixel(uint_fast8_t xpos, uint_fast8_t ypos, DisplayColors color
     for (int pixelIndex = 0; pixelIndex <= 4; pixelIndex++) {
         // frameBuffer[ypos * width + (xpos + pixelIndex)] = color;
     }
-    // frameBuffer[ypos * width + (xpos)] = color;
-    frameBuffer[0] = DISPLAY_BLACK;
-    frameBuffer.back() = DISPLAY_BLACK;
-    std::cout << frameBuffer.size();
+    frameBuffer[ypos * width + (xpos)] = color;
 }
 
 void Window::drawPixel(Vector pos, DisplayColors color)
@@ -68,7 +82,7 @@ void Window::drawPixel(Vector pos, DisplayColors color)
 }
 
 
-void Window::drawHLine(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_fast8_t y1, DisplayColors color)
+void Window::drawVLine(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_fast8_t y1, DisplayColors color)
 {
     if (x0 != x1) {
         perror("Error while checking for horizontality");
@@ -79,23 +93,24 @@ void Window::drawHLine(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_f
     }
 }
 
-void Window::drawHLine(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t length, DisplayColors color)
+void Window::drawVLine(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t length, DisplayColors color)
 {
     drawHLine(x0, y0, x0, y0 + length, color);
 }
 
-void Window::drawVLine(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_fast8_t y1, DisplayColors color)
+void Window::drawHLine(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_fast8_t y1, DisplayColors color)
 {
     if (y0 != y1) {
         perror("Error while checking for verticality");
         return;
     }
+    std::cout << "x0: " << static_cast<int>(x0) << " x1: " << static_cast<int>(x1) << std::endl;
     for (int posx = x0; posx <= x1; posx++){
         drawPixel(posx, y0, color);
     }
 }
 
-void Window::drawVLine(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t length, DisplayColors color)
+void Window::drawHLine(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t length, DisplayColors color)
 {
     drawVLine(x0, y0, x0 + length, y0, color);
 }
@@ -105,11 +120,11 @@ void Window::drawLine(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_fa
     if (x0 == x1) {
         if (y0 > y1)
             _swap_int16_t(y0, y1);
-        drawVLine(x0, y0, y1 - y0 + 1, color);
+        drawVLine(x0, y0, x1, y1, color);
     } else if (y0 == y1) {
         if (x0 > x1)
             _swap_int16_t(x0, x1);
-        drawHLine(x0, y0, x1 - x0 + 1, color);
+        drawHLine(x0, y0, x1, y1, color);
     } else {
         int16_t steep = abs(y1 - y0) > abs(x1 - x0);
         if (steep) {
@@ -155,6 +170,15 @@ void Window::drawLine(Vector start, Vector end, DisplayColors color)
     drawLine(start.x, start.y, end.x, end.y, color);
 }
 
+void Window::drawLine(Line line, DisplayColors color)
+{
+    drawLine(
+        line.start_point,
+        line.end_point,
+        color
+    );
+}
+
 void Window::drawCircle(uint_fast8_t x0, uint_fast8_t y0, uint_fast16_t r, DisplayColors color) {
 int16_t f = 1 - r;
   int16_t ddF_x = 1;
@@ -190,9 +214,20 @@ int16_t f = 1 - r;
 
 void Window::drawRect(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_fast8_t y1, DisplayColors color)
 {
-    drawLine(x0, y0, x0, y1, color); //left vertical
-    drawLine(x1, y1, x1, y0, color); //right vertical
-    drawLine(x0, y0, x1, y0, color); //upper horitontal
-    drawLine(x1, y1, x0, y1, color); //lower horizontal
+    drawLine(x0, y0, x0, y1 -1, color); //left vertical
+    drawLine(x1 -1, y1 -1, x1 -1, y0, color); //right vertical
+    drawLine(x0, y0, x1 -1, y0, color); //upper horitontal
+    drawLine(x1 -1, y1 -1, x0, y1 -1, color); //lower horizontal
+}
+
+void Window::drawRect(Vector upperLeft,  Vector lowerRight, DisplayColors color)
+{
+    drawRect(
+        upperLeft.x,
+        upperLeft.y,
+        lowerRight.x,
+        lowerRight.y,
+        color
+    );
 }
 

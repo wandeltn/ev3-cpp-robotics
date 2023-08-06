@@ -1,8 +1,5 @@
 #include "DirectRenderingManager.hpp"
-#include <cstring>
-#include <iostream>
-#include <vector>
-#include <math.h>
+
 
 DirectRenderingManager::DirectRenderingManager()
 {
@@ -11,7 +8,7 @@ DirectRenderingManager::DirectRenderingManager()
 
 std::shared_ptr<Window> DirectRenderingManager::createWindow(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_fast8_t y1, bool border)
 {
-    std::shared_ptr<Window> pWindow = std::make_shared<Window>(x0, y0, x1, y1, border);
+    std::shared_ptr<Window> pWindow = std::make_shared<Window>(x0, y0, x1, y1, border, fbp);
     _current_windows.push_back(pWindow);
     return pWindow;
 }

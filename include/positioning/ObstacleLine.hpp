@@ -10,6 +10,7 @@ class ObstacleLine : public BaseObstacle {
     public:
         ObstacleLine(Line line);
         bool checkForIntersect(const Line& line) override;
+        void paint(std::shared_ptr<Window> window) override;
 };
 
 #endif // __OBSTACLELINE_H__

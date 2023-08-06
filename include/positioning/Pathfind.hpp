@@ -25,7 +25,7 @@ namespace std
 class Pathfind
 {
 private:
-    ObstacleManager collisionDetect{};
+    static ObstacleManager collisionDetect;
     static std::shared_ptr<Window> _window;
 
 public:

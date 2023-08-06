@@ -1,5 +1,6 @@
 #include "Pathfind.hpp"
 
+ObstacleManager Pathfind::collisionDetect = ObstacleManager{};
 std::shared_ptr<Window> Pathfind::_window = nullptr;
 
 Pathfind::Pathfind()
@@ -10,7 +11,6 @@ Pathfind::Pathfind()
 Pathfind::Pathfind(std::shared_ptr<Window> window) 
 {
 	_window = window;
-	_window->clearScreen();
 }
 
 std::vector<Vector> Pathfind::findPath(Vector start, Vector end)
@@ -44,55 +44,61 @@ std::vector<Vector> Pathfind::findPath(Vector start, Vector end)
 	fScore[start] = start.getDistanceTo(end);
 
 	while (!openSet.empty()) {
-		Vector current = { 0,0 };
+		Vector currentBest = { 0,0 };
 		double currentBestFScore = std::numeric_limits<double>::max();
 		for (Vector openNode : openSet) {
 			// if (fScore.count(openNode) == 0) {
 			// 	fScore[openNode] = gScore[openNode] + openNode.getDistanceTo(end);
 			// }
 			if (fScore[openNode] < currentBestFScore) {
-				current = openNode;
+				currentBest = openNode;
 				currentBestFScore = fScore[openNode];
 			}
 		}
-		_window->drawPixel(current, DISPLAY_LIGHT);
+
+		// _window->drawPixel(currentBest, DISPLAY_LIGHT);
+		// _window->pushToScreen();
+		std::cout << currentBest << std::endl;
 		if (_window != nullptr) {
 		} else {
-			// std::cout << current << std::endl;
 		}
 
-		if (current == end) {
-			std::vector<Vector> final_path = reconstruct_path(cameFrom, current);
+		if (currentBest == end) {
+			std::vector<Vector> final_path = reconstruct_path(cameFrom, currentBest);
 				Vector prevNode = final_path.front();
-				_window->drawLine(final_path.back(), prevNode, DISPLAY_BLACK);
 				for (Vector node : final_path) {
+					// _window->drawLine(prevNode, node, DISPLAY_BLACK);
+					std::cout << node << std::endl;
+					prevNode = node;
 				}
 			if (_window != nullptr) {
 			}
 			
+			// collisionDetect.paint(_window);
 			return final_path;
 		}
 
-		openSet.erase(std::remove(openSet.begin(), openSet.end(), current), openSet.end());
+		openSet.erase(std::remove(openSet.begin(), openSet.end(), currentBest), openSet.end());
 
 		for (Vector neighborDirection : directions) {
-			Vector neighbor = current + neighborDirection;
-			if (gScore.count(current) == 0) {
-				gScore[current] = std::numeric_limits<double>::infinity();
+			Vector tempCurrentBest = currentBest;
+			Vector neighbor = tempCurrentBest + neighborDirection;
+			if (gScore.count(currentBest) == 0) {
+				gScore[currentBest] = std::numeric_limits<double>::infinity();
 			}
 			if (gScore.count(neighbor) == 0) {
 				gScore[neighbor] = std::numeric_limits<double>::infinity();
 			}
-			if (collisionDetect.checkForIntersect({current, neighbor})) {
+			if (collisionDetect.checkForIntersect({currentBest, neighbor})) {
 				continue;
 			}
 
-			double tentative_gScore = gScore[current] + (current.getDistanceTo(neighbor));
+			double tentative_gScore = gScore[currentBest] + (currentBest.getDistanceTo(neighbor));
 
 			if (tentative_gScore < gScore[neighbor]) {
-				cameFrom[neighbor] = current;
+				cameFrom[neighbor] = currentBest;
 				gScore[neighbor] = tentative_gScore;
-				fScore[neighbor] = tentative_gScore + neighbor.getDistanceTo(end);
+				fScore[neighbor] = tentative_gScore + 0* neighbor.getDistanceTo(end);
 
 				if (!std::count(openSet.begin(), openSet.end(), neighbor)) {
 					openSet.push_back(neighbor);
@@ -125,7 +131,7 @@ std::vector<Vector> Pathfind::reconstruct_path(const std::map<Vector, Vector>& c
 }
 
 std::vector<Vector> Pathfind::optimizePath(std::vector<Vector> unoptimizedPath) {
-	std::vector<Vector> finalPath = {};
+	std::vector<Vector> finalPath = {unoptimizedPath.front()};
 	Vector currentStart = unoptimizedPath[0];
 	Vector prevDirectTo = unoptimizedPath[0];
 	unoptimizedPath.erase(unoptimizedPath.begin());
