@@ -8,7 +8,7 @@ Vector::Vector(double x, double y)
 
 double Vector::getDistanceTo(Vector point)
 {
-    Vector distanceBetween = point;
+    Vector distanceBetween = point - Vector{this->x, this->y};
     return (sqrt(pow(distanceBetween.x, 2) + pow(distanceBetween.y, 2)));
 }
 

@@ -44,21 +44,33 @@ void Rrt::generateTree()
 
 void Rrt::generateNeighbors()
 {
-    for (RRTNode node : _rrtTree) {
+    for (RRTNode& node : _rrtTree) {
         std::cout << "checking neighbors for: " << node.position << std::endl;
         for (RRTNode possibleNeighbor : _rrtTree) {
             double distanceBetween = node.position.getDistanceTo(possibleNeighbor.position);
             std::cout << "checking: " << possibleNeighbor.position << std::endl;
-            for (std::pair<const double, Rrt::RRTNode*> compNode : node.neighbors) {
-                if (node.neighbors.size() >= node.maxNeighbors) {
+            if (node.neighbors.size() >= node.maxNeighbors) {
+                for (std::pair<const double, Rrt::RRTNode*> compNode : node.neighbors) {
                     if(compNode.first > distanceBetween) {
                         node.neighbors.insert({distanceBetween, &possibleNeighbor});
-                        node.neighbors.erase(node.neighbors.end());
                         std::cout << "inserting: " << possibleNeighbor.position << std::endl;
                     }
-                } else {
-                    node.addNeighbor(distanceBetween, &possibleNeighbor);
-                        std::cout << "inserting new: " << possibleNeighbor.position << std::endl;
+                }
+            } else {
+                node.addNeighbor(distanceBetween, &possibleNeighbor);
+                std::cout << "inserting new: " << possibleNeighbor.position << std::endl;
+            }
+        }
+        if (node.neighbors.size() >= node.maxNeighbors) {
+            std::map<double, RRTNode> tempMap;
+            for (int i = 0; i <= node.maxNeighbors; i++) {
+                // tempMap.insert({std::advance(node.neighbors.begin(), i)})
+            }
+
+            int i = 0;
+            for (std::pair<const double, Rrt::RRTNode *> neighbor : node.neighbors) {
+                if (i++ >= node.maxNeighbors) {
+                    node.neighbors.erase(neighbor.first);
                 }
             }
         }

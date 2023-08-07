@@ -70,10 +70,17 @@ void Window::fillScreen(DisplayColors color)
 
 void Window::drawPixel(uint_fast8_t xpos, uint_fast8_t ypos, DisplayColors color)
 {
-    for (int pixelIndex = 0; pixelIndex <= 4; pixelIndex++) {
+    // for (int pixelIndex = 0; pixelIndex <= 4; pixelIndex++) {
         // frameBuffer[ypos * width + (xpos + pixelIndex)] = color;
+    // }
+    uint index = ypos * width + (xpos);
+    // std::cout << index << std::endl;
+    
+    if (index <= frameBuffer.size()) {
+        frameBuffer[ypos * width + (xpos)] = color;
+    } else {
+        std::cerr << "Possible Segmentation Fault at index: " << index << std::endl;
     }
-    frameBuffer[ypos * width + (xpos)] = color;
 }
 
 void Window::drawPixel(Vector pos, DisplayColors color)

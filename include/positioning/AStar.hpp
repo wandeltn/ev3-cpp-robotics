@@ -12,8 +12,10 @@
 #include "ObstacleManager.hpp"
 
 class AStar {
+public:
     using uint = unsigned int;
     using HeuristicFunction = std::function<uint(Vector, Vector)>;
+
     using CoordinateList = std::vector<Vector>;
 
     struct Node
@@ -27,7 +29,6 @@ class AStar {
     };
 
     using NodeSet = std::vector<Node*>;
-public:
     class Generator
     {
         bool detectCollision(Vector coordinates_, Vector _origin);
@@ -36,7 +37,7 @@ public:
 
     public:
         Generator();
-        Generator(std::shared_ptr<Window> Window);
+        Generator(std::shared_ptr<Window>& Window);
         void setWorldSize(Vector worldSize_);
         void setDiagonalMovement(bool enable_);
         void setHeuristic(HeuristicFunction heuristic_);

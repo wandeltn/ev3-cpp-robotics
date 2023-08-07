@@ -19,8 +19,7 @@ AStar::uint AStar::Node::getScore()
 
 AStar::Generator::Generator()
 {
-    setDiagonalMovement(false);
-    setHeuristic(&Heuristic::euclidean);
+    setHeuristic(&Heuristic::manhattan);
     setWorldSize({178, 128});
     setDiagonalMovement(true);
     direction = {
@@ -29,12 +28,11 @@ AStar::Generator::Generator()
     };
 }
 
-AStar::Generator::Generator(std::shared_ptr<Window> window)
+AStar::Generator::Generator(std::shared_ptr<Window>& window)
 {
-    setDiagonalMovement(false);
-    setHeuristic(&Heuristic::euclidean);
-    setWorldSize({178, 128});
-    setDiagonalMovement(false);
+    setHeuristic(&Heuristic::manhattan);
+    setWorldSize({177, 127});
+    setDiagonalMovement(true);
     _window = window;
     direction = {
         { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 },
@@ -83,6 +81,8 @@ AStar::CoordinateList AStar::Generator::findPath(Vector source_, Vector target_)
     closedSet.reserve(100);
     openSet.push_back(new Node(source_));
 
+    _om.paint(_window);
+
     while (!openSet.empty()) {
         auto current_it = openSet.begin();
         current = *current_it;
@@ -108,6 +108,7 @@ AStar::CoordinateList AStar::Generator::findPath(Vector source_, Vector target_)
                 findNodeOnList(closedSet, newCoordinates)) {
                 continue;
             }
+            // std::cout << "newCoordinates: " << newCoordinates << std::endl;
             _window->drawPixel(newCoordinates, DISPLAY_LIGHT);
             // _window->pushToScreen();
 
@@ -160,14 +161,16 @@ void AStar::Generator::releaseNodes(NodeSet& nodes_)
 
 bool AStar::Generator::detectCollision(Vector coordinates_, Vector _origin)
 {
-    // if (coordinates_.x < 0 || coordinates_.x >= worldSize.x ||
-    //     coordinates_.y < 0 || coordinates_.y >= worldSize.y ||
-    //     std::find(walls.begin(), walls.end(), coordinates_) != walls.end()) {
-    //     return true;
-    // }
-    // return false;
-    // std::cout << "dest: " << coordinates_ << " start: " << _origin << std::endl;
-    return _om.checkForIntersect({coordinates_, _origin});
+    if (coordinates_.x < 0 || coordinates_.x >= worldSize.x
+        || coordinates_.y < 0 || coordinates_.y >= worldSize.y 
+        // || std::find(walls.begin(), walls.end(), coordinates_) != walls.end()
+    ) {
+        return true;
+    }
+    // std::cout << "dest: " << coordinates_ << " start: " << _origin;
+    bool intersect = _om.checkForIntersect({coordinates_, _origin});
+    // std::cout << " intersect: " << intersect << std::endl;
+    return intersect;
 }
 
 Vector AStar::Heuristic::getDelta(Vector source_, Vector target_)
