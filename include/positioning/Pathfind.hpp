@@ -4,6 +4,7 @@
 #include "Vector.hpp"
 #include "ObstacleManager.hpp"
 #include "../display/Window.hpp"
+#include "AStar.hpp"
 #include <vector>
 #include <list>
 #include <array>
@@ -11,30 +12,21 @@
 #include <limits>
 #include <algorithm>
 
-namespace std
-{
-    template<> struct less<Vector>
-    {
-       bool operator() (const Vector& lhs, const Vector& rhs) const
-       {
-           return (lhs.x + lhs.y) < (rhs.x + rhs.y);
-       }
-    };
-}
 
 class Pathfind
 {
 private:
     static ObstacleManager collisionDetect;
     static std::shared_ptr<Window> _window;
+    AStar::Generator generator;
 
 public:
 	Pathfind();
     Pathfind(std::shared_ptr<Window> window);
 
 	std::vector<Vector> findPath(Vector start, Vector end);
-	std::vector<Vector> reconstruct_path(const std::map<Vector, Vector>& cameFrom, Vector current);
-    std::vector<Vector> optimizePath(std::vector<Vector> unoptimizedPath);
+	// std::vector<Vector> reconstruct_path(const std::map<Vector, Vector>& cameFrom, Vector current);
+    // std::vector<Vector> optimizePath(std::vector<Vector> unoptimizedPath);
     
 };
 

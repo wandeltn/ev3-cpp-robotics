@@ -2,6 +2,7 @@
 #include "include/display/Window.hpp"
 #include "include/io/ButtonNotifier.hpp"
 #include "include/positioning/Pathfind.hpp"
+#include "include/positioning/Rrt.hpp"
 #include "ev3dev.hpp"
 
 #include <thread>
@@ -22,8 +23,13 @@
 
 int main() {
     // std::shared_ptr<Window> window = drm.createWindow(0, 0, 178, 128, true);
-    Pathfind pf{};
-    pf.findPath({3, 8}, {120, 120});
+    // Pathfind pf{window};
+    // std::vector<Vector> path = pf.findPath({3, 8}, {120, 120});
+    // for (Vector node : path) {
+        // std::cout << node << std::endl;
+    // }
+    Rrt rrt{};
+    rrt.generateTree();
     // drm.pushToScreen();
     
     sleep(10);
