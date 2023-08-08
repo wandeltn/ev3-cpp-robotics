@@ -1,0 +1,4 @@
+namespace Bitmaps
+{
+    
+} // namespace Bitmaps

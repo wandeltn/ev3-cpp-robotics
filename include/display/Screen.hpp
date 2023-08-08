@@ -16,21 +16,21 @@
 #endif
 
 enum DisplayColors {
-    DISPLAY_BLACK = 0x00,
-    DISPLAY_DARK = 0x78,
-    DISPLAY_LIGHT = 0xb4,
-    DISPLAY_WHITE = 0xff
+    DISPLAY_BLACK = 0x11111111,
+    DISPLAY_DARK = 0x78787878,
+    DISPLAY_LIGHT = 0xb4b4b4b4,
+    DISPLAY_WHITE = 0xffffffff
 };
 
 class Screen
 {
 protected:
     int fbfd;
-    unsigned char *fbp;
+    uint32_t *fbp;
     size_t screensize = 0;
 
-    uint_fast8_t width;
-    uint_fast8_t height;
+    unsigned int width;
+    unsigned int height;
 public:
     Screen();
     ~Screen();
