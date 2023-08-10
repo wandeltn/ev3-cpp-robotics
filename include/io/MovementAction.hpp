@@ -3,12 +3,11 @@
 
 class MovementAction {
     public:
-        MovementAction(int heading, int distance);
+        MovementAction(int heading_ = 0, int distance_ = 0, int speed_ = 300);
 
-        virtual int getHeading();
-    protected:
-        int _heading;
-        int _distance;
+        int heading;
+        int distance;
+        int speed;
 };
 
 #endif // __MOVEMENTACTION_H__

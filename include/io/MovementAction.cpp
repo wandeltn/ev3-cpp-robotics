@@ -1,13 +1,9 @@
 #include "MovementAction.hpp"
 
-MovementAction::MovementAction(int heading, int distance)
+MovementAction::MovementAction(int heading_, int distance_, int speed_)
+ : heading(heading_)
+ , distance(distance_)
+ , speed(speed_)
 {
-    _heading = heading;
-    _distance = distance;
+    
 }
-
-int MovementAction::getHeading()
-{
-    return _heading;
-}
-

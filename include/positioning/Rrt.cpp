@@ -35,11 +35,11 @@ void Rrt::generateTree()
 {
     fillArray();
     generateNeighbors();
-    for (Rrt::RRTNode node : _rrtTree) {
-        for (auto neighbor : node.neighbors) {
+    // for (Rrt::RRTNode node : _rrtTree) {
+        // for (auto neighbor : node.neighbors) {
             // _window->drawLine(node.position, neighbor.second->position, DISPLAY_BLACK);
-        }
-    }
+        // }
+    // }
 }
 
 void Rrt::generateNeighbors()
@@ -63,16 +63,16 @@ void Rrt::generateNeighbors()
         }
         if (node.neighbors.size() >= node.maxNeighbors) {
             std::map<double, RRTNode> tempMap;
-            for (int i = 0; i <= node.maxNeighbors; i++) {
+            // for (int i = 0; i <= node.maxNeighbors; i++) {
                 // tempMap.insert({std::advance(node.neighbors.begin(), i)})
-            }
+            // }
 
-            int i = 0;
-            for (std::pair<const double, Rrt::RRTNode *> neighbor : node.neighbors) {
-                if (i++ >= node.maxNeighbors) {
-                    node.neighbors.erase(neighbor.first);
-                }
-            }
+            // int i = 0;
+            // for (std::pair<const double, Rrt::RRTNode *> neighbor : node.neighbors) {
+                // if (i++ >= node.maxNeighbors) {
+                    // node.neighbors.erase(neighbor.first);
+                // }
+            // }
         }
     }
 }
@@ -80,7 +80,7 @@ void Rrt::generateNeighbors()
 void Rrt::fillArray()
 {
     for (RRTNode& node : _rrtTree) {
-        node = RRTNode{{rand() % 177, rand() % 127}};
+        node = RRTNode{{static_cast<double>(rand() % 177), static_cast<double>(rand() % 127)}};
     }
     std::cout << "finished filling array" << std::endl;
 }

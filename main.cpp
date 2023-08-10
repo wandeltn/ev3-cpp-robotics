@@ -3,6 +3,8 @@
 #include "include/io/ButtonNotifier.hpp"
 #include "include/positioning/Pathfind.hpp"
 #include "include/positioning/AStar.hpp"
+// #include "include/LocationTracker.hpp"
+#include "include/io/MotorController.hpp"
 #include "ev3dev.hpp"
 
 #include <thread>
@@ -21,21 +23,18 @@
 #define KEY_REPEAT  2
 #endif
 #ifdef EV3DEV_PLATFORM_EV3
-    DirectRenderingManager drm{};
+    MotorController mc{};
+    // LocationTracker lt{};
 #else
 #endif
 
 
 int main() {
     #ifdef EV3DEV_PLATFORM_EV3
-    std::shared_ptr<Window> window = drm.createWindow(0, 0, 178, 128, true);
-    Pathfind pf{window};
-    std::vector<Vector> path = pf.findPath({10, 10}, {119, 119});
-    for (Vector node : path) {
-        std::cout << node << std::endl;
-    }
+
+    mc.moveStraight(50);
+
     // rrt.generateTree();
-    drm.pushToScreen();
     #endif
     
     sleep(10);
