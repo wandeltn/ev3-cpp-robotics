@@ -15,6 +15,7 @@
 #include <map>
 #include <list>
 #include <atomic>
+#include <future>
 #include "DeviceCommunicator.hpp"
 
 
@@ -44,14 +45,14 @@ class SensorNotifier : protected DeviceCommunicator
         static void unsubscribeFromChange(std::list<void(*)(int)>::iterator callback);
         static void subscribeToAllChanges(std::function<void(std::map<subscriber_port, int>)> callback);
 
-    private:
         static std::thread _polling_thread;
+        static std::atomic<bool> _run_thread;
+        int Dispatcher();
+    private:
         static std::vector<std::function<void(std::map<subscriber_port, int>)>> _listeners;
 
         static port_listener_table _lookup_table;
-        static std::atomic<bool> _run_thread;
 
-        void Dispatcher();
 };
 
 #endif // __SENSORNOTIFIER_H__

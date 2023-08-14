@@ -18,27 +18,40 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <linux/input.h>
+#include <signal.h>
 #define KEY_RELEASE 0
 #define KEY_PRESS   1
 #define KEY_REPEAT  2
 #endif
 #ifdef EV3DEV_PLATFORM_EV3
-    MotorController mc{};
     // LocationTracker lt{};
 #else
 #endif
+MotorController mc{};
+
+void signal_callback(int signum) {
+    std::cout << "Exiting..." << std::endl;
+    mc._sensors._run_thread.store(false);
+    mc.stopAll();
+    exit(signum);
+}
 
 
 int main() {
     #ifdef EV3DEV_PLATFORM_EV3
+    signal(SIGINT, signal_callback);
 
-    mc.moveStraight(50);
+    std::async(mc.rotateTo, 50);
+    // mc.moveStraight(100);
+    // mc.rotateTo(50);
 
     // rrt.generateTree();
     #endif
-    
-    sleep(10);
-    // while (true){
-
-    // }
+    using namespace std::chrono_literals;
+    // mc._sensors._run_thread.store(false);
+    // mc._sensors._polling_thread.wait();
+    while (true){
+        // std::this_thread::sleep_for(100ms);
+        // mc._sensors.Dispatcher();
+    }
 }

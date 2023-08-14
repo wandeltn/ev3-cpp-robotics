@@ -11,6 +11,8 @@
 
 #define SENSORS_DIRECTORY   "/sys/class/lego-sensor/"
 #define MOTORS_DIRECTORY    "/sys/class/tacho-motor/"
+// #define SENSORS_DIRECTORY   "/home/niklas/fakesys/lego-sensor/"
+// #define MOTORS_DIRECTORY    "/home/niklas/fakesys/tacho-motor/"
 #define TYPE_PATH           "/driver_name"
 #define PORT_PATH           "/address"
 #define MOTOR_COMMAND_PATH  "/command"

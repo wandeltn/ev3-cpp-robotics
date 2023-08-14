@@ -13,6 +13,10 @@
 #include "SensorNotifier.hpp"
 #include "../LocationTracker.hpp"
 
+struct MotorPolarityInversed{};
+struct MotorPolarityNormal{};
+
+
 enum MovementState {
     MOVEMENT_IDLE = 0,
     MOVEMENT_TURNING = 1,
@@ -28,18 +32,29 @@ class MotorController : protected DeviceCommunicator {
         static void rotateTo(const int angle);
         static void moveStraight(const int distance);
         static void setMotorSpeed(const std::string motor, const int speed);
+        static void watchGyro(const int value);
+        
+        static void setPolarity(const std::string motor, MotorPolarityInversed);
+        static void setPolarity(const std::string motor, MotorPolarityNormal);
+
+        static void setDutyCycle(const std::string motor, const int value);
+
+        static void setStop(const std::string motor);
+
+        static void stopAll();
+        
         static MovementState state;
+        static SensorNotifier _sensors;
 
     private:
-        static void watchGyro(const int value);
 
         static std::thread _movement_thread;
         static std::deque<MovementAction> _movement_queue;
-        static SensorNotifier _sensors;
         static LocationTracker _location;
-        static std::condition_variable _cv;
+        // static std::condition_variable _cv;
+        static std::atomic<bool> _turnReached;
         static std::mutex _mutex;
-        static int _gyroTarget;
+        static std::atomic<int> _gyroTarget;
 };
 
 #endif // __MOTORCONTROLLER_H__

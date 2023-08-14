@@ -20,14 +20,16 @@ port_listener_table SensorNotifier::_lookup_table = port_listener_table{
 SensorNotifier::SensorNotifier()
 {
     _run_thread.store(true);
+    // auto thread = std::async(std::launch::async, &SensorNotifier::Dispatcher, this);
     _polling_thread = std::thread{&SensorNotifier::Dispatcher, this};
-    
+    _polling_thread.detach();
+    // Dispatcher();
 }
 
 SensorNotifier::~SensorNotifier()
 {
     _run_thread.store(false);
-    _polling_thread.join();
+    // _polling_thread.join();
 }
 
 std::list<void(*)(int)>::iterator SensorNotifier::subscribeToChange(subscriber_port device_port, void(*callback)(int))
@@ -53,45 +55,52 @@ void SensorNotifier::unsubscribeFromChange(std::list<void(*)(int)>::iterator cal
     }
 }
 
-void SensorNotifier::Dispatcher()
+int SensorNotifier::Dispatcher()
 {
-    while (_run_thread.load()) {
+    while (_run_thread) {
         for (ListenerTableRow device : _lookup_table) {
-            
-            std::ifstream ifs = std::ifstream{};
+            // FILE* fp;
+            std::ifstream ifs;
 
-            if (!ifs.is_open()) {
-                std::cerr << "Device could not be found: " << device.portName << std::endl;
-                readPorts();
-                ifs.open(device.portName);
-                //check if problem continues
-                if (!ifs.is_open()) {
-                    throw new std::invalid_argument("Device failed to open: " + device.portName);
-                }
+            if (device.portName.find("motor") == std::string::npos) {
+                ifs.open(device.portName + "/value0");
+            } else {
+                ifs.open(device.portName + "/position");
             }
 
-            std::string readValue;
-            getline(ifs, readValue);
+            if(!ifs.is_open()){
+                std::cout << "skipping device: " << device.portName + "/position" << std::endl;
+                continue;
+            }
 
-            //check for letters before cast to int
-            if (readValue.find_first_not_of("0123456789") == std::string::npos) {
-                throw new std::invalid_argument("device file contains letters and can not be cast to int: " + device.portName);
-            } 
-            if (std::stoi(readValue) != device.previousValue) {
+            std::string value{};
+            getline(ifs, value);
+            int numValue = std::stoi(value);
+
+            // std::cout << device.portName << " : " << value << std::endl;
+
+            if (numValue != device.previousValue) {
                 for (std::function<void(int)> listener : device.listeners) {
-                    listener(std::stoi(readValue));
+                    try
+                    {
+                        listener(numValue);
+                    }
+                    catch(const std::exception& e)
+                    {
+                        std::cerr << e.what() << '\n';
+                    }
                 }
             }
-            device.previousValue = std::stoi(readValue);
-            ifs.close();
+            device.previousValue = numValue;
         }
-        std::map<subscriber_port, int> tempMap = {};
-        for (ListenerTableRow row : _lookup_table) {
-            tempMap[row.portName] = row.previousValue;
-        }
-        for (std::function<void(std::map<subscriber_port, int>)> listener : _listeners) {
-            listener(tempMap);
-        }
-        usleep(10);
+    //     // std::map<subscriber_port, int> tempMap = {};
+    //     // for (ListenerTableRow row : _lookup_table) {
+    //     //     tempMap[row.portName] = row.previousValue;
+    //     // }
+    //     // for (std::function<void(std::map<subscriber_port, int>)> listener : _listeners) {
+    //     //     listener(tempMap);
+        // }
+        // return 1;
+        // usleep(100);
     }
 }
