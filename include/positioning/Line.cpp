@@ -49,6 +49,18 @@ bool Line::checkForIntersect(const Line& line) const
     // return false;
 }
 
+double Line::getLength() const
+{
+    double start_at_zero_x = end_point.x - start_point.x;
+    double start_at_zero_y = end_point.y - start_point.y;
+    return sqrt(pow(start_at_zero_x, 2) + pow(start_at_zero_y, 2)); 
+}
+
+double Line::getAngle() const
+{
+    return atan2(direction_vector.x, direction_vector.y);
+}
+
 bool Line::counterclockwise(Vector A, Vector B, Vector C) const
 {
     return (C.y-A.y)*(B.x-A.x) > (B.y-A.y)*(C.x-A.x);

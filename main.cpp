@@ -3,8 +3,7 @@
 #include "include/io/ButtonNotifier.hpp"
 #include "include/positioning/Pathfind.hpp"
 #include "include/positioning/AStar.hpp"
-// #include "include/LocationTracker.hpp"
-#include "include/io/MotorController.hpp"
+#include "include/positioning/RobotMovement.hpp"
 #include "ev3dev.hpp"
 
 #include <thread>
@@ -27,12 +26,12 @@
     // LocationTracker lt{};
 #else
 #endif
-MotorController mc{};
+
+RobotMovement rm{};
 
 void signal_callback(int signum) {
     std::cout << "Exiting..." << std::endl;
-    mc._sensors._run_thread.store(false);
-    mc.stopAll();
+    rm.stopAll();
     exit(signum);
 }
 
@@ -41,8 +40,7 @@ int main() {
     #ifdef EV3DEV_PLATFORM_EV3
     signal(SIGINT, signal_callback);
 
-    std::async(mc.rotateTo, 50);
-    // mc.moveStraight(100);
+    rm.goToLocation(MovementAction{300, 60, 300});
     // mc.rotateTo(50);
 
     // rrt.generateTree();
@@ -51,6 +49,7 @@ int main() {
     // mc._sensors._run_thread.store(false);
     // mc._sensors._polling_thread.wait();
     while (true){
+
         // std::this_thread::sleep_for(100ms);
         // mc._sensors.Dispatcher();
     }

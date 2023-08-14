@@ -1,46 +1,18 @@
 #include "MotorController.hpp"
 
 std::thread MotorController::_movement_thread;
-std::deque<MovementAction> MotorController::_movement_queue{};
 SensorNotifier MotorController::_sensors{};
 LocationTracker MotorController::_location{};
 // std::condition_variable MotorController::_cv;
 std::atomic<bool> MotorController::_turnReached;
 std::atomic<int> MotorController::_gyroTarget;
 MovementState MotorController::state = MOVEMENT_IDLE;
-std::mutex MotorController::_mutex{};
 
 
 MotorController::MotorController()
 {
     // readPorts();
-    std::list<void(*)(int)>::iterator listener = _sensors.subscribeToChange(sensor_gyro, watchGyro);
-    _movement_thread = std::thread{updateMovement};   
-    _movement_thread.join();
-}   
-
-void MotorController::updateMovement()
-{
-    std::ifstream ifs{};
-    std::string deviceState{};
-    ifs.open(DeviceCommunicator::motor_drive_left + "/state");
-    if(ifs.is_open()) {
-        getline(ifs, deviceState);
-        std::cout << "current state: " << deviceState << std::endl;
-    } else {
-        std::cout << "state could not be read" << std::endl;
-    }
-    if (deviceState.find("running") == std::string::npos) {
-        MovementAction current = _movement_queue.front();
-        _movement_queue.pop_front();
-        
-    }
-}
-
-void MotorController::appendMovement(MovementAction action)
-{
-    _movement_queue.push_back(action);
-
+    _sensors.subscribeToChange(sensor_gyro, watchGyro);
 }
 
 void MotorController::rotateTo(const int angle)
@@ -146,7 +118,30 @@ void MotorController::watchGyro(int value)
             state = MOVEMENT_IDLE;
         }
     }
-        // _cv.notify_all();
+}
+
+std::vector<std::string> MotorController::getState(const std::string motor)
+{
+    std::ifstream ifs{};
+    std::vector<std::string> deviceState{};
+    std::string state{};
+    ifs.open(motor + "/state");
+    if(ifs.is_open()) {
+        while (getline(ifs, state, ' ')) {
+            state.erase(std::remove_if(
+                    state.begin(),
+                    state.end(),
+                    [](unsigned char c){
+                        return !std::isprint(c);
+                    }),
+                    state.end()
+            );
+            deviceState.push_back(state);
+        }
+    } else {
+        std::cout << "state could not be read" << std::endl;
+    }
+    return deviceState;
 }
 
 void MotorController::setPolarity(const std::string motor, MotorPolarityInversed)

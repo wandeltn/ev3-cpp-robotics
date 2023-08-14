@@ -41,6 +41,7 @@ std::list<void(*)(int)>::iterator SensorNotifier::subscribeToChange(subscriber_p
             break;
         }
     }
+    return std::list<void(*)(int)>::iterator{};
 }
 
 void SensorNotifier::subscribeToAllChanges(std::function<void(std::map<subscriber_port, int>)> callback)
@@ -100,7 +101,6 @@ int SensorNotifier::Dispatcher()
     //     // for (std::function<void(std::map<subscriber_port, int>)> listener : _listeners) {
     //     //     listener(tempMap);
         // }
-        // return 1;
-        // usleep(100);
     }
+    return 1;
 }
