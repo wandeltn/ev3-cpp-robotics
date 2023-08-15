@@ -4,6 +4,7 @@ SensorNotifier LocationTracker::_notifier;
 
 Vector LocationTracker::_position{2,2};
 int LocationTracker::_heading = 0;
+Vector LocationTracker::_previousMotorPulses = {0,0};
 
 
 
@@ -21,16 +22,15 @@ LocationTracker::LocationTracker(int startX, int startY)
 
 void LocationTracker::updateLocation(std::map<subscriber_port, int> sensor_values)
 {
-    int motor_difference = sensor_values[DeviceCommunicator::motor_drive_left] - sensor_values[motor_drive_right];
-    if (motor_difference <= -10 || motor_difference >= 10) {
-        std::cerr << "large motor unsynchronization: " << motor_difference << std::endl;    
-    }
-
-    double moved_pulses = (sensor_values[motor_drive_left] + sensor_values[motor_drive_right]) / 2;
+    
+    double moved_pulses = ((sensor_values[motor_drive_left] - _previousMotorPulses.x) + (sensor_values[motor_drive_right] - _previousMotorPulses.y)) / 2;
     _heading += sensor_values[sensor_gyro];
 
     _position.x += MotorPulsesToInt(moved_pulses * cos(_heading));
     _position.y += MotorPulsesToInt(moved_pulses * sin(_heading));
+
+    _previousMotorPulses.x = sensor_values[motor_drive_left];
+    _previousMotorPulses.y = sensor_values[motor_drive_right];
 }
 
 const Vector LocationTracker::getLocation()

@@ -21,7 +21,7 @@ class LocationTracker : public DeviceCommunicator {
     private:
         static SensorNotifier _notifier;
 
-
+        static Vector _previousMotorPulses;
         static Vector _position;
         static int _heading;
 
