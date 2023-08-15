@@ -1,10 +1,4 @@
-#include "include/display/DirectRenderingManager.hpp"
-#include "include/display/Window.hpp"
-#include "include/io/ButtonNotifier.hpp"
-#include "include/positioning/Pathfind.hpp"
-#include "include/positioning/AStar.hpp"
-#include "include/positioning/RobotMovement.hpp"
-#include "ev3dev.hpp"
+#include "include/Robot.hpp"
 
 #include <thread>
 #include <chrono>
@@ -27,11 +21,12 @@
 #else
 #endif
 
-RobotMovement rm{};
+
+Robot rt{};
 
 void signal_callback(int signum) {
     std::cout << "Exiting..." << std::endl;
-    rm.stopAll();
+    rt.stopAll();
     exit(signum);
 }
 
@@ -40,17 +35,14 @@ int main() {
     #ifdef EV3DEV_PLATFORM_EV3
     signal(SIGINT, signal_callback);
 
-    rm.goToLocation(MovementAction{300, 60, 300});
-    // mc.rotateTo(50);
+    rt.moveToPosition({170,120});
 
+    rt.waitForFinish();
     // rrt.generateTree();
     #endif
     using namespace std::chrono_literals;
-    // mc._sensors._run_thread.store(false);
-    // mc._sensors._polling_thread.wait();
-    while (true){
+    // while (true){
 
-        // std::this_thread::sleep_for(100ms);
-        // mc._sensors.Dispatcher();
-    }
+        
+    // }
 }

@@ -58,7 +58,10 @@ double Line::getLength() const
 
 double Line::getAngle() const
 {
-    return atan2(direction_vector.x, direction_vector.y);
+    double result = atan2(direction_vector.x, direction_vector.y) * 180 / M_PI;
+    // std::cout << "dir_x: " << direction_vector.x << " dir_y: " << direction_vector.y << std::endl;
+    // std::cout << "getAngle(): " << result << std::endl;
+    return result;
 }
 
 bool Line::counterclockwise(Vector A, Vector B, Vector C) const

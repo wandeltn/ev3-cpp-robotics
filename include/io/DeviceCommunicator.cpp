@@ -1,6 +1,5 @@
 #include "DeviceCommunicator.hpp"
 
-
 const std::string DeviceCommunicator::INPUT_1_TYPE = std::string{"ev3-ports:in1"};
 const std::string DeviceCommunicator::INPUT_2_TYPE = std::string{"ev3-ports:in2"};
 const std::string DeviceCommunicator::INPUT_3_TYPE = std::string{"ev3-ports:in3"};
@@ -85,6 +84,17 @@ void DeviceCommunicator::readPorts()
         closedir(directory);
     }
 }
+
+double DeviceCommunicator::motorPulsesToCm(const double& value)
+{
+    return value / 360 * 15.6; 
+}
+
+double DeviceCommunicator::CmToMotorPulses(const double& value)
+{
+    return value / 15.6 * 360;
+}
+
 
 DeviceCommunicator::DeviceCommunicator()
 {

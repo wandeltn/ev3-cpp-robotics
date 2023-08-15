@@ -94,13 +94,25 @@ int SensorNotifier::Dispatcher()
             }
             device.previousValue = numValue;
         }
-    //     // std::map<subscriber_port, int> tempMap = {};
-    //     // for (ListenerTableRow row : _lookup_table) {
-    //     //     tempMap[row.portName] = row.previousValue;
-    //     // }
-    //     // for (std::function<void(std::map<subscriber_port, int>)> listener : _listeners) {
-    //     //     listener(tempMap);
-        // }
+        std::map<subscriber_port, int> tempMap = {};
+        for (ListenerTableRow row : _lookup_table) {
+            tempMap[row.portName] = row.previousValue;
+        }
+        for (std::function<void(std::map<subscriber_port, int>)> listener : _listeners) {
+            listener(tempMap);
+        }
     }
     return 1;
+}
+
+void SensorNotifier::stopDispatcher()
+{
+    _run_thread.store(false);
+}
+
+void SensorNotifier::startDispatcher()
+{
+    _run_thread.store(true);
+    _polling_thread = std::thread(&SensorNotifier::Dispatcher, this);
+    _polling_thread.detach();
 }

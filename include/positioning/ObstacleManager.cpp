@@ -10,7 +10,7 @@ ObstacleManager::ObstacleManager()
     appendObstacle(std::make_shared<ObstacleSquare>(Vector{2, 18}, Vector{12, 15}));
     appendObstacle(std::make_shared<ObstacleSquare>(Vector{28, 38}, Vector{34, 31}));
     appendObstacle(std::make_shared<ObstacleSquare>(Vector{50, 50}, Vector{178, 100}));
-    appendObstacle(std::make_shared<ObstacleSquare>(Vector{0, 0}, Vector{178, 127}));
+    appendObstacle(std::make_shared<ObstacleSquare>(Vector{0, 0}, Vector{178, 128}));
     
 }
 

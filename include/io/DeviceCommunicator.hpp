@@ -53,6 +53,8 @@ class DeviceCommunicator {
         static const std::string OUTPUT_D_TYPE; //!< Motor port D
 
         static void readPorts();
+        static double motorPulsesToCm(const double& value);
+        static double CmToMotorPulses(const double& value);
 };
 
 #endif // __DEVICECOMMUNICATOR_H__

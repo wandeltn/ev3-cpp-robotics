@@ -19,8 +19,12 @@ Pathfind::Pathfind(std::shared_ptr<Window> window)
 
 std::vector<Vector> Pathfind::findPath(Vector start, Vector end)
 {
+	if (!generator.om.checkForIntersect({start, end})) {
+		return std::vector<Vector>{end};
+	}
+
 	AStar::CoordinateList path = generator.findPath(start, end);
-	reconstruct_path(path, end);
+	path = reconstruct_path(path);
 	Vector prevNode = path.front();
 	for (Vector node : path) {
 		_window->drawLine(node, prevNode, DISPLAY_BLACK);
@@ -29,24 +33,23 @@ std::vector<Vector> Pathfind::findPath(Vector start, Vector end)
 	return path;
 }
 
-std::vector<Vector> Pathfind::reconstruct_path(const std::vector<Vector>& cameFrom, Vector current)
+std::vector<Vector> Pathfind::reconstruct_path(std::vector<Vector> total_path)
 {
-	std::vector<Vector> total_path = {current};
 	// while (cameFrom.count(current) > 0) {
 	// 	current = cameFrom.at(current);
 	// 	total_path.push_back(current);
 	// }
 	std::reverse(total_path.begin(), total_path.end());
 
-	// std::cout << "---FOUND PATH TO DESTINATION:---" << std::endl;
-	// for (Vector element : total_path) {
-	// 	std::cout << element << std::endl;
-	// }
-	// std::cout << "---FOUND BETTER PATH:---" << std::endl;
+	std::cout << "---FOUND PATH TO DESTINATION:---" << std::endl;
+	for (Vector element : total_path) {
+		std::cout << element << std::endl;
+	}
+	std::cout << "---FOUND BETTER PATH:---" << std::endl;
 	total_path = optimizePath(total_path);
-	// for (Vector element : total_path) {
-	// 	std::cout << element << std::endl;
-	// }
+	for (Vector element : total_path) {
+		std::cout << element << std::endl;
+	}
 	return total_path;
 }
 

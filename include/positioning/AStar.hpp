@@ -45,13 +45,13 @@ public:
         void addCollision(Vector coordinates_);
         void removeCollision(Vector coordinates_);
         void clearCollisions();
+        ObstacleManager om = ObstacleManager{};
 
     private:
         HeuristicFunction heuristic;
         CoordinateList direction, walls;
         Vector worldSize;
         uint directions;
-        ObstacleManager _om = ObstacleManager{};
         std::shared_ptr<Window> _window;
     };
 private:

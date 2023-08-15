@@ -16,7 +16,7 @@ struct MovementAction {
     int speed;
 };
 
-class RobotMovement : private MotorController {
+class RobotMovement : protected MotorController {
     public:    
         RobotMovement();
         ~RobotMovement();
@@ -27,12 +27,15 @@ class RobotMovement : private MotorController {
         static void goToLocation(std::vector<MovementAction> actions);
         static void goToLocation(std::deque<MovementAction> actions);
 
+        static void waitForThreadStop();
+
         static void stopAll();
 
     private:
         static std::deque<MovementAction> _pendingActions;
         static std::thread _movementThread;
         static std::atomic<bool> _runMovementThread;
+        static std::atomic<bool> _threadRunning;
 };
 
 #endif // __ROBOTMOVEMENT_H__

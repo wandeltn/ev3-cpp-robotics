@@ -81,7 +81,7 @@ AStar::CoordinateList AStar::Generator::findPath(Vector source_, Vector target_)
     closedSet.reserve(100);
     openSet.push_back(new Node(source_));
 
-    _om.paint(_window);
+    om.paint(_window);
 
     while (!openSet.empty()) {
         auto current_it = openSet.begin();
@@ -108,7 +108,7 @@ AStar::CoordinateList AStar::Generator::findPath(Vector source_, Vector target_)
                 findNodeOnList(closedSet, newCoordinates)) {
                 continue;
             }
-            // std::cout << "newCoordinates: " << newCoordinates << std::endl;
+            std::cout << "newCoordinates: " << newCoordinates << std::endl;
             _window->drawPixel(newCoordinates, DISPLAY_LIGHT);
             // _window->pushToScreen();
 
@@ -168,7 +168,7 @@ bool AStar::Generator::detectCollision(Vector coordinates_, Vector _origin)
         return true;
     }
     // std::cout << "dest: " << coordinates_ << " start: " << _origin;
-    bool intersect = _om.checkForIntersect({coordinates_, _origin});
+    bool intersect = om.checkForIntersect({coordinates_, _origin});
     // std::cout << " intersect: " << intersect << std::endl;
     return intersect;
 }

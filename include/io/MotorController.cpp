@@ -17,6 +17,7 @@ MotorController::MotorController()
 
 void MotorController::rotateTo(const int angle)
 {
+    std::cout << "rotating to angle: " << angle << std::endl;
     state = MOVEMENT_TURNING;
     if (_location.getHeading() == angle) {
         state = MOVEMENT_IDLE;
@@ -109,8 +110,8 @@ void MotorController::setMotorSpeed(std::string motor, int speed)
 
 void MotorController::watchGyro(int value)
 {   
-    std::cout << "watching gyro value: " << value << std::endl;
     if (state == MOVEMENT_TURNING) {
+        std::cout << "current gyro value: " << value << std::endl;
         if (value % 360 == _gyroTarget.load()) {
             _turnReached.store(true);
             setStop(motor_drive_left);
@@ -197,6 +198,35 @@ void MotorController::setStop(const std::string motor)
         fclose(fp);
     }
     
+}
+
+void MotorController::setStopAction(const std::string motor, const MotorStopAction action)
+{
+    FILE* fp;
+    fp = fopen((motor + "/stop_action").c_str(), "w");
+
+    if (fp == NULL) {
+        std::cout << "failed to set stop action: " << motor << std::endl;
+    } else {
+        switch (action)
+        {
+        case MotorStopActionCoast:
+            fprintf(fp, "coast");
+            break;
+        
+        case MotorStopActionHold:
+            fprintf(fp, "hold");
+            break;
+
+        case MotorStopActionBrake:
+            fprintf(fp, "brake");
+            break;
+
+        default:
+            break;
+        }
+        fclose(fp);
+    }
 }
 
 void MotorController::stopAll()

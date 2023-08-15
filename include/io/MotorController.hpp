@@ -15,6 +15,11 @@
 struct MotorPolarityInversed{};
 struct MotorPolarityNormal{};
 
+enum MotorStopAction{
+    MotorStopActionCoast = 0,
+    MotorStopActionHold = 1,
+    MotorStopActionBrake = 2
+};
 
 enum MovementState {
     MOVEMENT_IDLE = 0,
@@ -41,6 +46,8 @@ class MotorController : protected DeviceCommunicator {
         static void setDutyCycle(const std::string motor, const int value);
 
         static void setStop(const std::string motor);
+
+        static void setStopAction(const std::string motor, const MotorStopAction action);
 
         static void stopAll();
         

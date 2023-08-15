@@ -48,6 +48,8 @@ class SensorNotifier : protected DeviceCommunicator
         static std::thread _polling_thread;
         static std::atomic<bool> _run_thread;
         int Dispatcher();
+        void stopDispatcher();
+        void startDispatcher();
     private:
         static std::vector<std::function<void(std::map<subscriber_port, int>)>> _listeners;
 

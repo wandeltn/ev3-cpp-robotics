@@ -6,12 +6,7 @@
 #include <math.h>
 #include "io/SensorNotifier.hpp"
 #include "io/DeviceCommunicator.hpp"
-
-struct Point
-{
-    int x;
-    int y;
-};
+#include "positioning/Vector.hpp"
 
 
 class LocationTracker : public DeviceCommunicator {
@@ -20,14 +15,14 @@ class LocationTracker : public DeviceCommunicator {
         LocationTracker(int startX, int startY);
 
         static void updateLocation(std::map<subscriber_port, int> sensor_values);
-        static const Point getLocation();
+        static const Vector getLocation();
         static int getHeading();
         
     private:
         static SensorNotifier _notifier;
 
-        static double _position_x;
-        static double _position_y;
+
+        static Vector _position;
         static int _heading;
 
         static double MotorPulsesToInt(double pulses);
