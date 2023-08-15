@@ -47,6 +47,6 @@ bool Vector::operator==(const Vector& comparison)
 
 std::ostream& operator<<(std::ostream& os, const Vector& vector)
 {
-    os << "x: " << vector.x << "y: " << vector.y;
+    os << "x: " << vector.x << " y: " << vector.y;
     return os;
 }

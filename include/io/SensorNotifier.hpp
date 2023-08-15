@@ -1,7 +1,7 @@
-#pragma once
+#ifndef __SENSORNOTIFIER_H__
+#define __SENSORNOTIFIER_H__
 
 #include <string>
-#include <sys/inotify.h>
 #include <unistd.h>
 #include <stdexcept>
 #include <iostream>
@@ -13,24 +13,27 @@
 #include <vector>
 #include <set>
 #include <map>
+#include <list>
+#include <atomic>
+#include <future>
 #include "DeviceCommunicator.hpp"
 
 
 
 typedef std::string subscriber_port;
-typedef std::array<ListenerTableRow, 8> port_listener_table;
 
 struct ListenerTableRow {
-    ListenerTableRow(std::string name) {
-        portName = name;
+    ListenerTableRow(subscriber_port& name):  portName(name) {
         previousValue = 0;
-        listeners = std::vector<std::function<void(int)>>{};
+        listeners = {};
     }
 
-    std::string portName;
+    subscriber_port& portName;
     int previousValue;
-    std::vector<std::function<void(int)>> listeners;
+    std::list<void(*)(int)> listeners;
 };
+
+typedef std::array<ListenerTableRow, 8> port_listener_table;
 
 class SensorNotifier : protected DeviceCommunicator
 {
@@ -38,24 +41,20 @@ class SensorNotifier : protected DeviceCommunicator
         SensorNotifier();
         ~SensorNotifier();
 
-        static void subscribeToChange(subscriber_port device_port, std::function<void(int)> callback);
-        static void subscribeToChange(std::function<void(std::map<subscriber_port&, int>)> callback);
+        static std::list<void(*)(int)>::iterator subscribeToChange(subscriber_port device_port, void(*callback)(int));
+        static void unsubscribeFromChange(std::list<void(*)(int)>::iterator callback);
+        static void subscribeToAllChanges(std::function<void(std::map<subscriber_port, int>)> callback);
 
-    private:
         static std::thread _polling_thread;
-
-        
-        static std::vector<std::function<void(int)>> _input_1_listeners;
-        static std::vector<std::function<void(int)>> _input_2_listeners;
-        static std::vector<std::function<void(int)>> _input_3_listeners;
-        static std::vector<std::function<void(int)>> _input_4_listeners;
-
-        static std::vector<std::function<void(int)>> _output_A_listeners;
-        static std::vector<std::function<void(int)>> _output_B_listeners;
-        static std::vector<std::function<void(int)>> _output_C_listeners;
-        static std::vector<std::function<void(int)>> _output_D_listeners;    
+        static std::atomic<bool> _run_thread;
+        int Dispatcher();
+        void stopDispatcher();
+        void startDispatcher();
+    private:
+        static std::vector<std::function<void(std::map<subscriber_port, int>)>> _listeners;
 
         static port_listener_table _lookup_table;
 
-        void Dispatcher();
 };
+
+#endif // __SENSORNOTIFIER_H__

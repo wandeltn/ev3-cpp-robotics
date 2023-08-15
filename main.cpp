@@ -1,9 +1,4 @@
-#include "include/display/DirectRenderingManager.hpp"
-#include "include/display/Window.hpp"
-#include "include/io/ButtonNotifier.hpp"
-#include "include/positioning/Pathfind.hpp"
-#include "include/positioning/AStar.hpp"
-#include "ev3dev.hpp"
+#include "include/Robot.hpp"
 
 #include <thread>
 #include <chrono>
@@ -16,30 +11,38 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <linux/input.h>
+#include <signal.h>
 #define KEY_RELEASE 0
 #define KEY_PRESS   1
 #define KEY_REPEAT  2
 #endif
 #ifdef EV3DEV_PLATFORM_EV3
-    DirectRenderingManager drm{};
+    // LocationTracker lt{};
 #else
 #endif
 
 
+Robot rt{};
+
+void signal_callback(int signum) {
+    std::cout << "Exiting..." << std::endl;
+    rt.stopAll();
+    exit(signum);
+}
+
+
 int main() {
     #ifdef EV3DEV_PLATFORM_EV3
-    std::shared_ptr<Window> window = drm.createWindow(0, 0, 178, 128, true);
-    Pathfind pf{window};
-    std::vector<Vector> path = pf.findPath({10, 10}, {119, 119});
-    for (Vector node : path) {
-        std::cout << node << std::endl;
-    }
+    signal(SIGINT, signal_callback);
+
+    rt.moveToPosition({170,120});
+
+    rt.waitForFinish();
     // rrt.generateTree();
-    drm.pushToScreen();
     #endif
-    
-    sleep(10);
+    using namespace std::chrono_literals;
     // while (true){
 
+        
     // }
 }

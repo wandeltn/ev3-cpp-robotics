@@ -11,6 +11,8 @@ class Line {
 
         Vector getIntersect(const Line& line);
         bool checkForIntersect(const Line& line) const;
+        double getLength() const;
+        double getAngle() const;
 
         Line& operator=(const Line& line) = default;
 

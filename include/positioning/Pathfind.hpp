@@ -36,7 +36,7 @@ public:
     Pathfind(std::shared_ptr<Window> window);
 
 	std::vector<Vector> findPath(Vector start, Vector end);
-	std::vector<Vector> reconstruct_path(const std::vector<Vector>& cameFrom, Vector current);
+	std::vector<Vector> reconstruct_path(std::vector<Vector> total_path);
     std::vector<Vector> optimizePath(std::vector<Vector> unoptimizedPath);
     
 };

@@ -6,30 +6,26 @@
 #include <math.h>
 #include "io/SensorNotifier.hpp"
 #include "io/DeviceCommunicator.hpp"
-
-struct Point
-{
-    int x;
-    int y;
-};
+#include "positioning/Vector.hpp"
 
 
-class LocationTracker : private DeviceCommunicator {
+class LocationTracker : public DeviceCommunicator {
     public:
         LocationTracker();
         LocationTracker(int startX, int startY);
 
-        static void updateLocation(std::map<subscriber_port&, int> sensor_values);
-        static const Point getLocation();
-
+        static void updateLocation(std::map<subscriber_port, int> sensor_values);
+        static const Vector getLocation();
+        static int getHeading();
+        
     private:
         static SensorNotifier _notifier;
 
-        static float _position_x;
-        static float _position_y;
+        static Vector _previousMotorPulses;
+        static Vector _position;
         static int _heading;
 
-        static float MotorPulsesToInt(float pulses);
+        static double MotorPulsesToInt(double pulses);
 };
 
 #endif // __LOCATIONTRACKER_H__
