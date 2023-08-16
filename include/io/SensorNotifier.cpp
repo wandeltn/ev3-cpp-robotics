@@ -59,7 +59,7 @@ void SensorNotifier::unsubscribeFromChange(std::list<void(*)(int)>::iterator cal
 int SensorNotifier::Dispatcher()
 {
     while (_run_thread) {
-        for (ListenerTableRow device : _lookup_table) {
+        for (ListenerTableRow& device : _lookup_table) {
             // FILE* fp;
             std::ifstream ifs;
 
