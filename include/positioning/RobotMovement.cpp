@@ -57,7 +57,7 @@ void RobotMovement::updateMovement()
         std::this_thread::sleep_for(500ms);
         if (_pendingActions.size() && !actionAvailable)
         {
-            std::cout << "getting new aciton" << std::endl;
+            // std::cout << "getting new aciton" << std::endl;
             currentAction = _pendingActions.front();
             _pendingActions.pop_front();
             actionAvailable = true;
@@ -79,13 +79,13 @@ void RobotMovement::updateMovement()
             {
                 if (currentlyTurning)
                 {
-                    std::cout << "targetAngle: " << currentAction.direction << std::endl;
+                    // std::cout << "targetAngle: " << currentAction.direction << std::endl;
                     rotateTo(currentAction.direction);
                     currentlyTurning = false;
                 }
                 else if (!actionCompleted)
                 {
-                    std::cout << "moving forward: " << currentAction.distance << std::endl;
+                    // std::cout << "moving forward: " << currentAction.distance << std::endl;
                     moveStraight(CmToMotorPulses(currentAction.distance));
                     actionCompleted = true;
                 }
@@ -93,7 +93,7 @@ void RobotMovement::updateMovement()
                 {
                     if (_pendingActions.size())
                     {
-                        std::cout << "resetting action state" << std::endl;
+                        // std::cout << "resetting action state" << std::endl;
                         currentlyTurning = true;
                         actionCompleted = false;
                         actionAvailable = false;

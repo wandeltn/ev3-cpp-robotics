@@ -108,7 +108,7 @@ AStar::CoordinateList AStar::Generator::findPath(Vector source_, Vector target_)
                 findNodeOnList(closedSet, newCoordinates)) {
                 continue;
             }
-            std::cout << "newCoordinates: " << newCoordinates << std::endl;
+            // std::cout << "newCoordinates: " << newCoordinates << std::endl;
             _window->drawPixel(newCoordinates, DISPLAY_LIGHT);
             // _window->pushToScreen();
 

@@ -111,7 +111,6 @@ void Window::drawHLine(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_f
         perror("Error while checking for verticality");
         return;
     }
-    std::cout << "x0: " << static_cast<int>(x0) << " x1: " << static_cast<int>(x1) << std::endl;
     for (int posx = x0; posx <= x1; posx++){
         drawPixel(posx, y0, color);
     }

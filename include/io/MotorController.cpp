@@ -17,7 +17,6 @@ MotorController::MotorController()
 
 void MotorController::rotateTo(const int angle)
 {
-    std::cout << "rotating to angle: " << angle << std::endl;
     state = MOVEMENT_TURNING;
     if (_location.getHeading() == angle) {
         state = MOVEMENT_IDLE;
@@ -95,8 +94,6 @@ void MotorController::moveStraight(const int distance)
 
 void MotorController::setMotorSpeed(std::string motor, int speed)
 {
-    std::cout << "setting speed: " << speed << " of: " << motor << std::endl;
-
     FILE* fp;
     fp = fopen((motor + "/speed_sp").c_str(), "w");
 
@@ -111,7 +108,7 @@ void MotorController::setMotorSpeed(std::string motor, int speed)
 void MotorController::watchGyro(int value)
 {   
     if (state == MOVEMENT_TURNING) {
-        std::cout << "current gyro value: " << value << std::endl;
+        // std::cout << "current gyro value: " << value << std::endl;
         if (value % 360 == _gyroTarget.load()) {
             _turnReached.store(true);
             setStop(motor_drive_left);

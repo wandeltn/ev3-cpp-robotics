@@ -35,7 +35,7 @@ int main() {
     #ifdef EV3DEV_PLATFORM_EV3
     signal(SIGINT, signal_callback);
 
-    rt.moveToPosition({170,120});
+    rt.moveToPosition({170,119});
 
     rt.waitForFinish();
     // rrt.generateTree();

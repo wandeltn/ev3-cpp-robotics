@@ -78,8 +78,6 @@ int SensorNotifier::Dispatcher()
             getline(ifs, value);
             int numValue = std::stoi(value);
 
-            // std::cout << device.portName << " : " << value << std::endl;
-
             if (numValue != device.previousValue) {
                 for (std::function<void(int)> listener : device.listeners) {
                     try
