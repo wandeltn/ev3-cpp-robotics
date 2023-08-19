@@ -11,7 +11,6 @@
 #include <bits/stdc++.h>
 #include <limits>
 #include <algorithm>
-#include <regex>
 
 namespace std
 {
@@ -34,7 +33,8 @@ private:
     static AStar::Generator generator;
     void saveToFile(Vector start, Vector end, std::vector<Vector> path);
     std::vector<Vector> readFromFile(Vector start, Vector end);
-    bool checkIfInChache(Vector start, Vector end);
+
+    std::vector<std::string> explode(const std::string& string, const char& c);
 
 public:
     Pathfind();

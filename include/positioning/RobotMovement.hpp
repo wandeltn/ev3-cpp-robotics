@@ -6,17 +6,7 @@
 #include "../io/MotorController.hpp"
 #include "Line.hpp"
 
-struct MovementAction {
-    MovementAction(int distance, int direction, int speed);
-    MovementAction(Line line, int speed);
-    MovementAction();
-
-    int distance;
-    int direction;
-    int speed;
-};
-
-class RobotMovement : protected MotorController {
+class RobotMovement : protected MotorController, protected LocationTracker {
     public:    
         RobotMovement();
         ~RobotMovement();
@@ -32,7 +22,6 @@ class RobotMovement : protected MotorController {
         static void stopAll();
 
     private:
-        static std::deque<MovementAction> _pendingActions;
         static std::thread _movementThread;
         static std::atomic<bool> _runMovementThread;
         static std::atomic<bool> _threadRunning;

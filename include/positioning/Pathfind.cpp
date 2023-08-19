@@ -50,14 +50,14 @@ std::vector<Vector> Pathfind::reconstruct_path(std::vector<Vector> total_path)
     std::reverse(total_path.begin(), total_path.end());
 
     // std::cout << "---FOUND PATH TO DESTINATION:---" << std::endl;
-    for (Vector element : total_path) {
+    // for (Vector element : total_path) {
         // std::cout << element << std::endl;
-    }
+    // }
     // std::cout << "---FOUND BETTER PATH:---" << std::endl;
     total_path = optimizePath(total_path);
-    for (Vector element : total_path) {
+    // for (Vector element : total_path) {
         // std::cout << element << std::endl;
-    }
+    // }
     return total_path;
 }
 
@@ -78,58 +78,8 @@ std::vector<Vector> Pathfind::optimizePath(std::vector<Vector> unoptimizedPath) 
     return finalPath;
 }
 
-bool Pathfind::checkIfInChache(Vector start, Vector end)
-{
-    std::ifstream ifs{"path_saves.txt"};
-
-    if (!ifs.is_open()) {
-        std::cout << "failed to read existing paths" << std::endl;
-        return false;
-    } else {
-        std::cout << "reading existing paths" << std::endl;
-    }
-    std::string line{};
-    while(getline(ifs, line)) {
-        line.erase(std::remove_if(
-                    line.begin(),
-                    line.end(),
-                    [](unsigned char c){
-                        return !std::isprint(c);
-                    }),
-                    line.end()
-        ); 
-        std::cout << "read line: " << line << std::endl;
-
-        std::regex slash{"[/]"};
-        std::sregex_token_iterator first_slash{line.begin(), line.end(), slash, -1}, last_slash;
-        std::vector<std::string> pair{first_slash, last_slash};
-
-        std::regex semicolon{"[;]"};
-        std::sregex_token_iterator first_semicolon{pair[0].begin(), pair[0].end(), semicolon, -1}, last_semicolon;
-        std::vector<std::string> endPoints{first_semicolon, last_semicolon};
-
-        std::vector<Vector> coordinates{};
-        for (std::string point : endPoints) {
-            std::regex comma{"[,]"};
-            std::sregex_token_iterator first_comma{point.begin(), point.end(), comma, -1}, last_comma;
-            std::vector<std::string> vector{first_comma, last_comma};
-            coordinates.push_back({static_cast<double>(std::stoi(vector[0])), static_cast<double>(std::stoi(vector[1]))});
-        }
-
-        if (
-            coordinates.front() == start &&
-            coordinates.back() == end
-        ) {
-            ifs.close();
-            return true;
-        }
-    }
-    ifs.close();
-    return false;
-}
-
 void Pathfind::saveToFile(Vector start, Vector end, std::vector<Vector> path) {
-    if (checkIfInChache(start, end)) {
+    if (readFromFile(start, end).size()) {
         return;
     }
 
@@ -163,19 +113,12 @@ std::vector<Vector> Pathfind::readFromFile(Vector start, Vector end) {
 		); 
 		std::cout << "read line: " << line << std::endl;
 
-		std::regex slash{"[/]"};
-		std::sregex_token_iterator first_slash{line.begin(), line.end(), slash, -1}, last_slash;
-		std::vector<std::string> pair{first_slash, last_slash};
-
-		std::regex semicolon{"[;]"};
-		std::sregex_token_iterator first_semicolon{pair[0].begin(), pair[0].end(), semicolon, -1}, last_semicolon;
-		std::vector<std::string> endPoints{first_semicolon, last_semicolon};
+		std::vector<std::string> pair = explode(line, '/');
+		std::vector<std::string> endPoints = explode(pair[0], ';');
 
 		std::vector<Vector> coordinates{};
 		for (std::string point : endPoints) {
-			std::regex comma{"[,]"};
-			std::sregex_token_iterator first_comma{point.begin(), point.end(), comma, -1}, last_comma;
-			std::vector<std::string> vector{first_comma, last_comma};
+			std::vector<std::string> vector = explode(point, ',');
 			coordinates.push_back({static_cast<double>(std::stoi(vector[0])), static_cast<double>(std::stoi(vector[1]))});
 		}
 
@@ -184,12 +127,9 @@ std::vector<Vector> Pathfind::readFromFile(Vector start, Vector end) {
 			coordinates.back() == end
 		) {
             std::vector<Vector> final_path{};
-			std::sregex_token_iterator first{pair[1].begin(), pair[1].end(), semicolon, -1}, last;
-            std::vector<std::string> path{first, last};
+            std::vector<std::string> path = explode(pair[1], ';');
             for (std::string node : path) {
-                std::regex comma{"[,]"};
-			    std::sregex_token_iterator first_comma{node.begin(), node.end(), comma, -1}, last_comma;
-			    std::vector<std::string> vector{first_comma, last_comma};
+			    std::vector<std::string> vector = explode(node, ',');
 			    final_path.push_back({static_cast<double>(std::stoi(vector[0])), static_cast<double>(std::stoi(vector[1]))});
             }
             ifs.close();
@@ -197,4 +137,19 @@ std::vector<Vector> Pathfind::readFromFile(Vector start, Vector end) {
 		}
 	}
     return std::vector<Vector>{};
+}
+
+std::vector<std::string> Pathfind::explode(const std::string &string, const char &c)
+{
+    std::string buff{""};
+	std::vector<std::string> v;
+	
+	for(auto n:string)
+	{
+		if(n != c) buff+=n; else
+		if(n == c && buff != "") { v.push_back(buff); buff = ""; }
+	}
+	if(buff != "") v.push_back(buff);
+	
+	return v;
 }

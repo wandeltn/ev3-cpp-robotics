@@ -1,26 +1,5 @@
 #include "RobotMovement.hpp"
 
-MovementAction::MovementAction(int distance, int direction, int speed)
-{
-    this->distance = distance;
-    this->direction = direction;
-    this->speed = speed;
-}
-
-MovementAction::MovementAction(Line line, int speed)
-{
-    this->distance = line.getLength();
-    direction = line.getAngle();
-    this->speed = speed;
-
-    std::cout << this->direction << std::endl;
-}
-
-MovementAction::MovementAction()
-{
-}
-
-std::deque<MovementAction> RobotMovement::_pendingActions{};
 std::thread RobotMovement::_movementThread;
 std::atomic<bool> RobotMovement::_runMovementThread;
 std::atomic<bool> RobotMovement::_threadRunning;

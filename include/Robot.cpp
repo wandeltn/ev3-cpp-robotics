@@ -1,6 +1,5 @@
 #include "Robot.hpp"
 
-LocationTracker Robot::_tracker{};
 DirectRenderingManager Robot::_drm{};
 
 
@@ -17,9 +16,9 @@ Robot::Robot()
 
 void Robot::moveToPosition(Vector target)
 {
-    std::vector<Vector> path = _pathfind.findPath(_tracker.getLocation(), target);
+    std::vector<Vector> path = _pathfind.findPath(getLocation(), target);
     _drm.pushToScreen();
-    const Vector& prevNode = _tracker.getLocation();
+    const Vector& prevNode = getLocation();
     for (const Vector& node : path) {
         goToLocation(MovementAction{{prevNode, node}, 400});
     }

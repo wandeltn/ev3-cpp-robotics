@@ -15,7 +15,6 @@ class Robot : public RobotMovement {
 
     private:
         Pathfind _pathfind;
-        static LocationTracker _tracker;
         static DirectRenderingManager _drm;
 };
 

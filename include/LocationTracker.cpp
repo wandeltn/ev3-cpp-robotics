@@ -1,7 +1,28 @@
 #include "LocationTracker.hpp"
 
-SensorNotifier LocationTracker::_notifier;
+MovementAction::MovementAction(int distance, int direction, int speed)
+{
+    this->distance = distance;
+    this->direction = direction;
+    this->speed = speed;
+}
 
+MovementAction::MovementAction(Line line, int speed)
+{
+    this->distance = line.getLength();
+    direction = line.getAngle();
+    this->speed = speed;
+
+    std::cout << this->direction << std::endl;
+}
+
+MovementAction::MovementAction()
+{
+}
+
+std::deque<MovementAction> LocationTracker::_pendingActions{};
+SensorNotifier LocationTracker::_notifier{};
+LineManager LocationTracker::_lineManager{};
 Vector LocationTracker::_position{2,2};
 int LocationTracker::_heading = 0;
 Vector LocationTracker::_previousMotorPulses = {0,0};
