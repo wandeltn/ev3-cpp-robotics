@@ -7,10 +7,12 @@
 #include <iostream>
 #include <atomic>
 #include <mutex>
-#include <condition_variable>
+#include <cassert>
 #include "DeviceCommunicator.hpp"
 #include "SensorNotifier.hpp"
 #include "../LocationTracker.hpp"
+
+#define assertm(exp, msg) assert(((void)msg, exp))
 
 struct MotorPolarityInversed{};
 struct MotorPolarityNormal{};
@@ -58,7 +60,6 @@ class MotorController : protected DeviceCommunicator {
     private:
         static std::thread _movement_thread;
         static LocationTracker _location;
-        // static std::condition_variable _cv;
         static std::atomic<bool> _turnReached;
         static std::mutex _mutex;
         static std::atomic<int> _gyroTarget;

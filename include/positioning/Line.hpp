@@ -3,6 +3,9 @@
 
 #include "Vector.hpp"
 #include <limits>
+#include <cassert>
+
+#define assertm(exp, msg) assert(((void)msg, exp))
 
 class Line {
     public:

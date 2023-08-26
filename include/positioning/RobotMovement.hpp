@@ -6,7 +6,7 @@
 #include "../io/MotorController.hpp"
 #include "Line.hpp"
 
-class RobotMovement : protected MotorController, protected LocationTracker {
+class RobotMovement : public MotorController, protected LocationTracker {
     public:    
         RobotMovement();
         ~RobotMovement();
@@ -17,7 +17,7 @@ class RobotMovement : protected MotorController, protected LocationTracker {
         static void goToLocation(std::vector<MovementAction> actions);
         static void goToLocation(std::deque<MovementAction> actions);
 
-        static void waitForThreadStop();
+        static void waitForMovementThreadStop();
 
         static void stopAll();
 

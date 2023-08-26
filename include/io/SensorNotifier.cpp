@@ -4,6 +4,7 @@
 std::thread SensorNotifier::_polling_thread;
 std::vector<std::function<void(std::map<subscriber_port, int>)>> SensorNotifier::_listeners{};
 std::atomic<bool> SensorNotifier::_run_thread;
+std::atomic<bool> SensorNotifier::_thread_running;
 
 port_listener_table SensorNotifier::_lookup_table = port_listener_table{
     ListenerTableRow{input_1},
@@ -58,6 +59,7 @@ void SensorNotifier::unsubscribeFromChange(std::list<void(*)(int)>::iterator cal
 
 int SensorNotifier::Dispatcher()
 {
+    _thread_running = true;
     while (_run_thread) {
         for (ListenerTableRow& device : _lookup_table) {
             // FILE* fp;
@@ -100,6 +102,7 @@ int SensorNotifier::Dispatcher()
             listener(tempMap);
         }
     }
+    _thread_running = false;
     return 1;
 }
 
@@ -113,4 +116,13 @@ void SensorNotifier::startDispatcher()
     _run_thread.store(true);
     _polling_thread = std::thread(&SensorNotifier::Dispatcher, this);
     _polling_thread.detach();
+}
+
+void SensorNotifier::waitForThreadStop()
+{
+    while (_thread_running)
+    {
+        using namespace std::chrono_literals;
+        std::this_thread::sleep_for(200ms);
+    }
 }

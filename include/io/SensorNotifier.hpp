@@ -45,14 +45,16 @@ class SensorNotifier : protected DeviceCommunicator
         static void unsubscribeFromChange(std::list<void(*)(int)>::iterator callback);
         static void subscribeToAllChanges(std::function<void(std::map<subscriber_port, int>)> callback);
 
-        static std::thread _polling_thread;
-        static std::atomic<bool> _run_thread;
         int Dispatcher();
         void stopDispatcher();
         void startDispatcher();
+        void waitForThreadStop();
     private:
+        static std::thread _polling_thread;
+        static std::atomic<bool> _run_thread;
+        static std::atomic<bool> _thread_running;
+        
         static std::vector<std::function<void(std::map<subscriber_port, int>)>> _listeners;
-
         static port_listener_table _lookup_table;
 
 };

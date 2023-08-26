@@ -26,5 +26,7 @@ void Robot::moveToPosition(Vector target)
 
 void Robot::waitForFinish()
 {
-    waitForThreadStop();
+    waitForMovementThreadStop();
+    _sensors.stopDispatcher();
+    _sensors.waitForThreadStop();
 } 

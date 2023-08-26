@@ -3,7 +3,6 @@
 std::thread MotorController::_movement_thread;
 SensorNotifier MotorController::_sensors{};
 LocationTracker MotorController::_location{};
-// std::condition_variable MotorController::_cv;
 std::atomic<bool> MotorController::_turnReached;
 std::atomic<int> MotorController::_gyroTarget;
 MovementState MotorController::state = MOVEMENT_IDLE;
@@ -49,6 +48,21 @@ void MotorController::rotateTo(const int angle)
 
     _turnReached.store(false);
     _gyroTarget.store(angle);
+
+    std::vector<std::string> right_state = getState(motor_drive_right);
+    std::vector<std::string> left_state = getState(motor_drive_left);
+
+    std::cout << "right state: " << std::endl;
+    for (std::string state : right_state) {
+        std::cout << state;
+    }
+    std::cout << std::endl;
+    std::cout << "left state: " << std::endl;
+    for (std::string state : left_state) {
+        std::cout << state;
+    }
+    std::cout << std::endl;
+
 }
 
 void MotorController::moveStraight(const int distance)
@@ -108,7 +122,7 @@ void MotorController::setMotorSpeed(std::string motor, int speed)
 void MotorController::watchGyro(int value)
 {   
     if (state == MOVEMENT_TURNING) {
-        // std::cout << "current gyro value: " << value << std::endl;
+        std::cout << "current gyro value: " << value << std::endl;
         if (value % 360 == _gyroTarget.load()) {
             _turnReached.store(true);
             setStop(motor_drive_left);

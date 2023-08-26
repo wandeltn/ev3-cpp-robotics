@@ -36,6 +36,9 @@ int main() {
     signal(SIGINT, signal_callback);
 
     rt.moveToPosition({170,119});
+    // rt.moveStraight(200);
+    // rt.rotateTo(50);
+    // rt.rotateTo(0);
 
     rt.waitForFinish();
     // rrt.generateTree();

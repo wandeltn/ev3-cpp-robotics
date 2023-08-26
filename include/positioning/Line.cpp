@@ -54,6 +54,7 @@ double Line::getLength() const
     double start_at_zero_x = end_point.x - start_point.x;
     double start_at_zero_y = end_point.y - start_point.y;
     return sqrt(pow(start_at_zero_x, 2) + pow(start_at_zero_y, 2)); 
+    // return Vector(start_at_zero_x, start_at_zero_y) ^ Vector(start_at_zero_x, start_at_zero_y);
 }
 
 double Line::getAngle() const
@@ -61,6 +62,7 @@ double Line::getAngle() const
     double result = atan2(direction_vector.x, direction_vector.y) * 180 / M_PI;
     // std::cout << "dir_x: " << direction_vector.x << " dir_y: " << direction_vector.y << std::endl;
     // std::cout << "getAngle(): " << result << std::endl;
+    assertm((result <= 360), "Angle out of range in Line::getAngle");
     return result;
 }
 
