@@ -28,23 +28,8 @@ void MotorController::rotateTo(const int angle)
         setDutyCycle(motor_drive_left, 20);
     }
 
-    FILE* fp_left;
-    FILE* fp_right;
-
-    fp_left = fopen((motor_drive_left + "/command").c_str(), "w");
-    fp_right = fopen((motor_drive_right + "/command").c_str(), "w");
-
-    if (
-        fp_left == NULL ||
-        fp_right == NULL
-    ) {
-        std::cout << "failed to open command file" << std::endl;
-    } else {
-        fprintf(fp_left, "run-direct");
-        fprintf(fp_right, "run-direct");
-    }
-    fclose(fp_left);
-    fclose(fp_right);
+    sendCommand(motor_drive_left, MotorCommandRunDirect);
+    sendCommand(motor_drive_right, MotorCommandRunDirect);
 
     _turnReached.store(false);
     _gyroTarget.store(angle);
@@ -198,17 +183,7 @@ void MotorController::setDutyCycle(const std::string motor, const int value)
 
 void MotorController::setStop(const std::string motor)
 {
-    FILE* fp;
-    fp = fopen((motor + "/command").c_str(), "w");
-
-    if (fp == NULL) {
-        std::cout << "failed to stop motor: " << motor << std::endl;
-    } else
-    {
-        fprintf(fp, "stop");
-        fclose(fp);
-    }
-    
+    sendCommand(motor, MotorCommandStop);
 }
 
 void MotorController::setStopAction(const std::string motor, const MotorStopAction action)
@@ -234,6 +209,52 @@ void MotorController::setStopAction(const std::string motor, const MotorStopActi
             break;
 
         default:
+            break;
+        }
+        fclose(fp);
+    }
+}
+
+void MotorController::sendCommand(const std::string motor, const MotorCommand command)
+{
+    FILE* fp;
+    fopen((motor + "/command").c_str(), "w");
+
+    if (fp == NULL) {
+        std::cout << "failed to send command to: " << motor << std::endl;
+    } else {
+        switch (command)
+        {
+        case MotorCommandStop:
+            fprintf(fp, "stop");
+            break;
+
+        case MotorCommandReset:
+            fprintf(fp, "reset");
+            break;
+
+        case MotorCommandRunToAbsPos:
+            fprintf(fp, "run-to-abs-pos");
+            break;
+        
+        case MotorCommandRunDirect:
+            fprintf(fp, "run-direct");
+            break;
+
+        case MotorCommandRunToRelPos:
+            fprintf(fp, "run-to-rel-pos");
+            break;
+
+        case MotorCommandRunTimed:
+            fprintf(fp, "run-timed");
+            break;
+
+        case MotorCommandRunForever:
+            fprintf(fp, "run-forever");
+            break;
+
+        default:
+            std::cout << "unable to send command: " << command << std::endl;
             break;
         }
         fclose(fp);

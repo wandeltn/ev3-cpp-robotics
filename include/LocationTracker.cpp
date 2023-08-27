@@ -47,8 +47,8 @@ void LocationTracker::updateLocation(std::map<subscriber_port, int> sensor_value
     // double moved_pulses = ((sensor_values[motor_drive_left] - _previousMotorPulses.x) + (sensor_values[motor_drive_right] - _previousMotorPulses.y)) / 2;
     // _heading += sensor_values[sensor_gyro];
 
-    // _position.x += MotorPulsesToInt(moved_pulses * cos(_heading));
-    // _position.y += MotorPulsesToInt(moved_pulses * sin(_heading));
+    // _position.x += MotorPulsesToInt(moved_pulses * cos(_heading * (M_PI / 180)));
+    // _position.y += MotorPulsesToInt(moved_pulses * sin(_heading * (M_PI / 180)));
 
     // _previousMotorPulses.x = sensor_values[motor_drive_left];
     // _previousMotorPulses.y = sensor_values[motor_drive_right];

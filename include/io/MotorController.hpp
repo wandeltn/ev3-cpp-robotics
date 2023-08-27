@@ -23,6 +23,16 @@ enum MotorStopAction{
     MotorStopActionBrake = 2
 };
 
+enum MotorCommand {
+    MotorCommandStop = 0,
+    MotorCommandReset = 1,
+    MotorCommandRunToAbsPos = 2,
+    MotorCommandRunDirect = 3,
+    MotorCommandRunToRelPos = 4,
+    MotorCommandRunTimed = 5,
+    MotorCommandRunForever = 6,
+};
+
 enum MovementState {
     MOVEMENT_IDLE = 0,
     MOVEMENT_TURNING = 1,
@@ -46,10 +56,10 @@ class MotorController : protected DeviceCommunicator {
         static void setPolarity(const std::string motor, MotorPolarityNormal);
 
         static void setDutyCycle(const std::string motor, const int value);
-
         static void setStop(const std::string motor);
-
         static void setStopAction(const std::string motor, const MotorStopAction action);
+
+        static void sendCommand(const std::string motor, const MotorCommand command);
 
         static void stopAll();
         
