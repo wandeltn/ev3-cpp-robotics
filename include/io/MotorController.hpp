@@ -33,12 +33,6 @@ enum MotorCommand {
     MotorCommandRunForever = 6,
 };
 
-enum MovementState {
-    MOVEMENT_IDLE = 0,
-    MOVEMENT_TURNING = 1,
-    MOVEMENT_MOVING = 2
-};
-
 class MotorController : protected DeviceCommunicator {
     public:
         MotorController();
@@ -65,7 +59,6 @@ class MotorController : protected DeviceCommunicator {
         
     protected:
         static SensorNotifier _sensors;
-        static MovementState state;
 
     private:
         static std::thread _movement_thread;

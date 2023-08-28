@@ -17,6 +17,12 @@
 #define PORT_PATH           "/address"
 #define MOTOR_COMMAND_PATH  "/command"
 
+enum MovementState {
+    MOVEMENT_IDLE = 0,
+    MOVEMENT_TURNING = 1,
+    MOVEMENT_MOVING = 2
+};
+
 class DeviceCommunicator {
     public: 
         DeviceCommunicator();
@@ -51,6 +57,8 @@ class DeviceCommunicator {
         static const std::string OUTPUT_B_TYPE; //!< Motor port B
         static const std::string OUTPUT_C_TYPE; //!< Motor port C
         static const std::string OUTPUT_D_TYPE; //!< Motor port D
+
+        static MovementState state;
 
         static void readPorts();
         static double motorPulsesToCm(const double& value);

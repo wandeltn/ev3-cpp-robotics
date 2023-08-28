@@ -31,6 +31,8 @@ std::string& DeviceCommunicator::motor_drive_left = DeviceCommunicator::output_B
 std::string& DeviceCommunicator::motor_tool_drive = DeviceCommunicator::output_C;
 std::string& DeviceCommunicator::motor_tool_shift = DeviceCommunicator::output_D;
 
+MovementState DeviceCommunicator::state = MOVEMENT_IDLE;
+
 
 void DeviceCommunicator::readPorts()
 {

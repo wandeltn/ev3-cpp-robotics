@@ -5,8 +5,6 @@ SensorNotifier MotorController::_sensors{};
 LocationTracker MotorController::_location{};
 std::atomic<bool> MotorController::_turnReached;
 std::atomic<int> MotorController::_gyroTarget;
-MovementState MotorController::state = MOVEMENT_IDLE;
-
 
 MotorController::MotorController()
 {
