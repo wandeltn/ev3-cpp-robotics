@@ -7,14 +7,14 @@ std::atomic<bool> SensorNotifier::_run_thread;
 std::atomic<bool> SensorNotifier::_thread_running;
 
 port_listener_table SensorNotifier::_lookup_table = port_listener_table{
-    ListenerTableRow{input_1},
-    ListenerTableRow{input_2},
-    ListenerTableRow{input_3},
-    ListenerTableRow{input_4},
-    ListenerTableRow{output_A},
-    ListenerTableRow{output_B},
-    ListenerTableRow{output_C},
-    ListenerTableRow{output_D}
+    ListenerTableRow{input_1, "input_port-1"},
+    ListenerTableRow{input_2, "input_port-2"},
+    ListenerTableRow{input_3, "input_port-3"},
+    ListenerTableRow{input_4, "input_port-4"},
+    ListenerTableRow{output_A, "output_port-A"},
+    ListenerTableRow{output_B, "output_port-B"},
+    ListenerTableRow{output_C, "output_port-C"},
+    ListenerTableRow{output_D, "output_port-D"}
 };
 
 
@@ -62,6 +62,10 @@ int SensorNotifier::Dispatcher()
     _thread_running = true;
     while (_run_thread) {
         for (ListenerTableRow& device : _lookup_table) {
+            if (!device.enabled) {
+                std::cout << "skipping disabled device: " << device.deviceIdentifier << std::endl;
+                continue;
+            }
             // FILE* fp;
             std::ifstream ifs;
 
@@ -72,7 +76,7 @@ int SensorNotifier::Dispatcher()
             }
 
             if(!ifs.is_open()){
-                std::cout << "skipping device: " << device.portName + "/position" << std::endl;
+                std::cout << "skipping device: " << device.deviceIdentifier + "/position" << std::endl;
                 continue;
             }
 

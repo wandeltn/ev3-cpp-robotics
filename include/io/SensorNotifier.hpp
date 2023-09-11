@@ -23,14 +23,22 @@
 typedef std::string subscriber_port;
 
 struct ListenerTableRow {
-    ListenerTableRow(subscriber_port& name):  portName(name) {
+    ListenerTableRow(subscriber_port& name, std::string id):  portName(name) {
         previousValue = 0;
         listeners = {};
+        deviceIdentifier = id;
+        if (name.length()){
+            enabled = true;
+        } else {
+            enabled = false;
+        }
     }
 
+    std::string deviceIdentifier;
     subscriber_port& portName;
     int previousValue;
     std::list<void(*)(int)> listeners;
+    bool enabled;
 };
 
 typedef std::array<ListenerTableRow, 8> port_listener_table;

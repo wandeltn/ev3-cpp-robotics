@@ -19,15 +19,15 @@ void MotorController::rotateTo(const int angle)
         state = MOVEMENT_IDLE;
         return;
     } else if (_location.getHeading() > angle) {
-        setDutyCycle(motor_drive_right, 20);
-        setDutyCycle(motor_drive_left, -20);
+        setMotorSpeed(motor_drive_right, 20);
+        setMotorSpeed(motor_drive_left, -20);
     } else {
-        setDutyCycle(motor_drive_right, -20);
-        setDutyCycle(motor_drive_left, 20);
+        setMotorSpeed(motor_drive_right, -20);
+        setMotorSpeed(motor_drive_left, 20);
     }
 
-    sendCommand(motor_drive_left, MotorCommandRunDirect);
-    sendCommand(motor_drive_right, MotorCommandRunDirect);
+    sendCommand(motor_drive_left, MotorCommandRunForever);
+    sendCommand(motor_drive_right, MotorCommandRunForever);
 
     _turnReached.store(false);
     _gyroTarget.store(angle);
