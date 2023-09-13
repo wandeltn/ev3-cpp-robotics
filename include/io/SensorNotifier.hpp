@@ -27,18 +27,12 @@ struct ListenerTableRow {
         previousValue = 0;
         listeners = {};
         deviceIdentifier = id;
-        if (name.length()){
-            enabled = true;
-        } else {
-            enabled = false;
-        }
     }
 
     std::string deviceIdentifier;
     subscriber_port& portName;
     int previousValue;
     std::list<void(*)(int)> listeners;
-    bool enabled;
 };
 
 typedef std::array<ListenerTableRow, 8> port_listener_table;

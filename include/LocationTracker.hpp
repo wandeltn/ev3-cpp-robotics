@@ -39,7 +39,7 @@ class LocationTracker : public DeviceCommunicator {
 
         static SensorNotifier _notifier;
         static LineManager _lineManager;
-        static Vector _previousMotorPulses;
+        static std::map<std::string, int> _previousValues;
         static Vector _position;
         static int _heading;
 

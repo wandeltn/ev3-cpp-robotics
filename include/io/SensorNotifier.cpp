@@ -62,7 +62,7 @@ int SensorNotifier::Dispatcher()
     _thread_running = true;
     while (_run_thread) {
         for (ListenerTableRow& device : _lookup_table) {
-            if (!device.enabled) {
+            if (!device.portName.length()) {
                 std::cout << "skipping disabled device: " << device.deviceIdentifier << std::endl;
                 continue;
             }
@@ -85,6 +85,13 @@ int SensorNotifier::Dispatcher()
             int numValue = std::stoi(value);
 
             if (numValue != device.previousValue) {
+                if (device.deviceIdentifier == "input_port-3") {
+                    if (gyroValueOffset == 0) {
+                        gyroValueOffset = -numValue;
+                        std::cout << "set new offset: " << gyroValueOffset << std::endl;
+                    }
+                    numValue += gyroValueOffset;
+                }
                 for (std::function<void(int)> listener : device.listeners) {
                     try
                     {

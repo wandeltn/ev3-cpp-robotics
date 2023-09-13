@@ -33,6 +33,8 @@ std::string& DeviceCommunicator::motor_tool_shift = DeviceCommunicator::output_D
 
 MovementState DeviceCommunicator::state = MOVEMENT_IDLE;
 
+int DeviceCommunicator::gyroValueOffset = 0;
+
 
 void DeviceCommunicator::readPorts()
 {
@@ -85,18 +87,58 @@ void DeviceCommunicator::readPorts()
         }
         closedir(directory);
     }
+
+    sendGyroMode(GYRO_CAL);
+    using namespace std::chrono_literals;
+    std::this_thread::sleep_for(500ms);
+    sendGyroMode(GYRO_ANG);
 }
 
-double DeviceCommunicator::motorPulsesToCm(const double& value)
+double DeviceCommunicator::motorPulsesToMm(const double& value)
 {
-    return value / 360 * 15.6; 
+    return value / 360 * 156; 
 }
 
-double DeviceCommunicator::CmToMotorPulses(const double& value)
+double DeviceCommunicator::MmToMotorPulses(const double& value)
 {
-    return value / 15.6 * 360;
+    return value / 156 * 360;
 }
 
+void DeviceCommunicator::sendGyroMode(const GyroMode &mode)
+{
+    FILE* fp;
+    fp = fopen((input_1 + "/mode").c_str(), "w");
+
+    switch (mode)
+    {
+    case GYRO_ANG:
+        fprintf(fp, "GYRO-ANG");
+        break;
+    
+    case GYRO_RATE:
+        fprintf(fp, "GYRO-RATE");
+
+    case GYRO_FAS:
+        fprintf(fp, "GYRO-FAS");
+
+    case GYRO_G_A:
+        fprintf(fp, "GYRO-G&A");
+
+    case GYRO_CAL:
+        fprintf(fp, "GYRO-CAL");
+
+    case GYRO_TILT_RATE:
+        fprintf(fp, "TILT-RATE");
+
+    case GYRO_TILT_ANG:
+        fprintf(fp, "TILT_ANG");
+
+    default:
+        break;
+    }
+
+    fclose(fp);
+}
 
 DeviceCommunicator::DeviceCommunicator()
 {

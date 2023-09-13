@@ -25,7 +25,7 @@ SensorNotifier LocationTracker::_notifier{};
 LineManager LocationTracker::_lineManager{};
 Vector LocationTracker::_position{2,2};
 int LocationTracker::_heading = 0;
-Vector LocationTracker::_previousMotorPulses = {0,0};
+std::map<std::string, int> LocationTracker::_previousValues = {0,0};
 
 
 
@@ -43,7 +43,29 @@ LocationTracker::LocationTracker(int startX, int startY)
 
 void LocationTracker::updateLocation(std::map<subscriber_port, int> sensor_values)
 {
+    switch (state)
+    {
+    case MOVEMENT_IDLE:
+        if (
+            _previousValues[motor_drive_left] != sensor_values[motor_drive_left] ||
+            _previousValues[motor_drive_right] != sensor_values[motor_drive_right] ||
+            _previousValues[sensor_gyro] != sensor_values[sensor_gyro]
+            ) {
+                std::cerr << "WARN: Robot moving without command" << std::endl;
+            }
+        break;
+
+    case MOVEMENT_MOVING:
+        Vector movedPulses = {
+            sensor_values[motor_drive_right] - _previousValues[motor_drive_right],
+            sensor_values
+        };
+        break;
     
+    default:
+        std::cerr << "ERR: state not matchable" << state << std::endl;
+        break;
+    }
     // double moved_pulses = ((sensor_values[motor_drive_left] - _previousMotorPulses.x) + (sensor_values[motor_drive_right] - _previousMotorPulses.y)) / 2;
     // _heading += sensor_values[sensor_gyro];
 

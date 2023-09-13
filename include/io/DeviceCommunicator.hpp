@@ -8,6 +8,7 @@
 #include <iostream>
 #include <algorithm>
 #include <cctype>
+#include <thread>
 
 #define SENSORS_DIRECTORY   "/sys/class/lego-sensor/"
 #define MOTORS_DIRECTORY    "/sys/class/tacho-motor/"
@@ -21,6 +22,16 @@ enum MovementState {
     MOVEMENT_IDLE = 0,
     MOVEMENT_TURNING = 1,
     MOVEMENT_MOVING = 2
+};
+
+enum GyroMode {
+    GYRO_ANG = 0,
+    GYRO_RATE = 1,
+    GYRO_FAS = 2,
+    GYRO_G_A = 3,
+    GYRO_CAL = 4,
+    GYRO_TILT_RATE = 5,
+    GYRO_TILT_ANG = 6
 };
 
 class DeviceCommunicator {
@@ -61,8 +72,13 @@ class DeviceCommunicator {
         static MovementState state;
 
         static void readPorts();
-        static double motorPulsesToCm(const double& value);
-        static double CmToMotorPulses(const double& value);
+        static double motorPulsesToMm(const double& value);
+        static double MmToMotorPulses(const double& value);
+
+        static void sendGyroMode(const GyroMode& mode);
+
+
+        static int gyroValueOffset;
 };
 
 #endif // __DEVICECOMMUNICATOR_H__

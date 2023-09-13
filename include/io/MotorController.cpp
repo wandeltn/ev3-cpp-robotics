@@ -18,12 +18,12 @@ void MotorController::rotateTo(const int angle)
     if (_location.getHeading() == angle) {
         state = MOVEMENT_IDLE;
         return;
-    } else if (_location.getHeading() > angle) {
-        setMotorSpeed(motor_drive_right, 20);
-        setMotorSpeed(motor_drive_left, -20);
+    } else if (_location.getHeading() < angle) {
+        setMotorSpeed(motor_drive_right, 80);
+        setMotorSpeed(motor_drive_left, -80);
     } else {
-        setMotorSpeed(motor_drive_right, -20);
-        setMotorSpeed(motor_drive_left, 20);
+        setMotorSpeed(motor_drive_right, -80);
+        setMotorSpeed(motor_drive_left, 80);
     }
 
     sendCommand(motor_drive_left, MotorCommandRunForever);
@@ -216,7 +216,7 @@ void MotorController::setStopAction(const std::string motor, const MotorStopActi
 void MotorController::sendCommand(const std::string motor, const MotorCommand command)
 {
     FILE* fp;
-    fopen((motor + "/command").c_str(), "w");
+    fp = fopen((motor + "/command").c_str(), "w");
 
     if (fp == NULL) {
         std::cout << "failed to send command to: " << motor << std::endl;
