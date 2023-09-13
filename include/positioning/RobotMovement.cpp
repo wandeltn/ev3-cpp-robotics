@@ -65,7 +65,7 @@ void RobotMovement::updateMovement()
                 else if (!actionCompleted)
                 {
                     // std::cout << "moving forward: " << currentAction.distance << std::endl;
-                    moveStraight(CmToMotorPulses(currentAction.distance));
+                    moveStraight(MmToMotorPulses(currentAction.distance));
                     actionCompleted = true;
                 }
                 else

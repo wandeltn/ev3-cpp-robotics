@@ -42,6 +42,7 @@ class LocationTracker : public DeviceCommunicator {
         static std::map<std::string, int> _previousValues;
         static Vector _position;
         static int _heading;
+        static bool _initialized;
 
         static double MotorPulsesToInt(double pulses);
 };
