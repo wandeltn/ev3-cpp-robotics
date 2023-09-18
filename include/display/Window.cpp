@@ -185,6 +185,16 @@ void Window::drawLine(Line line, DisplayColors color)
     );
 }
 
+void Window::drawPolyline(std::vector<Vector> points, DisplayColors color)
+{
+    Vector prev = points.front();
+
+    for (Vector current : points) {
+        drawLine({prev, current}, color);
+        prev = current;
+    }
+}
+
 void Window::drawCircle(uint_fast8_t x0, uint_fast8_t y0, uint_fast16_t r, DisplayColors color) {
 int16_t f = 1 - r;
   int16_t ddF_x = 1;

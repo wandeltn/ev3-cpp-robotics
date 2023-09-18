@@ -44,47 +44,53 @@ LocationTracker::LocationTracker(int startX, int startY)
 
 void LocationTracker::updateLocation(std::map<subscriber_port, int> sensor_values)
 {
-    _previousValues = sensor_values;
-    if (!_initialized) {
-        for (auto value : sensor_values) {
-            _previousValues[value.first] = value.second;
-        }
-        _initialized = true;
-    }
-    switch (state)
-    {
-    case MOVEMENT_IDLE:
-        if (
-            _previousValues[motor_drive_left] != sensor_values[motor_drive_left] ||
-            _previousValues[motor_drive_right] != sensor_values[motor_drive_right] ||
-            _previousValues[sensor_gyro] != sensor_values[sensor_gyro]
-            ) {
-                std::cout << "motor right: prev:" << _previousValues[motor_drive_right] << " now:" << sensor_values[motor_drive_right] << std::endl;
-                std::cout << "motor left: prev:" << _previousValues[motor_drive_left] << " now:" << sensor_values[motor_drive_left] << std::endl;
-                std::cout << "gyro: prev:" << _previousValues[sensor_gyro] << " now:" << sensor_values[sensor_gyro] << std::endl;
-                std::cerr << "WARN: Robot moving without command" << std::endl;
-            }
-        break;
-
-    // case MOVEMENT_MOVING: {
-    //     double movedPulses = (sensor_values[motor_drive_right] - _previousValues[motor_drive_right] + sensor_values[motor_drive_left] - _previousValues[motor_drive_left]) / 2;
-
-    //     _position.x += (cos(_heading * (M_PI / 180))) * motorPulsesToMm(movedPulses);
-    //     _position.y += (sin(_heading * (M_PI / 180))) * motorPulsesToMm(movedPulses);
-    //     break;
+    // _previousValues = sensor_values;
+    // if (!_initialized) {
+    //     for (auto value : sensor_values) {
+    //         _previousValues[value.first] = value.second;
+    //     }
+    //     _initialized = true;
     // }
 
-    // case MOVEMENT_TURNING:
-    //     _heading = sensor_values[sensor_gyro] % 360;
-    //     if (_heading < 0) {
-    //         _heading += 360;
-    //     }
-    //     break;
-    
-    default:
-        std::cerr << "ERR: state not matchable" << state << std::endl;
-        break;
+    _heading = sensor_values[sensor_gyro] % 360;
+    if (_heading < 0) {
+        _heading += 360;
     }
+
+    // switch (state)
+    // {
+    // case MOVEMENT_IDLE:
+    //     if (
+    //         _previousValues[motor_drive_left] != sensor_values[motor_drive_left] ||
+    //         _previousValues[motor_drive_right] != sensor_values[motor_drive_right] ||
+    //         _previousValues[sensor_gyro] != sensor_values[sensor_gyro]
+    //         ) {
+    //             std::cout << "motor right: prev:" << _previousValues[motor_drive_right] << " now:" << sensor_values[motor_drive_right] << std::endl;
+    //             std::cout << "motor left: prev:" << _previousValues[motor_drive_left] << " now:" << sensor_values[motor_drive_left] << std::endl;
+    //             std::cout << "gyro: prev:" << _previousValues[sensor_gyro] << " now:" << sensor_values[sensor_gyro] << std::endl;
+    //             std::cerr << "WARN: Robot moving without command" << std::endl;
+    //         }
+    //     break;
+
+    // // case MOVEMENT_MOVING: {
+    // //     double movedPulses = (sensor_values[motor_drive_right] - _previousValues[motor_drive_right] + sensor_values[motor_drive_left] - _previousValues[motor_drive_left]) / 2;
+
+    // //     _position.x += (cos(_heading * (M_PI / 180))) * motorPulsesToMm(movedPulses);
+    // //     _position.y += (sin(_heading * (M_PI / 180))) * motorPulsesToMm(movedPulses);
+    // //     break;
+    // // }
+
+    // // case MOVEMENT_TURNING:
+    // //     _heading = sensor_values[sensor_gyro] % 360;
+    // //     if (_heading < 0) {
+    // //         _heading += 360;
+    // //     }
+    // //     break;
+    
+    // default:
+    //     std::cerr << "ERR: state not matchable" << state << std::endl;
+    //     break;
+    // }
 }
 
 const Vector LocationTracker::getLocation()

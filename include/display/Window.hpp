@@ -52,6 +52,7 @@ class Window {
         void drawLine(uint_fast8_t x0, uint_fast8_t y0, uint_fast8_t x1, uint_fast8_t y1, DisplayColors color);
         void drawLine(Vector start, Vector end, DisplayColors color);
         void drawLine(Line line, DisplayColors color);
+        void drawPolyline(std::vector<Vector> points, DisplayColors color);
 
         void drawCircle(uint_fast8_t x0, uint_fast8_t y0, uint_fast16_t r, DisplayColors color);
 

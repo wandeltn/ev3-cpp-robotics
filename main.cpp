@@ -25,8 +25,9 @@
 Robot rt{};
 
 void signal_callback(int signum) {
-    std::cout << "Exiting..." << std::endl;
+    std::cout << "Exiting..:" << signum << std::endl;
     rt.stopAll();
+    rt.waitForFinish();
     exit(signum);
 }
 

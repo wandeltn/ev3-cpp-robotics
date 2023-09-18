@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <cctype>
 #include <thread>
+#include <atomic>
 
 #define SENSORS_DIRECTORY   "/sys/class/lego-sensor/"
 #define MOTORS_DIRECTORY    "/sys/class/tacho-motor/"
@@ -69,7 +70,7 @@ class DeviceCommunicator {
         static const std::string OUTPUT_C_TYPE; //!< Motor port C
         static const std::string OUTPUT_D_TYPE; //!< Motor port D
 
-        static MovementState state;
+        static std::atomic<MovementState> state;
 
         static void readPorts();
         static double motorPulsesToMm(const double& value);

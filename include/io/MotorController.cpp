@@ -4,6 +4,7 @@ std::thread MotorController::_movement_thread;
 SensorNotifier MotorController::_sensors{};
 LocationTracker MotorController::_location{};
 std::atomic<bool> MotorController::_turnReached;
+std::atomic<bool> MotorController::_turningRight;
 std::atomic<int> MotorController::_gyroTarget;
 
 MotorController::MotorController()
@@ -21,9 +22,11 @@ void MotorController::rotateTo(const int angle)
     } else if (_location.getHeading() < angle) {
         setMotorSpeed(motor_drive_right, 80);
         setMotorSpeed(motor_drive_left, -80);
+        _turningRight.store(false);
     } else {
         setMotorSpeed(motor_drive_right, -80);
         setMotorSpeed(motor_drive_left, 80);
+        _turningRight.store(true);
     }
 
     sendCommand(motor_drive_left, MotorCommandRunForever);
@@ -52,8 +55,8 @@ void MotorController::moveStraight(const int distance)
 {
     state = MOVEMENT_MOVING;
 
-    setMotorSpeed(motor_drive_left, 600);
-    setMotorSpeed(motor_drive_right, 600);
+    setMotorSpeed(motor_drive_left, 100);
+    setMotorSpeed(motor_drive_right, 100);
 
 
     FILE* fp_left_pos;
@@ -105,12 +108,21 @@ void MotorController::setMotorSpeed(std::string motor, int speed)
 void MotorController::watchGyro(int value)
 {   
     if (state == MOVEMENT_TURNING) {
-        std::cout << "current gyro value: " << value << std::endl;
-        if (value % 360 == _gyroTarget.load()) {
-            _turnReached.store(true);
-            setStop(motor_drive_left);
-            setStop(motor_drive_right);
-            state = MOVEMENT_IDLE;
+        std::cout << _location.getHeading() << std::endl;
+        if (_turningRight) {
+            if (_location.getHeading() <= _gyroTarget.load()) {
+                _turnReached.store(true);
+                setStop(motor_drive_left);
+                setStop(motor_drive_right);
+                state = MOVEMENT_IDLE;
+            }
+        } else {
+            if (_location.getHeading() >= _gyroTarget.load()) {
+                _turnReached.store(true);
+                setStop(motor_drive_left);
+                setStop(motor_drive_right);
+                state = MOVEMENT_IDLE;
+            }
         }
     }
 }

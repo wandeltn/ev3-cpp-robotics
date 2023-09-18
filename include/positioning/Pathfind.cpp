@@ -27,6 +27,7 @@ std::vector<Vector> Pathfind::findPath(Vector start, Vector end)
     }
     std::vector<Vector> cachedPath = readFromFile(start, end);
     if (cachedPath.size()) {
+        _window->drawPolyline(cachedPath, DISPLAY_DARK);
         return cachedPath;
     } else {
         std::cout << "generating path" << std::endl;

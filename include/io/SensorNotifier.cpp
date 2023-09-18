@@ -39,7 +39,6 @@ std::list<void(*)(int)>::iterator SensorNotifier::subscribeToChange(subscriber_p
         if (row.portName == device_port) {
             row.listeners.push_back(callback);
             return row.listeners.end();
-            break;
         }
     }
     return std::list<void(*)(int)>::iterator{};
@@ -63,7 +62,7 @@ int SensorNotifier::Dispatcher()
     while (_run_thread) {
         for (ListenerTableRow& device : _lookup_table) {
             if (!device.portName.length()) {
-                std::cout << "skipping disabled device: " << device.deviceIdentifier << std::endl;
+                std::cout << "skipping disconnected device: " << device.deviceIdentifier << std::endl;
                 continue;
             }
             // FILE* fp;
@@ -84,14 +83,15 @@ int SensorNotifier::Dispatcher()
             getline(ifs, value);
             int numValue = std::stoi(value);
 
-            if (numValue != device.previousValue) {
-                if (device.deviceIdentifier == "input_port-3") {
-                    if (gyroValueOffset == 0) {
-                        gyroValueOffset = -numValue;
-                        std::cout << "set new offset: " << gyroValueOffset << std::endl;
-                    }
-                    numValue += gyroValueOffset;
+            if (device.deviceIdentifier == "input_port-3") {
+                if (gyroValueOffset == 0) {
+                    gyroValueOffset = -numValue;
+                    std::cout << "set new offset: " << gyroValueOffset << std::endl;
                 }
+                numValue += gyroValueOffset;
+            }
+
+            if (numValue != device.previousValue) {
                 for (std::function<void(int)> listener : device.listeners) {
                     try
                     {
@@ -102,8 +102,8 @@ int SensorNotifier::Dispatcher()
                         std::cerr << e.what() << '\n';
                     }
                 }
+                device.previousValue = numValue;
             }
-            device.previousValue = numValue;
         }
         std::map<subscriber_port, int> tempMap = {};
         for (ListenerTableRow row : _lookup_table) {

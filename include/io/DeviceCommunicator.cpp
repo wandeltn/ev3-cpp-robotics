@@ -31,7 +31,7 @@ std::string& DeviceCommunicator::motor_drive_left = DeviceCommunicator::output_B
 std::string& DeviceCommunicator::motor_tool_drive = DeviceCommunicator::output_C;
 std::string& DeviceCommunicator::motor_tool_shift = DeviceCommunicator::output_D;
 
-MovementState DeviceCommunicator::state = MOVEMENT_IDLE;
+std::atomic<MovementState> DeviceCommunicator::state;
 
 int DeviceCommunicator::gyroValueOffset = 0;
 
@@ -142,6 +142,7 @@ void DeviceCommunicator::sendGyroMode(const GyroMode &mode)
 
 DeviceCommunicator::DeviceCommunicator()
 {
+    state.store(MOVEMENT_IDLE);
     readPorts();
     sensor_color_right = input_1;
     sensor_color_left = input_2;
