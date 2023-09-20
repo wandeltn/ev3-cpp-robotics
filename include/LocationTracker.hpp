@@ -12,6 +12,9 @@
 #include "positioning/LineManager.hpp"
 
 
+#define FIELD_SIZE_X    2000
+#define FIELD_SIZE_Y    1000
+
 struct MovementAction {
     MovementAction(int distance, int direction, int speed);
     MovementAction(Line line, int speed);
@@ -41,6 +44,7 @@ class LocationTracker : public DeviceCommunicator {
         static LineManager _lineManager;
         static std::map<std::string, int> _previousValues;
         static Vector _position;
+        static Vector _prevPixel;
         static int _heading;
         static bool _initialized;
 

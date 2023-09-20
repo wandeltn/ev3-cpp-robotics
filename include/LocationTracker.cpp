@@ -24,6 +24,7 @@ std::deque<MovementAction> LocationTracker::_pendingActions{};
 SensorNotifier LocationTracker::_notifier{};
 LineManager LocationTracker::_lineManager{};
 Vector LocationTracker::_position{2,2};
+Vector LocationTracker::_prevPixel = {1,1};
 int LocationTracker::_heading = 0;
 std::map<std::string, int> LocationTracker::_previousValues = {};
 bool LocationTracker::_initialized = false;
@@ -56,7 +57,9 @@ void LocationTracker::updateLocation(std::map<subscriber_port, int> sensor_value
     if (_heading < 0) {
         _heading += 360;
     }
+    
 
+    
     // switch (state)
     // {
     // case MOVEMENT_IDLE:
@@ -73,10 +76,10 @@ void LocationTracker::updateLocation(std::map<subscriber_port, int> sensor_value
     //     break;
 
     // // case MOVEMENT_MOVING: {
-    // //     double movedPulses = (sensor_values[motor_drive_right] - _previousValues[motor_drive_right] + sensor_values[motor_drive_left] - _previousValues[motor_drive_left]) / 2;
+        double movedPulses = (sensor_values[motor_drive_right] - _previousValues[motor_drive_right] + sensor_values[motor_drive_left] - _previousValues[motor_drive_left]) / 2;
 
-    // //     _position.x += (cos(_heading * (M_PI / 180))) * motorPulsesToMm(movedPulses);
-    // //     _position.y += (sin(_heading * (M_PI / 180))) * motorPulsesToMm(movedPulses);
+        _position.x += (cos(_heading * (M_PI / 180))) * motorPulsesToMm(movedPulses);
+        _position.y += (sin(_heading * (M_PI / 180))) * motorPulsesToMm(movedPulses);
     // //     break;
     // // }
 

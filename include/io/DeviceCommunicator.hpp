@@ -60,15 +60,14 @@ class DeviceCommunicator {
         static std::string& motor_tool_shift;
 
     protected:
-        static const std::string INPUT_1_TYPE;  //!< Sensor port 1
-        static const std::string INPUT_2_TYPE;  //!< Sensor port 2
-        static const std::string INPUT_3_TYPE;  //!< Sensor port 3
-        static const std::string INPUT_4_TYPE;  //!< Sensor port 4
-
-        static const std::string OUTPUT_A_TYPE; //!< Motor port A
-        static const std::string OUTPUT_B_TYPE; //!< Motor port B
-        static const std::string OUTPUT_C_TYPE; //!< Motor port C
-        static const std::string OUTPUT_D_TYPE; //!< Motor port D
+        static std::string INPUT_1_TYPE;  //!< Sensor port 1
+        static std::string INPUT_2_TYPE;  //!< Sensor port 2
+        static std::string INPUT_3_TYPE;  //!< Sensor port 3
+        static std::string INPUT_4_TYPE;  //!< Sensor port 4
+        static std::string OUTPUT_A_TYPE; //!< Motor port A
+        static std::string OUTPUT_B_TYPE; //!< Motor port B
+        static std::string OUTPUT_C_TYPE; //!< Motor port C
+        static std::string OUTPUT_D_TYPE; //!< Motor port D
 
         static std::atomic<MovementState> state;
 

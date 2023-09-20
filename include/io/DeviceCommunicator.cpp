@@ -1,14 +1,14 @@
 #include "DeviceCommunicator.hpp"
 
-const std::string DeviceCommunicator::INPUT_1_TYPE = std::string{"ev3-ports:in1"};
-const std::string DeviceCommunicator::INPUT_2_TYPE = std::string{"ev3-ports:in2"};
-const std::string DeviceCommunicator::INPUT_3_TYPE = std::string{"ev3-ports:in3"};
-const std::string DeviceCommunicator::INPUT_4_TYPE= std::string{"ev3-ports:in4"};
+std::string DeviceCommunicator::INPUT_1_TYPE = std::string{"ev3-ports:in1"};
+std::string DeviceCommunicator::INPUT_2_TYPE = std::string{"ev3-ports:in2"};
+std::string DeviceCommunicator::INPUT_3_TYPE = std::string{"ev3-ports:in3"};
+std::string DeviceCommunicator::INPUT_4_TYPE= std::string{"ev3-ports:in4"};
 
-const std::string DeviceCommunicator::OUTPUT_A_TYPE = std::string{"ev3-ports:outA"};
-const std::string DeviceCommunicator::OUTPUT_B_TYPE = std::string{"ev3-ports:outB"};
-const std::string DeviceCommunicator::OUTPUT_C_TYPE = std::string{"ev3-ports:outC"};
-const std::string DeviceCommunicator::OUTPUT_D_TYPE = std::string{"ev3-ports:outD"};
+std::string DeviceCommunicator::OUTPUT_A_TYPE = std::string{"ev3-ports:outA"};
+std::string DeviceCommunicator::OUTPUT_B_TYPE = std::string{"ev3-ports:outB"};
+std::string DeviceCommunicator::OUTPUT_C_TYPE = std::string{"ev3-ports:outC"};
+std::string DeviceCommunicator::OUTPUT_D_TYPE = std::string{"ev3-ports:outD"};
 
 
 std::string DeviceCommunicator::input_1 = "";
@@ -66,6 +66,15 @@ void DeviceCommunicator::readPorts()
                     line.end()
                 );
 
+                INPUT_1_TYPE = std::string{"ev3-ports:in1"};
+                INPUT_2_TYPE = std::string{"ev3-ports:in2"};
+                INPUT_3_TYPE = std::string{"ev3-ports:in3"};
+                INPUT_4_TYPE= std::string{"ev3-ports:in4"};
+                OUTPUT_A_TYPE = std::string{"ev3-ports:outA"};
+                OUTPUT_B_TYPE = std::string{"ev3-ports:outB"};
+                OUTPUT_C_TYPE = std::string{"ev3-ports:outC"};
+                OUTPUT_D_TYPE = std::string{"ev3-ports:outD"};
+
                 if (line == INPUT_1_TYPE) { input_1 = path; }
                 else if (line == INPUT_2_TYPE) { input_2 = path; }
                 else if (line == INPUT_3_TYPE) { input_3 = path; }
@@ -96,12 +105,12 @@ void DeviceCommunicator::readPorts()
 
 double DeviceCommunicator::motorPulsesToMm(const double& value)
 {
-    return value / 360 * 156; 
+    return value / 360 * 15.6; 
 }
 
 double DeviceCommunicator::MmToMotorPulses(const double& value)
 {
-    return value / 156 * 360;
+    return value / 15.6 * 360;
 }
 
 void DeviceCommunicator::sendGyroMode(const GyroMode &mode)

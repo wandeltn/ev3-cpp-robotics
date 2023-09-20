@@ -55,8 +55,8 @@ void MotorController::moveStraight(const int distance)
 {
     state = MOVEMENT_MOVING;
 
-    setMotorSpeed(motor_drive_left, 100);
-    setMotorSpeed(motor_drive_right, 100);
+    setMotorSpeed(motor_drive_left, 300);
+    setMotorSpeed(motor_drive_right, 300);
 
 
     FILE* fp_left_pos;

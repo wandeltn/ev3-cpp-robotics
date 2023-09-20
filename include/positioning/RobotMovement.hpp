@@ -5,6 +5,7 @@
 #include <math.h>
 #include "../io/MotorController.hpp"
 #include "Line.hpp"
+#include "../display/Window.hpp"
 
 class RobotMovement : public MotorController, protected LocationTracker {
     public:    
