@@ -26,8 +26,6 @@ LineManager LocationTracker::_lineManager{};
 Vector LocationTracker::_position{2,2};
 Vector LocationTracker::_prevPixel = {1,1};
 int LocationTracker::_heading = 0;
-std::map<std::string, int> LocationTracker::_previousValues = {};
-bool LocationTracker::_initialized = false;
 
 
 
@@ -43,20 +41,15 @@ LocationTracker::LocationTracker(int startX, int startY)
     _notifier.subscribeToAllChanges(LocationTracker::updateLocation);
 }
 
-void LocationTracker::updateLocation(std::map<subscriber_port, int> sensor_values)
+void LocationTracker::updateLocation(std::map<subscriber_port, int> sensor_values, std::map<subscriber_port, int> prev_values)
 {
-    // _previousValues = sensor_values;
-    // if (!_initialized) {
-    //     for (auto value : sensor_values) {
-    //         _previousValues[value.first] = value.second;
-    //     }
-    //     _initialized = true;
-    // }
 
     _heading = sensor_values[sensor_gyro] % 360;
     if (_heading < 0) {
         _heading += 360;
     }
+
+    std::cout << prev_values[motor_drive_left] << std::endl;
     
 
     
@@ -76,10 +69,9 @@ void LocationTracker::updateLocation(std::map<subscriber_port, int> sensor_value
     //     break;
 
     // // case MOVEMENT_MOVING: {
-        double movedPulses = (sensor_values[motor_drive_right] - _previousValues[motor_drive_right] + sensor_values[motor_drive_left] - _previousValues[motor_drive_left]) / 2;
-
-        _position.x += (cos(_heading * (M_PI / 180))) * motorPulsesToMm(movedPulses);
-        _position.y += (sin(_heading * (M_PI / 180))) * motorPulsesToMm(movedPulses);
+        // double movedPulses = (sensor_values[motor_drive_right] - _previousValues[motor_drive_right] + sensor_values[motor_drive_left] - _previousValues[motor_drive_left]) / 2;
+        // _position.x += (cos(_heading * (M_PI / 180))) * motorPulsesToMm(movedPulses);
+        // _position.y += (sin(_heading * (M_PI / 180))) * motorPulsesToMm(movedPulses);
     // //     break;
     // // }
 

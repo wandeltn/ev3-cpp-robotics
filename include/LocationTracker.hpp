@@ -31,7 +31,7 @@ class LocationTracker : public DeviceCommunicator {
         LocationTracker();
         LocationTracker(int startX, int startY);
 
-        static void updateLocation(std::map<subscriber_port, int> sensor_values);
+        static void updateLocation(std::map<subscriber_port, int> sensor_values, std::map<subscriber_port, int> prev_values);
         static const Vector getLocation();
         static int getHeading();
 
@@ -42,11 +42,9 @@ class LocationTracker : public DeviceCommunicator {
 
         static SensorNotifier _notifier;
         static LineManager _lineManager;
-        static std::map<std::string, int> _previousValues;
         static Vector _position;
         static Vector _prevPixel;
         static int _heading;
-        static bool _initialized;
 
         static double MotorPulsesToInt(double pulses);
 };

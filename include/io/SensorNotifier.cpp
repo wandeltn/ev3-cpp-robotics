@@ -2,7 +2,7 @@
 
 
 std::thread SensorNotifier::_polling_thread;
-std::vector<std::function<void(std::map<subscriber_port, int>)>> SensorNotifier::_listeners{};
+std::vector<std::function<void(std::map<subscriber_port, int>, std::map<subscriber_port, int>)>> SensorNotifier::_listeners{};
 std::atomic<bool> SensorNotifier::_run_thread;
 std::atomic<bool> SensorNotifier::_thread_running;
 
@@ -44,7 +44,7 @@ std::list<void(*)(int)>::iterator SensorNotifier::subscribeToChange(subscriber_p
     return std::list<void(*)(int)>::iterator{};
 }
 
-void SensorNotifier::subscribeToAllChanges(std::function<void(std::map<subscriber_port, int>)> callback)
+void SensorNotifier::subscribeToAllChanges(std::function<void(std::map<subscriber_port, int>, std::map<subscriber_port, int>)> callback)
 {
     _listeners.push_back(callback);
 }
@@ -60,6 +60,11 @@ int SensorNotifier::Dispatcher()
 {
     _thread_running = true;
     while (_run_thread) {
+        std::map<subscriber_port, int> tempMapPrev = {};
+        for (ListenerTableRow row : _lookup_table) {
+            tempMapPrev[row.portName] = row.previousValue;
+        }
+
         for (ListenerTableRow& device : _lookup_table) {
             if (!device.portName.length()) {
                 std::cout << "skipping disconnected device: " << device.deviceIdentifier << std::endl;
@@ -109,8 +114,8 @@ int SensorNotifier::Dispatcher()
         for (ListenerTableRow row : _lookup_table) {
             tempMap[row.portName] = row.previousValue;
         }
-        for (std::function<void(std::map<subscriber_port, int>)> listener : _listeners) {
-            listener(tempMap);
+        for (auto listener : _listeners) {
+            listener(tempMap, tempMapPrev);
         }
     }
     _thread_running = false;
