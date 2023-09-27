@@ -59,7 +59,7 @@ double Line::getLength() const
 
 double Line::getAngle() const
 {
-    double result = atan2(direction_vector.x, direction_vector.y) * 180 / M_PI;
+    double result = atan2(direction_vector.y, direction_vector.x) * 180 / M_PI;
     // std::cout << "dir_x: " << direction_vector.x << " dir_y: " << direction_vector.y << std::endl;
     // std::cout << "getAngle(): " << result << std::endl;
     assertm((result <= 360), "Angle out of range in Line::getAngle");
