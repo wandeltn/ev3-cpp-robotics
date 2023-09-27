@@ -4,7 +4,7 @@ std::thread RobotMovement::_movementThread;
 std::atomic<bool> RobotMovement::_runMovementThread;
 std::atomic<bool> RobotMovement::_threadRunning;
 
-RobotMovement::RobotMovement()
+RobotMovement::RobotMovement() : LocationTracker(65, 185)
 {
     setStopAction(motor_drive_left, MotorStopActionHold);
     setStopAction(motor_drive_right, MotorStopActionHold);

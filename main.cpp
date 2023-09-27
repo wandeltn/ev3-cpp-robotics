@@ -36,7 +36,7 @@ int main() {
     #ifdef EV3DEV_PLATFORM_EV3
     signal(SIGINT, signal_callback);
 
-    rt.moveToPosition({170,119});
+    rt.moveToPosition({400, 800});
     // rt.moveStraight(200);
     // rt.rotateTo(50);
     // rt.rotateTo(0);

@@ -7,10 +7,10 @@ ObstacleManager::ObstacleManager()
     //TODO: load obstacles from file
     appendObstacle(std::make_shared<ObstacleLine>(Line{Vector{15, 25}, Vector{25, 15}}));
     
-    appendObstacle(std::make_shared<ObstacleSquare>(Vector{2, 18}, Vector{12, 15}));
-    appendObstacle(std::make_shared<ObstacleSquare>(Vector{28, 38}, Vector{34, 31}));
-    appendObstacle(std::make_shared<ObstacleSquare>(Vector{50, 50}, Vector{178, 100}));
-    appendObstacle(std::make_shared<ObstacleSquare>(Vector{0, 0}, Vector{178, 128}));
+    // appendObstacle(std::make_shared<ObstacleSquare>(Vector{2, 18}, Vector{12, 15}));
+    // appendObstacle(std::make_shared<ObstacleSquare>(Vector{28, 38}, Vector{34, 31}));
+    // appendObstacle(std::make_shared<ObstacleSquare>(Vector{50, 50}, Vector{178, 100}));
+    // appendObstacle(std::make_shared<ObstacleSquare>(Vector{0, 0}, Vector{178, 128}));
     
 }
 
