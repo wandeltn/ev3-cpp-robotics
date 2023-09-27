@@ -19,7 +19,7 @@ void MotorController::rotateTo(const int angle)
     if (_location.getHeading() == angle) {
         state = MOVEMENT_IDLE;
         return;
-    } else if (_location.getHeading() < angle) {
+    } else if (abs(_location.getHeading() - angle) < 180) {
         setMotorSpeed(motor_drive_right, 80);
         setMotorSpeed(motor_drive_left, -80);
         _turningRight.store(false);
@@ -38,22 +38,24 @@ void MotorController::rotateTo(const int angle)
     std::vector<std::string> right_state = getState(motor_drive_right);
     std::vector<std::string> left_state = getState(motor_drive_left);
 
-    std::cout << "right state: " << std::endl;
+    std::cout << "right state: " << "\n";
     for (std::string state : right_state) {
         std::cout << state;
     }
-    std::cout << std::endl;
-    std::cout << "left state: " << std::endl;
+    std::cout << "\n";
+    std::cout << "left state: " << "\n";
     for (std::string state : left_state) {
         std::cout << state;
     }
-    std::cout << std::endl;
+std::cout << std::endl;
 
 }
 
 void MotorController::moveStraight(const int distance)
 {
-    state = MOVEMENT_MOVING;
+    state.store(MOVEMENT_MOVING);
+
+    std::cerr << "driving Straight: " << distance << std::endl;
 
     setMotorSpeed(motor_drive_left, 300);
     setMotorSpeed(motor_drive_right, 300);

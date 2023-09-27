@@ -105,12 +105,12 @@ void DeviceCommunicator::readPorts()
 
 double DeviceCommunicator::motorPulsesToMm(const double& value)
 {
-    return value / 360 * 15.6; 
+    return value / 360 * 156; 
 }
 
 double DeviceCommunicator::MmToMotorPulses(const double& value)
 {
-    return value / 15.6 * 360;
+    return value * 156 / 360;
 }
 
 void DeviceCommunicator::sendGyroMode(const GyroMode &mode)
