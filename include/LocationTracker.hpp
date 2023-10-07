@@ -45,8 +45,6 @@ class LocationTracker : public DeviceCommunicator {
         static Vector _position;
         static Vector _prevPixel;
         static int _heading;
-
-        static double MotorPulsesToInt(double pulses);
 };
 
 #endif // __LOCATIONTRACKER_H__

@@ -98,8 +98,3 @@ int LocationTracker::getHeading()
 {
     return _heading;
 }
-
-double LocationTracker::MotorPulsesToInt(double pulses)
-{
-    return ((static_cast<double>(pulses) / 360.0) * 15.6);
-}
