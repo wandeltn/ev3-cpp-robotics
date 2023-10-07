@@ -58,13 +58,13 @@ void RobotMovement::updateMovement()
             {
                 if (currentlyTurning)
                 {
-                    // std::cout << "targetAngle: " << currentAction.direction << std::endl;
+                    std::cout << "targetAngle: " << currentAction.direction << std::endl;
                     rotateTo(currentAction.direction);
                     currentlyTurning = false;
                 }
                 else if (!actionCompleted)
                 {
-                    // std::cout << "moving forward: " << currentAction.distance << std::endl;
+                    std::cout << "moving forward: " << currentAction.distance << std::endl;
                     moveStraight(MmToMotorPulses(currentAction.distance));
                     actionCompleted = true;
                 }

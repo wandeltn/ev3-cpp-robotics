@@ -51,10 +51,10 @@ void LocationTracker::updateLocation(std::map<subscriber_port, int> sensor_value
 
 
     double movedPulses = ((sensor_values[motor_drive_right] - prev_values[motor_drive_right]) + (sensor_values[motor_drive_left] - prev_values[motor_drive_left])) / 2;
-    _position.x += (cos(_heading * (M_PI / 180))) * motorPulsesToMm(movedPulses);
-    _position.y += (sin(_heading * (M_PI / 180))) * motorPulsesToMm(movedPulses);
-    std::cout << _position << std::endl;
-    std::cout << "moved pulses: " << movedPulses << std::endl;
+    _position.x += (cos(_heading * (180 / M_PI))) * motorPulsesToMm(movedPulses);
+    _position.y += (sin(_heading * (180 / M_PI))) * motorPulsesToMm(movedPulses);
+    // std::cout << _position << std::endl;
+    // std::cout << "moved pulses: " << movedPulses << std::endl;
 
     
     switch (state)

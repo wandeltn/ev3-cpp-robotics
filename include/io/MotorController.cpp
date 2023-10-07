@@ -19,7 +19,7 @@ void MotorController::rotateTo(const int angle)
     if (_location.getHeading() == angle) {
         state = MOVEMENT_IDLE;
         return;
-    } else if (abs(_location.getHeading() - angle) < 180) {
+    } else if (_location.getHeading() < angle) {
         setMotorSpeed(motor_drive_right, 80);
         setMotorSpeed(motor_drive_left, -80);
         _turningRight.store(false);
