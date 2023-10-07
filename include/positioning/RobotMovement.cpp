@@ -28,8 +28,8 @@ void RobotMovement::updateMovement()
     bool actionAvailable = false;
     MovementAction currentAction;
     while (
-        _runMovementThread || 
-        actionAvailable  
+        _runMovementThread 
+        || actionAvailable  
         || _pendingActions.size()
     )
     {

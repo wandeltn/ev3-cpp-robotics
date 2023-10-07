@@ -21,9 +21,9 @@ class Line {
 
         Vector start_point;
         Vector end_point;
-        Vector direction_vector;
         
     private:
+        Vector direction_vector;
         double _length;
         bool counterclockwise(Vector A, Vector B, Vector C) const;
 };

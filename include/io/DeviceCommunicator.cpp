@@ -110,7 +110,7 @@ double DeviceCommunicator::motorPulsesToMm(const double& value)
 
 double DeviceCommunicator::MmToMotorPulses(const double& value)
 {
-    return value * 156 / 360;
+    return value / 156 * 360;
 }
 
 void DeviceCommunicator::sendGyroMode(const GyroMode &mode)

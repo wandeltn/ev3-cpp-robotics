@@ -11,11 +11,13 @@ class Robot : public RobotMovement {
         Robot();
 
         void moveToPosition(Vector target);
+        void moveToPosition(int distance, int direction);
         void waitForFinish();
 
     private:
         Pathfind _pathfind;
         static DirectRenderingManager _drm;
+        static Vector _destination;
 };
 
 #endif // __ROBOT_H__

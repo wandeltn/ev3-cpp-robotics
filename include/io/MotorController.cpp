@@ -55,7 +55,7 @@ void MotorController::moveStraight(const int distance)
 {
     state.store(MOVEMENT_MOVING);
 
-    std::cerr << "driving Straight: " << distance << std::endl;
+    std::cerr << "moving motor pulses: " << distance << std::endl;
 
     setMotorSpeed(motor_drive_left, 300);
     setMotorSpeed(motor_drive_right, 300);
