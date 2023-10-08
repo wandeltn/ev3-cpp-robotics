@@ -25,7 +25,8 @@ SensorNotifier LocationTracker::_notifier{};
 LineManager LocationTracker::_lineManager{};
 Vector LocationTracker::_position{65,185};
 Vector LocationTracker::_prevPixel = {1,1};
-int LocationTracker::_heading = 0;
+int LocationTracker::_heading_gyro = 0;
+double LocationTracker::_heading_motor = 0;
 
 
 
@@ -44,48 +45,27 @@ LocationTracker::LocationTracker(int startX, int startY)
 void LocationTracker::updateLocation(std::map<subscriber_port, int> sensor_values, std::map<subscriber_port, int> prev_values)
 {
 
-    _heading = abs(sensor_values[sensor_gyro]) % 360;
-    if (_heading < 0) {
-        _heading += 360;
+    _heading_gyro = abs(sensor_values[sensor_gyro]) % 360;
+    if (_heading_gyro < 0) {
+        _heading_gyro += 360;
     }
 
 
     double movedPulses = ((sensor_values[motor_drive_right] - prev_values[motor_drive_right]) + (sensor_values[motor_drive_left] - prev_values[motor_drive_left])) / 2;
-    _position.x += (cos(_heading * (180 / M_PI))) * motorPulsesToMm(movedPulses);
-    _position.y += (sin(_heading * (180 / M_PI))) * motorPulsesToMm(movedPulses);
+    _position.x += (cos(_heading_gyro * (180 / M_PI))) * motorPulsesToMm(movedPulses);
+    _position.y += (sin(_heading_gyro * (180 / M_PI))) * motorPulsesToMm(movedPulses);
     // std::cout << _position << std::endl;
     // std::cout << "moved pulses: " << movedPulses << std::endl;
 
-    
-    switch (state)
-    {
-        case MOVEMENT_IDLE:
-    //     if (
-    //         _previousValues[motor_drive_left] != sensor_values[motor_drive_left] ||
-    //         _previousValues[motor_drive_right] != sensor_values[motor_drive_right] ||
-    //         _previousValues[sensor_gyro] != sensor_values[sensor_gyro]
-    //         ) {
-    //             std::cout << "motor right: prev:" << _previousValues[motor_drive_right] << " now:" << sensor_values[motor_drive_right] << std::endl;
-    //             std::cout << "motor left: prev:" << _previousValues[motor_drive_left] << " now:" << sensor_values[motor_drive_left] << std::endl;
-    //             std::cout << "gyro: prev:" << _previousValues[sensor_gyro] << " now:" << sensor_values[sensor_gyro] << std::endl;
-    //             std::cerr << "WARN: Robot moving without command" << std::endl;
-    //         }
-            break;
+    if (state == MOVEMENT_TURNING) {
+        double turned_angle_right = (motorPulsesToMm(sensor_values[motor_drive_right] - prev_values[motor_drive_right]) / (M_PI * VEHICLE_WIDTH_MM)) * 360;
+        double turned_angle_left = (motorPulsesToMm(sensor_values[motor_drive_left] - prev_values[motor_drive_left]) / (M_PI * VEHICLE_WIDTH_MM)) * 360;
+        std::cout << "estimated turned_angle_right: " << turned_angle_right << "\n";
+        std::cout << "estimated turned_angle_left: " << turned_angle_left << "\n";
 
-        case MOVEMENT_MOVING: {
-            break;
-        }
+        _heading_motor += ((turned_angle_left * -1) + turned_angle_right) / 2;
 
-        case MOVEMENT_TURNING:
-    // //     _heading = sensor_values[sensor_gyro] % 360;
-    // //     if (_heading < 0) {
-    // //         _heading += 360;
-    // //     }
-            break;
-    
-        default:
-            // std::cerr << "ERR: state not matchable" << state << std::endl;
-            break;
+        std::cout << "LocationTracker::_heading_motor: " << _heading_motor << "\n";
     }
 }
 
@@ -96,5 +76,5 @@ const Vector LocationTracker::getLocation()
 
 int LocationTracker::getHeading()
 {
-    return _heading;
+    return _heading_gyro;
 }

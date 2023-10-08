@@ -12,8 +12,9 @@
 #include "positioning/LineManager.hpp"
 
 
-#define FIELD_SIZE_X    2000
-#define FIELD_SIZE_Y    1000
+#define FIELD_SIZE_X        2000
+#define FIELD_SIZE_Y        1000
+#define VEHICLE_WIDTH_MM    145
 
 struct MovementAction {
     MovementAction(int distance, int direction, int speed);
@@ -44,7 +45,8 @@ class LocationTracker : public DeviceCommunicator {
         static LineManager _lineManager;
         static Vector _position;
         static Vector _prevPixel;
-        static int _heading;
+        static int _heading_gyro;
+        static double _heading_motor;
 };
 
 #endif // __LOCATIONTRACKER_H__

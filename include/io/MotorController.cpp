@@ -110,12 +110,13 @@ void MotorController::setMotorSpeed(std::string motor, int speed)
 void MotorController::watchGyro(int value)
 {   
     if (state == MOVEMENT_TURNING) {
-        std::cout << _location.getHeading() << std::endl;
+        // std::cout << _location.getHeading() << std::endl;
         if (_turningRight) {
             if (_location.getHeading() <= _gyroTarget.load()) {
                 _turnReached.store(true);
                 setStop(motor_drive_left);
                 setStop(motor_drive_right);
+                std::cout << _location.getHeading() << std::endl;
                 state = MOVEMENT_IDLE;
             }
         } else {
@@ -123,6 +124,7 @@ void MotorController::watchGyro(int value)
                 _turnReached.store(true);
                 setStop(motor_drive_left);
                 setStop(motor_drive_right);
+                std::cout << _location.getHeading() << std::endl;
                 state = MOVEMENT_IDLE;
             }
         }
