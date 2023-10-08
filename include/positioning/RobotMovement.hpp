@@ -18,14 +18,11 @@ class RobotMovement : public MotorController, protected LocationTracker {
         static void goToLocation(std::vector<MovementAction> actions);
         static void goToLocation(std::deque<MovementAction> actions);
 
-        static void waitForMovementThreadStop();
+        static void finishQueue();
 
         static void stopAll();
 
     private:
-        static std::thread _movementThread;
-        static std::atomic<bool> _runMovementThread;
-        static std::atomic<bool> _threadRunning;
 };
 
 #endif // __ROBOTMOVEMENT_H__

@@ -3,7 +3,6 @@
 
 #include <fstream>
 #include <queue>
-#include <thread>
 #include <iostream>
 #include <atomic>
 #include <mutex>
@@ -61,12 +60,12 @@ class MotorController : protected DeviceCommunicator {
         static SensorNotifier _sensors;
 
     private:
-        static std::thread _movement_thread;
         static LocationTracker _location;
         static std::atomic<bool> _turnReached;
         static std::atomic<bool> _turningRight;
         static std::mutex _mutex;
         static std::atomic<int> _gyroTarget;
+        static std::list<void(*)(int)>::iterator _listener;
 };
 
 #endif // __MOTORCONTROLLER_H__

@@ -8,8 +8,8 @@
 #include <iostream>
 #include <algorithm>
 #include <cctype>
-#include <thread>
 #include <atomic>
+#include <unistd.h>
 
 #define SENSORS_DIRECTORY   "/sys/class/lego-sensor/"
 #define MOTORS_DIRECTORY    "/sys/class/tacho-motor/"

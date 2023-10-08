@@ -1,6 +1,5 @@
 #include "include/Robot.hpp"
 
-#include <thread>
 #include <chrono>
 #include <iostream>
 #include <sys/inotify.h>
@@ -27,7 +26,6 @@ Robot rt{};
 void signal_callback(int signum) {
     std::cout << "Exiting..:" << signum << std::endl;
     rt.stopAll();
-    rt.waitForFinish();
     exit(signum);
 }
 
@@ -43,12 +41,6 @@ int main() {
     // rt.rotateTo(50);
     // rt.rotateTo(0);
 
-    rt.waitForFinish();
-    // rrt.generateTree();
+    rt.finishQueue();
     #endif
-    using namespace std::chrono_literals;
-    // while (true){
-
-        
-    // }
 }

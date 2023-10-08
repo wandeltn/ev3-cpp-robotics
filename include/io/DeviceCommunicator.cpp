@@ -98,8 +98,7 @@ void DeviceCommunicator::readPorts()
     }
 
     sendGyroMode(GYRO_CAL);
-    using namespace std::chrono_literals;
-    std::this_thread::sleep_for(500ms);
+    sleep(0.5);
     sendGyroMode(GYRO_ANG);
 }
 
@@ -116,7 +115,7 @@ double DeviceCommunicator::MmToMotorPulses(const double& value)
 void DeviceCommunicator::sendGyroMode(const GyroMode &mode)
 {
     FILE* fp;
-    fp = fopen((input_1 + "/mode").c_str(), "w");
+    fp = fopen((sensor_gyro + "/mode").c_str(), "w");
 
     switch (mode)
     {
