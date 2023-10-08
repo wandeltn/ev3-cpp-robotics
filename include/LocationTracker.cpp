@@ -28,6 +28,9 @@ Vector LocationTracker::_prevPixel = {1,1};
 int LocationTracker::_heading_gyro = 0;
 double LocationTracker::_heading_motor = 0;
 
+int LocationTracker::prevPulses = 0;
+
+
 
 
 LocationTracker::LocationTracker()
@@ -44,6 +47,10 @@ LocationTracker::LocationTracker(int startX, int startY)
 
 void LocationTracker::updateLocation(std::map<subscriber_port, int> sensor_values, std::map<subscriber_port, int> prev_values)
 {
+    if (prevPulses == 0) {
+        prevPulses = sensor_values[motor_drive_left];
+    }
+
 
     _heading_gyro = abs(sensor_values[sensor_gyro]) % 360;
     if (_heading_gyro < 0) {
@@ -66,6 +73,7 @@ void LocationTracker::updateLocation(std::map<subscriber_port, int> sensor_value
         _heading_motor += ((turned_angle_left * -1) + turned_angle_right) / 2;
 
         std::cout << "LocationTracker::_heading_motor: " << _heading_motor << "\n";
+        std::cout << "Absolute motor angle calculation: " << (motorPulsesToMm(sensor_values[motor_drive_left] - prevPulses) / (M_PI * VEHICLE_WIDTH_MM)) * 360 << "\n";
     }
 }
 

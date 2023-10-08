@@ -23,6 +23,11 @@ class RobotMovement : public MotorController, protected LocationTracker {
         static void stopAll();
 
     private:
+        static bool actionAvailable;
+        static bool actionCompleted;
+        static bool currentlyTurning;
+        static MovementAction currentAction;
+
 };
 
 #endif // __ROBOTMOVEMENT_H__

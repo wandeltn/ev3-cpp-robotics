@@ -41,7 +41,7 @@ class MotorController : protected DeviceCommunicator {
         static void rotateTo(const int angle);
         static void moveStraight(const int distance);
         static void setMotorSpeed(const std::string motor, const int speed);
-        static void watchGyro(const int value);
+        static void watchGyro(std::map<subscriber_port, int> sensor_values, std::map<subscriber_port, int> prev_values);
 
         static std::vector<std::string> getState(const std::string motor);
         

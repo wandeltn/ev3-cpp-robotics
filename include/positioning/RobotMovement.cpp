@@ -1,5 +1,11 @@
 #include "RobotMovement.hpp"
 
+bool RobotMovement::currentlyTurning = true;
+bool RobotMovement::actionCompleted = false;
+bool RobotMovement::actionAvailable = false;
+MovementAction RobotMovement::currentAction;
+
+
 RobotMovement::RobotMovement() : LocationTracker(65, 185)
 {
     setStopAction(motor_drive_left, MotorStopActionHold);
@@ -13,10 +19,6 @@ RobotMovement::~RobotMovement()
 
 void RobotMovement::updateMovement()
 {
-    bool currentlyTurning = true;
-    bool actionCompleted = false;
-    bool actionAvailable = false;
-    MovementAction currentAction;
     while (
         actionAvailable  
         || _pendingActions.size()

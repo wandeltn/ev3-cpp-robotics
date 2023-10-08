@@ -9,7 +9,7 @@ std::list<void(*)(int)>::iterator MotorController::_listener;
 
 MotorController::MotorController()
 {
-    _listener = _sensors.subscribeToChange(sensor_gyro, *watchGyro);
+    _sensors.subscribeToAllChanges(MotorController::watchGyro);
     // readPorts();
 }
 
@@ -107,9 +107,9 @@ void MotorController::setMotorSpeed(std::string motor, int speed)
     }
 }
 
-void MotorController::watchGyro(int value)
+void MotorController::watchGyro(std::map<subscriber_port, int> sensor_values, std::map<subscriber_port, int> prev_values)
 {   
-    std::cout << "MotorController::watchGyro() called with value: " << value << "\n";
+    std::cout << "MotorController::watchGyro() called with value: " << sensor_values[sensor_gyro] << "\n";
     std::cout << "MotorController::watchGyro() called with state: " << state << "\n";
     if (state == MOVEMENT_TURNING) {
         std::cout << _location.getHeading() << std::endl;
