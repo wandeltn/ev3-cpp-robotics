@@ -31,10 +31,3 @@ void Robot::moveToPosition(int distance, int direction)
 {
     goToLocation(MovementAction{distance, direction, 400});
 }
-
-void Robot::waitForFinish()
-{
-    waitForMovementThreadStop();
-    _sensors.stopDispatcher();
-    _sensors.waitForThreadStop();
-} 

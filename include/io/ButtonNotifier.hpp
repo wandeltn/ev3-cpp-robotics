@@ -1,7 +1,7 @@
 #ifndef __BUTTONNOTIFIER_H__
 #define __BUTTONNOTIFIER_H__ 
 
-#include <thread>
+#include <memory>
 #include <vector>
 #include <linux/input.h>
 #include <fstream>
@@ -15,9 +15,7 @@
 
 class ButtonNotifier {
     private:
-        static std::thread _listener_thread;
         static std::ifstream _ifstream;
-        static bool _exit_thread;
         static __u16 _previous_key;
         static std::mutex _mutex;
         static std::unique_ptr<ButtonNotifier> _pinstance;

@@ -1,16 +1,16 @@
 #include "MotorController.hpp"
 
-std::thread MotorController::_movement_thread;
 SensorNotifier MotorController::_sensors{};
 LocationTracker MotorController::_location{};
 std::atomic<bool> MotorController::_turnReached;
 std::atomic<bool> MotorController::_turningRight;
 std::atomic<int> MotorController::_gyroTarget;
+std::list<void(*)(int)>::iterator MotorController::_listener;
 
 MotorController::MotorController()
 {
+    _sensors.subscribeToAllChanges(MotorController::watchGyro);
     // readPorts();
-    _sensors.subscribeToChange(sensor_gyro, watchGyro);
 }
 
 void MotorController::rotateTo(const int angle)
@@ -47,7 +47,7 @@ void MotorController::rotateTo(const int angle)
     for (std::string state : left_state) {
         std::cout << state;
     }
-std::cout << std::endl;
+    std::cout << std::endl;
 
 }
 
@@ -107,16 +107,19 @@ void MotorController::setMotorSpeed(std::string motor, int speed)
     }
 }
 
-void MotorController::watchGyro(int value)
+void MotorController::watchGyro(std::map<subscriber_port, int> sensor_values, std::map<subscriber_port, int> prev_values)
 {   
+    std::cout << "MotorController::watchGyro() called with value: " << sensor_values[sensor_gyro] << "\n";
+    std::cout << "MotorController::watchGyro() called with state: " << state << "\n";
     if (state == MOVEMENT_TURNING) {
-        // std::cout << _location.getHeading() << std::endl;
+        std::cout << _location.getHeading() << std::endl;
         if (_turningRight) {
             if (_location.getHeading() <= _gyroTarget.load()) {
                 _turnReached.store(true);
                 setStop(motor_drive_left);
                 setStop(motor_drive_right);
                 std::cout << _location.getHeading() << std::endl;
+                // _sensors.unsubscribeFromChange(_listener, sensor_gyro);
                 state = MOVEMENT_IDLE;
             }
         } else {
@@ -125,6 +128,7 @@ void MotorController::watchGyro(int value)
                 setStop(motor_drive_left);
                 setStop(motor_drive_right);
                 std::cout << _location.getHeading() << std::endl;
+                // _sensors.unsubscribeFromChange(_listener, sensor_gyro);
                 state = MOVEMENT_IDLE;
             }
         }

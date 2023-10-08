@@ -1,39 +1,29 @@
 #include "RobotMovement.hpp"
 
-std::thread RobotMovement::_movementThread;
-std::atomic<bool> RobotMovement::_runMovementThread;
-std::atomic<bool> RobotMovement::_threadRunning;
+bool RobotMovement::currentlyTurning = true;
+bool RobotMovement::actionCompleted = false;
+bool RobotMovement::actionAvailable = false;
+MovementAction RobotMovement::currentAction;
+
 
 RobotMovement::RobotMovement() : LocationTracker(65, 185)
 {
     setStopAction(motor_drive_left, MotorStopActionHold);
     setStopAction(motor_drive_right, MotorStopActionHold);
     _pendingActions.clear();
-    _runMovementThread.store(true);
-    _movementThread = std::thread{updateMovement};
-    _movementThread.detach();
 }
 
 RobotMovement::~RobotMovement()
 {
-    _runMovementThread.store(false);
 }
 
 void RobotMovement::updateMovement()
 {
-    using namespace std::chrono_literals;
-    _threadRunning.store(true);
-    bool currentlyTurning = true;
-    bool actionCompleted = false;
-    bool actionAvailable = false;
-    MovementAction currentAction;
     while (
-        _runMovementThread 
-        || actionAvailable  
+        actionAvailable  
         || _pendingActions.size()
     )
     {
-        std::this_thread::sleep_for(200ms);
         if (_pendingActions.size() && !actionAvailable)
         {
             // std::cout << "getting new aciton" << std::endl;
@@ -41,15 +31,7 @@ void RobotMovement::updateMovement()
             _pendingActions.pop_front();
             actionAvailable = true;
         }
-        else if (actionAvailable) {
-        }
-        else
-        {
-            _sensors.stopDispatcher();
-            continue;
-        }
 
-        _sensors.startDispatcher();
         std::vector<std::string> state = getState(motor_drive_left);
         if (std::find(state.begin(), state.end(), "running") == state.end())
         {
@@ -83,8 +65,8 @@ void RobotMovement::updateMovement()
                 }
             }
         }
+        _sensors.Dispatcher();
     }
-    _threadRunning.store(false);
 }
 
 void RobotMovement::goToLocation(MovementAction action)
@@ -102,15 +84,9 @@ void RobotMovement::goToLocation(std::deque<MovementAction> actions)
     _pendingActions.insert(_pendingActions.end(), actions.begin(), actions.end());
 }
 
-void RobotMovement::waitForMovementThreadStop()
+void RobotMovement::finishQueue()
 {
-    using namespace std::chrono_literals;
-    _runMovementThread.store(false);
-    while (_threadRunning)
-    {
-        std::this_thread::sleep_for(200ms);
-    }
-    
+    updateMovement();
 }
 
 void RobotMovement::stopAll()

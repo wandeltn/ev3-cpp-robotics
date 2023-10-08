@@ -3,7 +3,6 @@
 
 #include <fstream>
 #include <queue>
-#include <thread>
 #include <iostream>
 #include <atomic>
 #include <mutex>
@@ -42,7 +41,7 @@ class MotorController : protected DeviceCommunicator {
         static void rotateTo(const int angle);
         static void moveStraight(const int distance);
         static void setMotorSpeed(const std::string motor, const int speed);
-        static void watchGyro(const int value);
+        static void watchGyro(std::map<subscriber_port, int> sensor_values, std::map<subscriber_port, int> prev_values);
 
         static std::vector<std::string> getState(const std::string motor);
         
@@ -61,12 +60,12 @@ class MotorController : protected DeviceCommunicator {
         static SensorNotifier _sensors;
 
     private:
-        static std::thread _movement_thread;
         static LocationTracker _location;
         static std::atomic<bool> _turnReached;
         static std::atomic<bool> _turningRight;
         static std::mutex _mutex;
         static std::atomic<int> _gyroTarget;
+        static std::list<void(*)(int)>::iterator _listener;
 };
 
 #endif // __MOTORCONTROLLER_H__
