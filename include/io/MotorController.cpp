@@ -6,11 +6,31 @@ std::atomic<bool> MotorController::_turnReached;
 std::atomic<bool> MotorController::_turningRight;
 std::atomic<int> MotorController::_gyroTarget;
 std::list<void(*)(int)>::iterator MotorController::_listener;
+int MotorController::_turningGyroTargetOffset = 5;
 
 MotorController::MotorController()
 {
     _sensors.subscribeToAllChanges(MotorController::watchGyro);
     // readPorts();
+}
+
+double MotorController::shortestSignedDistanceBetweenCircularValues(double origin, double target){
+
+  double signedDiff = 0.0;
+  double raw_diff = origin > target ? origin - target : target - origin;
+  double mod_diff = fmod(raw_diff, 360); //equates rollover values. E.g 0 == 360 degrees in circle
+
+  if(mod_diff > (360/2) ){
+    //There is a shorter path in opposite direction
+    signedDiff = (360 - mod_diff);
+    if(target>origin) signedDiff = signedDiff * -1;
+  } else {
+    signedDiff = mod_diff;
+    if(origin>target) signedDiff = signedDiff * -1;
+  }
+
+  return signedDiff;
+
 }
 
 void MotorController::rotateTo(const int angle)
@@ -19,21 +39,31 @@ void MotorController::rotateTo(const int angle)
     if (_location.getHeading() == angle) {
         state = MOVEMENT_IDLE;
         return;
-    } else if (_location.getHeading() < angle) {
+    } else if (shortestSignedDistanceBetweenCircularValues(_location.getHeading(), angle) > 0) {
         setMotorSpeed(motor_drive_right, 80);
         setMotorSpeed(motor_drive_left, -80);
         _turningRight.store(false);
+        _gyroTarget.store(angle - _turningGyroTargetOffset);
     } else {
         setMotorSpeed(motor_drive_right, -80);
         setMotorSpeed(motor_drive_left, 80);
         _turningRight.store(true);
+        _gyroTarget.store(angle + _turningGyroTargetOffset);
     }
+
+    _gyroTarget = _gyroTarget % 360;
+    if (_gyroTarget < 0) {
+        _gyroTarget += 360;
+    }
+
+    std::cout << "MotorController::rotateTo() using target: " << _gyroTarget << "\n";
+    std::cout << "MotorController::rotateTo() using _turningGyroTargetOffset: " << _turningGyroTargetOffset << "\n";
 
     sendCommand(motor_drive_left, MotorCommandRunForever);
     sendCommand(motor_drive_right, MotorCommandRunForever);
 
     _turnReached.store(false);
-    _gyroTarget.store(angle);
+    
 
     std::vector<std::string> right_state = getState(motor_drive_right);
     std::vector<std::string> left_state = getState(motor_drive_left);
@@ -109,8 +139,6 @@ void MotorController::setMotorSpeed(std::string motor, int speed)
 
 void MotorController::watchGyro(std::map<subscriber_port, int> sensor_values, std::map<subscriber_port, int> prev_values)
 {   
-    std::cout << "MotorController::watchGyro() called with value: " << sensor_values[sensor_gyro] << "\n";
-    std::cout << "MotorController::watchGyro() called with state: " << state << "\n";
     if (state == MOVEMENT_TURNING) {
         std::cout << _location.getHeading() << std::endl;
         if (_turningRight) {
@@ -118,8 +146,8 @@ void MotorController::watchGyro(std::map<subscriber_port, int> sensor_values, st
                 _turnReached.store(true);
                 setStop(motor_drive_left);
                 setStop(motor_drive_right);
-                std::cout << _location.getHeading() << std::endl;
-                // _sensors.unsubscribeFromChange(_listener, sensor_gyro);
+                std::cout << "Stopped turning at: " << _location.getHeading() << std::endl;
+                _turningGyroTargetOffset = round((double)(_turningGyroTargetOffset + abs(_location.getHeading() - _gyroTarget)) / 2);
                 state = MOVEMENT_IDLE;
             }
         } else {
@@ -127,8 +155,8 @@ void MotorController::watchGyro(std::map<subscriber_port, int> sensor_values, st
                 _turnReached.store(true);
                 setStop(motor_drive_left);
                 setStop(motor_drive_right);
-                std::cout << _location.getHeading() << std::endl;
-                // _sensors.unsubscribeFromChange(_listener, sensor_gyro);
+                std::cout << "Stopped turning at: " << _location.getHeading() << std::endl;
+                _turningGyroTargetOffset = round((double)(_turningGyroTargetOffset + abs(_location.getHeading() - _gyroTarget)) / 2);
                 state = MOVEMENT_IDLE;
             }
         }

@@ -67,13 +67,13 @@ void LocationTracker::updateLocation(std::map<subscriber_port, int> sensor_value
     if (state == MOVEMENT_TURNING) {
         double turned_angle_right = (motorPulsesToMm(sensor_values[motor_drive_right] - prev_values[motor_drive_right]) / (M_PI * VEHICLE_WIDTH_MM)) * 360;
         double turned_angle_left = (motorPulsesToMm(sensor_values[motor_drive_left] - prev_values[motor_drive_left]) / (M_PI * VEHICLE_WIDTH_MM)) * 360;
-        std::cout << "estimated turned_angle_right: " << turned_angle_right << "\n";
-        std::cout << "estimated turned_angle_left: " << turned_angle_left << "\n";
+        // std::cout << "estimated turned_angle_right: " << turned_angle_right << "\n";
+        // std::cout << "estimated turned_angle_left: " << turned_angle_left << "\n";
 
         _heading_motor += ((turned_angle_left * -1) + turned_angle_right) / 2;
 
-        std::cout << "LocationTracker::_heading_motor: " << _heading_motor << "\n";
-        std::cout << "Absolute motor angle calculation: " << (motorPulsesToMm(sensor_values[motor_drive_left] - prevPulses) / (M_PI * VEHICLE_WIDTH_MM)) * 360 << "\n";
+        // std::cout << "LocationTracker::_heading_motor: " << _heading_motor << "\n";
+        // std::cout << "Absolute motor angle calculation: " << (motorPulsesToMm(sensor_values[motor_drive_left] - prevPulses) / (M_PI * VEHICLE_WIDTH_MM)) * 360 << "\n";
     }
 }
 

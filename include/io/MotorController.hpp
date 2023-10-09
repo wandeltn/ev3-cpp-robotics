@@ -35,6 +35,8 @@ enum MotorCommand {
 class MotorController : protected DeviceCommunicator {
     public:
         MotorController();
+        
+        static double shortestSignedDistanceBetweenCircularValues(double origin, double target);
 
         static void exit();
 
@@ -66,6 +68,7 @@ class MotorController : protected DeviceCommunicator {
         static std::mutex _mutex;
         static std::atomic<int> _gyroTarget;
         static std::list<void(*)(int)>::iterator _listener;
+        static int _turningGyroTargetOffset;
 };
 
 #endif // __MOTORCONTROLLER_H__

@@ -35,8 +35,11 @@ int main() {
     signal(SIGINT, signal_callback);
 
     // rt.moveToPosition({400, 800});
-    rt.moveToPosition(10, 0);
-    rt.moveToPosition(10, 180);
+    rt.moveToPosition(50, 0);
+    rt.moveToPosition(50, 90);
+    rt.moveToPosition(50, 180);
+    rt.moveToPosition(50, 270);
+    rt.moveToPosition(0, 0);
     // rt.moveStraight(200);
     // rt.rotateTo(50);
     // rt.rotateTo(0);
