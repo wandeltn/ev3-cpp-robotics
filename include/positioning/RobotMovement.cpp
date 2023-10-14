@@ -86,6 +86,9 @@ void RobotMovement::goToLocation(std::deque<MovementAction> actions)
 
 void RobotMovement::finishQueue()
 {
+    for (int i = 0; i <= 5; i++) {
+        _sensors.Dispatcher(false);
+    }
     updateMovement();
 }
 

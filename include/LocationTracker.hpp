@@ -4,17 +4,20 @@
 #include <map>
 #include <deque>
 #include <iostream>
+#include <queue>
 #include <math.h>
 #include "io/SensorNotifier.hpp"
 #include "io/DeviceCommunicator.hpp"
 #include "positioning/Vector.hpp"
 #include "positioning/Line.hpp"
 #include "positioning/LineManager.hpp"
+#include "positioning/PolyFit.hpp"
 
 
 #define FIELD_SIZE_X        2000
 #define FIELD_SIZE_Y        1000
-#define VEHICLE_WIDTH_MM    145
+#define VEHICLE_WIDTH_MM    260
+
 
 struct MovementAction {
     MovementAction(int distance, int direction, int speed);
@@ -36,6 +39,8 @@ class LocationTracker : public DeviceCommunicator {
         static const Vector getLocation();
         static int getHeading();
 
+        static void sendForwardMovementUpdate(uint distanceInPulses);
+
     protected:
         static std::deque<MovementAction> _pendingActions;
 
@@ -43,12 +48,18 @@ class LocationTracker : public DeviceCommunicator {
 
         static SensorNotifier _notifier;
         static LineManager _lineManager;
+        static PolyFit _polyfit;
         static Vector _position;
+        static Vector _positionByCommand;
         static Vector _prevPixel;
+        static std::deque<std::map<std::string, int>> _cachedValues;
         static int _heading_gyro;
         static double _heading_motor;
 
         static int prevPulses;
+        static bool _firstCall;
+
+        static void AddValuesToCache(std::map<std::string, int> values);
 };
 
 #endif // __LOCATIONTRACKER_H__

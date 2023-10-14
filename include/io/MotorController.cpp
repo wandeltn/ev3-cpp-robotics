@@ -121,6 +121,8 @@ void MotorController::moveStraight(const int distance)
     fclose(fp_left_com);
     fclose(fp_right_com);  
 
+    _location.sendForwardMovementUpdate(distance);
+
     state = MOVEMENT_IDLE;
 }
 
@@ -139,26 +141,38 @@ void MotorController::setMotorSpeed(std::string motor, int speed)
 
 void MotorController::watchGyro(std::map<subscriber_port, int> sensor_values, std::map<subscriber_port, int> prev_values)
 {   
+//     if (state == MOVEMENT_TURNING) {
+//         std::cout << _location.getHeading() << std::endl;
+//         if (_turningRight) {
+//             if (_location.getHeading() <= _gyroTarget.load()) {
+//                 _turnReached.store(true);
+//                 setStop(motor_drive_left);
+//                 setStop(motor_drive_right);
+//                 std::cout << "Stopped turning at: " << _location.getHeading() << std::endl;
+//                 _turningGyroTargetOffset = round((double)(_turningGyroTargetOffset + abs(_location.getHeading() - _gyroTarget)) / 2);
+//                 state = MOVEMENT_IDLE;
+//             }
+//         } else {
+//             if (_location.getHeading() >= _gyroTarget.load()) {
+//                 _turnReached.store(true);
+//                 setStop(motor_drive_left);
+//                 setStop(motor_drive_right);
+//                 std::cout << "Stopped turning at: " << _location.getHeading() << std::endl;
+//                 _turningGyroTargetOffset = round((double)(_turningGyroTargetOffset + abs(_location.getHeading() - _gyroTarget)) / 2);
+//                 state = MOVEMENT_IDLE;
+//             }
+//         }
+//     }
+
     if (state == MOVEMENT_TURNING) {
-        std::cout << _location.getHeading() << std::endl;
-        if (_turningRight) {
-            if (_location.getHeading() <= _gyroTarget.load()) {
-                _turnReached.store(true);
-                setStop(motor_drive_left);
-                setStop(motor_drive_right);
-                std::cout << "Stopped turning at: " << _location.getHeading() << std::endl;
-                _turningGyroTargetOffset = round((double)(_turningGyroTargetOffset + abs(_location.getHeading() - _gyroTarget)) / 2);
-                state = MOVEMENT_IDLE;
-            }
-        } else {
-            if (_location.getHeading() >= _gyroTarget.load()) {
-                _turnReached.store(true);
-                setStop(motor_drive_left);
-                setStop(motor_drive_right);
-                std::cout << "Stopped turning at: " << _location.getHeading() << std::endl;
-                _turningGyroTargetOffset = round((double)(_turningGyroTargetOffset + abs(_location.getHeading() - _gyroTarget)) / 2);
-                state = MOVEMENT_IDLE;
-            }
+        // std::cout << abs(shortestSignedDistanceBetweenCircularValues(_location.getHeading(), _gyroTarget)) << std::endl;
+        if (abs(shortestSignedDistanceBetweenCircularValues(_location.getHeading(), _gyroTarget)) <= _turningGyroTargetOffset) {
+            setStop(motor_drive_left);
+            setStop(motor_drive_right);
+            _turnReached.store(true);
+            std::cout << "Stopped turning at: " << _location.getHeading() << std::endl;
+            _turningGyroTargetOffset = round((double)(_turningGyroTargetOffset + abs(_location.getHeading() - _gyroTarget)) / 2);
+            state = MOVEMENT_IDLE;
         }
     }
 }

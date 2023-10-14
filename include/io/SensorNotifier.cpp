@@ -1,5 +1,6 @@
 #include "SensorNotifier.hpp"
 
+bool ListenerTableRow::firstRead = true;
 
 std::vector<std::function<void(std::map<subscriber_port, int>, std::map<subscriber_port, int>)>> SensorNotifier::_listeners{};
 
@@ -17,7 +18,7 @@ port_listener_table SensorNotifier::_lookup_table = port_listener_table{
 
 SensorNotifier::SensorNotifier()
 {
-
+    readPorts();
 }
 
 SensorNotifier::~SensorNotifier()
@@ -51,7 +52,7 @@ void SensorNotifier::unsubscribeFromChange(std::list<void(*)(int)>::iterator cal
     std::cout << "unsubscribing someone from: " << device_port << "\n";
 }
 
-int SensorNotifier::Dispatcher()
+int SensorNotifier::Dispatcher(bool dispatch)
 {
     std::map<subscriber_port, int> tempMapPrev = {};
     for (ListenerTableRow row : _lookup_table) {
@@ -82,33 +83,35 @@ int SensorNotifier::Dispatcher()
         int numValue = std::stoi(value);
 
         if (device.deviceIdentifier == "input_port-3") {
-            if (gyroValueOffset == 0) {
-                gyroValueOffset = -numValue;
-                std::cout << "set new offset: " << gyroValueOffset << std::endl;
-            }
             numValue += gyroValueOffset;
         }
 
         if (numValue != device.previousValue) {
-            for (std::function<void(int)> listener : device.listeners) {
-                try
-                {
-                    listener(numValue);
-                }
-                catch(const std::exception& e)
-                {
-                    std::cerr << e.what() << '\n';
+                if (dispatch) {
+                    for (std::function<void(int)> listener : device.listeners) {
+                        try
+                        {
+                            listener(numValue);
+                        }
+                        catch(const std::exception& e)
+                        {
+                            std::cerr << e.what() << '\n';
+                    }
                 }
             }
             device.previousValue = numValue;
         }
     }
-    std::map<subscriber_port, int> tempMap = {};
-    for (ListenerTableRow row : _lookup_table) {
-        tempMap[row.portName] = row.previousValue;
-    }
-    for (auto listener : _listeners) {
-        listener(tempMap, tempMapPrev);
+    if (dispatch) {
+        std::map<subscriber_port, int> tempMap = {};
+        for (ListenerTableRow row : _lookup_table) {
+            tempMap[row.portName] = row.previousValue;
+        }
+        for (auto listener : _listeners) {
+            listener(tempMap, tempMapPrev);
+        }
+    } else {
+        _lookup_table.begin()->firstRead = false;
     }
     return 1;
 }

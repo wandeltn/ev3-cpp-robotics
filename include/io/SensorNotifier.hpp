@@ -26,15 +26,46 @@ struct ListenerTableRow {
         previousValue = 0;
         listeners = {};
         deviceIdentifier = id;
+        firstRead = true;
     }
 
     std::string deviceIdentifier;
     subscriber_port& portName;
     int previousValue;
     std::list<void(*)(int)> listeners;
+    static bool firstRead;
 };
 
-typedef std::array<ListenerTableRow, 8> port_listener_table;
+struct port_listener_table {
+    port_listener_table(
+        ListenerTableRow first,
+        ListenerTableRow second,
+        ListenerTableRow third,
+        ListenerTableRow fourth,
+        ListenerTableRow fifth,
+        ListenerTableRow sixth,
+        ListenerTableRow seventh,
+        ListenerTableRow eightth
+    ): _content{first, second, third, fourth, fifth, sixth, seventh, eightth} {
+
+    }
+    auto begin() {
+        return _content.begin();
+    }
+
+    auto end() {
+        return _content.end();
+    }
+
+    const auto operator[](const std::string& value) {
+        for (auto& device : _content) {
+            if (device.deviceIdentifier == value) {
+                return &device;
+            }
+        }
+    }
+    std::array<ListenerTableRow, 8> _content;
+};
 
 class SensorNotifier : protected DeviceCommunicator
 {
@@ -46,7 +77,7 @@ class SensorNotifier : protected DeviceCommunicator
         static void unsubscribeFromChange(std::list<void(*)(int)>::iterator callback, subscriber_port device_port);
         static void subscribeToAllChanges(std::function<void(std::map<subscriber_port, int>, std::map<subscriber_port, int>)> callback);
 
-        int Dispatcher();
+        int Dispatcher(bool dispatch = true);
 
     private:
         static std::vector<std::function<void(std::map<subscriber_port, int>, std::map<subscriber_port, int>)>> _listeners;
