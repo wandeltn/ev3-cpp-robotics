@@ -5,6 +5,7 @@
 #include <deque>
 #include <iostream>
 #include <queue>
+#include <numeric>
 #include <math.h>
 #include "io/SensorNotifier.hpp"
 #include "io/DeviceCommunicator.hpp"
@@ -14,9 +15,10 @@
 #include "positioning/PolyFit.hpp"
 
 
-#define FIELD_SIZE_X        2000
-#define FIELD_SIZE_Y        1000
-#define VEHICLE_WIDTH_MM    260
+#define FIELD_SIZE_X            2000
+#define FIELD_SIZE_Y            1000
+#define VEHICLE_WIDTH_MM        260
+#define COLOR_SENSOR_CACHE_SIZE 20
 
 
 struct MovementAction {
@@ -58,6 +60,7 @@ class LocationTracker : public DeviceCommunicator {
 
         static int prevPulses;
         static bool _firstCall;
+        static int _colorSensorTriggerValue;
 
         static void AddValuesToCache(std::map<std::string, int> values);
 };

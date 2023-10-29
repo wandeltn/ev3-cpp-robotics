@@ -22,7 +22,8 @@
 enum MovementState {
     MOVEMENT_IDLE = 0,
     MOVEMENT_TURNING = 1,
-    MOVEMENT_MOVING = 2
+    MOVEMENT_MOVING = 2,
+    MOVEMENT_BACKWARD = 3
 };
 
 enum GyroMode {

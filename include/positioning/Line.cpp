@@ -69,7 +69,7 @@ double Line::getAngle() const
     double result = atan2(direction_vector.y, direction_vector.x);
     std::cout << "getAngle() directionVector:" << direction_vector << "\n";
     std::cout << "getAngle() atan2:" << result << "\n";
-    result = result * -180 / M_PI;
+    result = result * 180 / M_PI;
     if (result < 0) {
         result = 360 + result;
     }

@@ -33,7 +33,7 @@ double LocationTracker::_heading_motor = 0;
 
 int LocationTracker::prevPulses = 0;
 bool LocationTracker::_firstCall = true;
-
+int LocationTracker::_colorSensorTriggerValue = 20;
 
 
 LocationTracker::LocationTracker()
@@ -66,8 +66,8 @@ void LocationTracker::updateLocation(std::map<subscriber_port, int> sensor_value
         if (movedPulses <= 100) {
             _position.x += (cos(_heading_gyro * (M_PI / 180))) * motorPulsesToMm(movedPulses);
             _position.y -= (sin(_heading_gyro * (M_PI / 180))) * motorPulsesToMm(movedPulses);
-            std::cout << _position << std::endl;
-            std::cout << "moved pulses: " << movedPulses << std::endl;
+            // std::cout << _position << std::endl;
+            // std::cout << "moved pulses: " << movedPulses << std::endl;
         } else {
             std::cout << "W: skipped position update, robot moving to fast: " << movedPulses << "\n";
         }
@@ -92,16 +92,10 @@ void LocationTracker::updateLocation(std::map<subscriber_port, int> sensor_value
 
         AddValuesToCache(sensor_values);
 
-        std::vector<double> tempRegresseionVectorLeft{};
-        std::vector<double> tempRegresseionVectorRight{};
-        tempRegresseionVectorLeft.reserve(_cachedValues.size());
-        tempRegresseionVectorRight.reserve(_cachedValues.size());
-        for (std::map<std::string, int> value : _cachedValues) {
-            tempRegresseionVectorLeft.push_back(value[sensor_color_left]);
-            tempRegresseionVectorRight.push_back(value[sensor_color_right]);
+        // check for line under left color sensor
+        if (sensor_values[sensor_color_left] <= _colorSensorTriggerValue) {
+
         }
-        double StrechfactorLeft = _polyfit.getRegressionStrechfactor(tempRegresseionVectorLeft);
-        double StrechfactorRight = _polyfit.getRegressionStrechfactor(tempRegresseionVectorRight);
 
         
     } else {
@@ -131,7 +125,7 @@ void LocationTracker::AddValuesToCache(std::map<std::string, int> values)
 {
     _cachedValues.push_back(values);
 
-    if (_cachedValues.size() >= 10) {
+    if (_cachedValues.size() > COLOR_SENSOR_CACHE_SIZE) {
         _cachedValues.pop_front();
     }
 }

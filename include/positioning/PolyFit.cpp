@@ -33,6 +33,7 @@
 #define MAXIT 1
 #define EPS 3.0e-7
 #define FPMIN 1.0e-30
+#define NODEBUG
 
 
 
@@ -79,26 +80,32 @@ double PolyFit::getRegressionStrechfactor(std::vector<double> values)
     bool fixedinter = false;                         // Fixed the intercept (coefficient A0)
     int wtype = 0;                                   // Weight: 0 = none (default), 1 = sigma, 2 = 1/sigma^2
     double fixedinterval = 0.;                       // The fixed intercept value (if applicable)
-    double alphaval = 0.05;                          // Critical apha value
+    // double alphaval = 0.05;                          // Critical apha value
 
     double x[values.size()] = {};
-    double y[values.size()] = {};
+    double y[values.size()];
 
-    for (int i = 0; i<=values.size(); i++) {
+    std::copy(values.begin(), values.end(), y);
+    for (uint i = 0; i < values.size(); i++) {
         x[i] = i;
-        y[i] = values[i];
     }
 
-    double erry[values.size()] = {};       // Data points (err on y) (if applicable)
+#ifndef NODEBUG
+    for (uint i = 0; i < sizeof(x) / sizeof(double); i++) {
+        std::cout << "x" << i << ": " << x[i] << "\n";
+        std::cout << "y" << i << ": " << y[i] << "\n";
+    }
+#endif
+    double erry[0];       // Data points (err on y) (if applicable)
 
     // Definition of other variables
     // **************************************************************
     size_t n = 0;                                    // Number of data points (adjusted later)
     size_t nstar = 0;                                // equal to n (fixed intercept) or (n-1) not fixed
     double coefbeta[k+1];                            // Coefficients of the polynomial
-    double serbeta[k+1];                             // Standard error on coefficients
-    double tstudentval = 0.;                         // Student t value
-    double SE = 0.;                                  // Standard error
+    // double serbeta[k+1];                             // Standard error on coefficients
+    // double tstudentval = 0.;                         // Student t value
+    // double SE = 0.;                                  // Standard error
     
     double **XTWXInv;                                // Matrix XTWX Inverse [k+1,k+1]
     double **Weights;                                // Matrix Weights [n,n]
@@ -109,7 +116,8 @@ double PolyFit::getRegressionStrechfactor(std::vector<double> values)
     n = sizeof(x)/sizeof(double);
     nstar = n-1;
     if (fixedinter) nstar = n;
-           
+
+#ifndef NODEBUG
     std::cout << "Number of points: " << n << std::endl;
     std::cout << "Polynomial order: " << k << std::endl;
     if (fixedinter) {
@@ -117,6 +125,7 @@ double PolyFit::getRegressionStrechfactor(std::vector<double> values)
     } else {
         std::cout << "A0 is adjustable!" << std::endl;
     }
+#endif
 
     if (k>nstar) {
         std::cout << "The polynomial order is too high. Max should be " << n << " for adjustable A0 ";
@@ -125,10 +134,12 @@ double PolyFit::getRegressionStrechfactor(std::vector<double> values)
         return -1;
     }
 
+#ifndef NODEBUG
     if (k==nstar) {
         std::cout << "The degree of freedom is equal to the number of points. ";
         std::cout << "The fit will be exact." << std::endl;  
     }
+#endif
 
     XTWXInv = Make2DArray(k+1,k+1);
     Weights = Make2DArray(n,n);
@@ -136,9 +147,11 @@ double PolyFit::getRegressionStrechfactor(std::vector<double> values)
     // Build the weight matrix
     // **************************************************************
     CalculateWeights(erry, Weights, n, wtype);
-    
+
+#ifndef NODEBUG
     std::cout << "Weights" << std::endl;
     displayMat(Weights,n,n);
+#endif
 
     if (determinant(Weights,n)==0.) {
         std::cout << "One or more points have 0 error. Review the errors on points or use no weighting. ";
@@ -146,12 +159,14 @@ double PolyFit::getRegressionStrechfactor(std::vector<double> values)
         return -1;
     } 
 
-    // Calculate the coefficients of the fit
+#ifndef NODEBUG
+    std::cout << "Calculate the coefficients of the fit" << "\n";
+#endif
     // **************************************************************
     Fit(x,y,n,k,fixedinter,fixedinterval,coefbeta,Weights,XTWXInv);
 
-
-    // Calculate related values
+#ifndef NODEBUG
+    std::cout << "Calculate related values" << "\n";
     // **************************************************************
     double RSS = CalculateRSS(x,y,coefbeta,Weights,fixedinter,n,k+1);
     double TSS = CalculateTSS(x,y,coefbeta,Weights,fixedinter,n,k+1);
@@ -163,7 +178,6 @@ double PolyFit::getRegressionStrechfactor(std::vector<double> values)
         tstudentval = fabs(CalculateTValueStudent(nstar-k, 1.-0.5*alphaval)); 
     }
     std::cout << "t-student value: " << tstudentval << std::endl << std::endl;
-
     // Calculate the standard errors on the coefficients
     // **************************************************************
     CalculateSERRBeta(fixedinter,SE,k,serbeta,XTWXInv);
@@ -186,11 +200,12 @@ double PolyFit::getRegressionStrechfactor(std::vector<double> values)
 
     // Write the prediction and confidence intervals
     // **************************************************************
-    // WriteCIBands("CIBands2.dat",x,coefbeta,XTWXInv,tstudentval,SE,n,k);
+    WriteCIBands("CIBands2.dat",x,coefbeta,XTWXInv,tstudentval,SE,n,k);
 
     // Display the covariance and correlation matrix
     // **************************************************************
     DisplayCovCorrMatrix(k, SE, fixedinter, XTWXInv);
+#endif
     return coefbeta[1]; //return the second coefficient of the poly
 }
 
@@ -304,7 +319,7 @@ double PolyFit::invincbeta(double y,double alpha, double beta) {
 // **************************************************************
 double PolyFit::CalculateTValueStudent(const double nu, const double alpha) {
 
-    double precision = 1.e-5;
+    // double precision = 1.e-5;
 
     if (alpha<=0. || alpha >= 1.) return 0.;
 
@@ -422,6 +437,11 @@ double PolyFit::determinant(double **a, const size_t k) {
         for (size_t i = 0; i < k; i++) {
 
             for (size_t j = 0; j < k; j++) {
+                // std::cout << "inside determinant loop" << "\n";
+                // std::cout << "c: " << c << "\n";
+                // std::cout << "k: " << k << "\n";
+                // std::cout << "i: " << i << "\n";
+                // std::cout << "j: " << j << "\n";
 
                 b[i][j] = 0;
 
@@ -668,6 +688,7 @@ const double fixedinterval, double *beta, double **Weights, double **XTWXInv) {
 
     if (fixedinter) beta[0] = fixedinterval;
 
+#ifndef NODEBUG
     std::cout << "Matrix X" << std::endl;
     displayMat(X,n,k+1);
 
@@ -679,7 +700,7 @@ const double fixedinterval, double *beta, double **Weights, double **XTWXInv) {
 
     std::cout << "Matrix XTWXInv" << std::endl;
     displayMat(XTWXInv,k+1,k+1);
-
+#endif
 
 }
 

@@ -81,11 +81,16 @@ void MotorController::rotateTo(const int angle)
 
 }
 
-void MotorController::moveStraight(const int distance)
+void MotorController::moveStraight(const int distance, bool reverse)
 {
     state.store(MOVEMENT_MOVING);
 
     std::cerr << "moving motor pulses: " << distance << std::endl;
+
+    if (reverse) {
+        setPolarity(motor_drive_left, MotorPolarityInversed{});
+        setPolarity(motor_drive_right, MotorPolarityInversed{});
+    }
 
     setMotorSpeed(motor_drive_left, 300);
     setMotorSpeed(motor_drive_right, 300);
@@ -122,6 +127,11 @@ void MotorController::moveStraight(const int distance)
     fclose(fp_right_com);  
 
     _location.sendForwardMovementUpdate(distance);
+
+    if (reverse) {
+        setPolarity(motor_drive_left, MotorPolarityNormal{});
+        setPolarity(motor_drive_right, MotorPolarityNormal{});
+    }
 
     state = MOVEMENT_IDLE;
 }
@@ -165,13 +175,18 @@ void MotorController::watchGyro(std::map<subscriber_port, int> sensor_values, st
 //     }
 
     if (state == MOVEMENT_TURNING) {
-        // std::cout << abs(shortestSignedDistanceBetweenCircularValues(_location.getHeading(), _gyroTarget)) << std::endl;
-        if (abs(shortestSignedDistanceBetweenCircularValues(_location.getHeading(), _gyroTarget)) <= _turningGyroTargetOffset) {
+        double distanceToTarget = shortestSignedDistanceBetweenCircularValues(_location.getHeading(), _gyroTarget);
+        std::cout << "distance to target: " << distanceToTarget << std::endl;
+        std::cout << "offset: " << _turningGyroTargetOffset << "\n";
+        if (
+            (_turningRight && distanceToTarget >= -_turningGyroTargetOffset)
+            || (!_turningRight && distanceToTarget <= _turningGyroTargetOffset)
+        ) {
             setStop(motor_drive_left);
             setStop(motor_drive_right);
             _turnReached.store(true);
             std::cout << "Stopped turning at: " << _location.getHeading() << std::endl;
-            _turningGyroTargetOffset = round((double)(_turningGyroTargetOffset + abs(_location.getHeading() - _gyroTarget)) / 2);
+            // _turningGyroTargetOffset = round((double)(_turningGyroTargetOffset + abs(_location.getHeading() - _gyroTarget)) / 2);
             state = MOVEMENT_IDLE;
         }
     }
