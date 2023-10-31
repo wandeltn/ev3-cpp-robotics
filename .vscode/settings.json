@@ -86,7 +86,18 @@
         "latch": "cpp",
         "ranges": "cpp",
         "span": "cpp",
-        "syncstream": "cpp"
+        "syncstream": "cpp",
+        "strstream": "cpp",
+        "rope": "cpp",
+        "slist": "cpp"
     },
-    "C_Cpp.errorSquiggles": "enabled"
+    "C_Cpp.errorSquiggles": "enabled",
+    "C_Cpp.intelliSenseEngineFallback": "disabled",
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/home/niklas/ev3-cpp-robotics/bin",
+            "binaryPath": "/home/niklas/ev3-cpp-robotics/bin/main",
+            "binaryArgs": []
+        }
+    ]
 }

@@ -6,7 +6,7 @@ std::atomic<bool> MotorController::_turnReached;
 std::atomic<bool> MotorController::_turningRight;
 std::atomic<int> MotorController::_gyroTarget;
 std::list<void(*)(int)>::iterator MotorController::_listener;
-int MotorController::_turningGyroTargetOffset = 5;
+int MotorController::_turningGyroTargetOffset = 0;
 
 MotorController::MotorController()
 {
@@ -186,7 +186,7 @@ void MotorController::watchGyro(std::map<subscriber_port, int> sensor_values, st
             setStop(motor_drive_right);
             _turnReached.store(true);
             std::cout << "Stopped turning at: " << _location.getHeading() << std::endl;
-            // _turningGyroTargetOffset = round((double)(_turningGyroTargetOffset + abs(_location.getHeading() - _gyroTarget)) / 2);
+            _turningGyroTargetOffset = round((double)(_turningGyroTargetOffset + shortestSignedDistanceBetweenCircularValues(_gyroTarget, _location.getHeading())) / 2);
             state = MOVEMENT_IDLE;
         }
     }

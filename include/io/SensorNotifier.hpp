@@ -57,12 +57,27 @@ struct port_listener_table {
         return _content.end();
     }
 
+    std::map<std::string, std::string> getFilePaths(){
+        std::map<std::string, std::string> map{};
+        for (auto& device : *this) {
+            map[device.deviceIdentifier] = device.portName;
+        }
+        return map;
+    };
+
     const auto operator[](const std::string& value) {
         for (auto& device : _content) {
             if (device.deviceIdentifier == value) {
                 return &device;
             }
         }
+    }
+    explicit operator std::map<std::string, int>() {
+        std::map<std::string, int> map{};
+        for (auto device : *this) {
+            map[device.deviceIdentifier] = device.previousValue;
+        }
+        return map;
     }
     std::array<ListenerTableRow, 8> _content;
 };
@@ -78,6 +93,9 @@ class SensorNotifier : protected DeviceCommunicator
         static void subscribeToAllChanges(std::function<void(std::map<subscriber_port, int>, std::map<subscriber_port, int>)> callback);
 
         int Dispatcher(bool dispatch = true);
+
+        static std::map<std::string, int> getCurrentValues();
+        static const std::map<std::string, std::string> getDevices();
 
     private:
         static std::vector<std::function<void(std::map<subscriber_port, int>, std::map<subscriber_port, int>)>> _listeners;

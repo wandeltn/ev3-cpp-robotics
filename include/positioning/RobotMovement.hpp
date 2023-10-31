@@ -6,8 +6,9 @@
 #include "../io/MotorController.hpp"
 #include "Line.hpp"
 #include "../display/Window.hpp"
+#include "../http-server/Server.hpp"
 
-class RobotMovement : public MotorController, protected LocationTracker {
+class RobotMovement : public MotorController, public LocationTracker {
     public:    
         RobotMovement();
         ~RobotMovement();
@@ -27,6 +28,7 @@ class RobotMovement : public MotorController, protected LocationTracker {
         static bool actionCompleted;
         static bool currentlyTurning;
         static MovementAction currentAction;
+
 
 };
 

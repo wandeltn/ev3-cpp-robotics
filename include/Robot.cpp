@@ -2,9 +2,12 @@
 
 DirectRenderingManager Robot::_drm{};
 Vector Robot::_destination{0,0};
+bool Robot::enableServer = true;
+bool Robot::serverStarted = false;
+Server Robot::_server{};
 
 
-Robot::Robot()
+Robot::Robot(bool startServer) 
 {
     _pathfind = Pathfind{_drm.createWindow(
         0,
@@ -14,6 +17,19 @@ Robot::Robot()
         false
     )};
     _destination = getLocation();
+        
+    enableServer = startServer;
+
+    if (enableServer) {
+        _server.start();
+        serverStarted = true;
+    }
+}
+
+Robot::~Robot()
+{
+    _server.stop();
+    serverStarted = false;
 }
 
 void Robot::moveToPosition(Vector target)

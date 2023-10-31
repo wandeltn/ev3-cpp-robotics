@@ -8,7 +8,8 @@
 
 class Robot : public RobotMovement {
     public:
-        Robot();
+        Robot(bool startServer = true);
+        ~Robot();
 
         void moveToPosition(Vector target);
         void moveToPosition(int distance, int direction);
@@ -18,6 +19,10 @@ class Robot : public RobotMovement {
         Pathfind _pathfind;
         static DirectRenderingManager _drm;
         static Vector _destination;
+        
+        static bool enableServer;
+        static bool serverStarted;
+        static Server _server;
 };
 
 #endif // __ROBOT_H__

@@ -115,3 +115,13 @@ int SensorNotifier::Dispatcher(bool dispatch)
     }
     return 1;
 }
+
+std::map<std::string, int> SensorNotifier::getCurrentValues()
+{
+    return static_cast<std::map<std::string, int>>(_lookup_table);
+}
+
+const std::map<std::string, std::string> SensorNotifier::getDevices()
+{
+    return _lookup_table.getFilePaths();
+}

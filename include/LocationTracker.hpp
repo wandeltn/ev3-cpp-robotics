@@ -42,13 +42,13 @@ class LocationTracker : public DeviceCommunicator {
         static int getHeading();
 
         static void sendForwardMovementUpdate(uint distanceInPulses);
+        static SensorNotifier _notifier;
 
     protected:
         static std::deque<MovementAction> _pendingActions;
 
     private:
 
-        static SensorNotifier _notifier;
         static LineManager _lineManager;
         static PolyFit _polyfit;
         static Vector _position;

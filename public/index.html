@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ev3dev</title>
+</head>
+<script>
+    fetch("/api")
+    .then(res => res.json())
+    .then((out) => {
+        console.log(out.sensor_values);
+        for (let value in out.sensor_values) {
+            console.log(value);
+            console.log(out.sensor_values[value]);
+            document.getElementById(value).innerHTML = out.sensor_values[value];
+        }
+    }).catch(err => console.error(err));
+</script>
+<style>
+    :root {
+        --main-background-color: #212f3c;
+        --secondary-background-color: #1c2833;
+        --primary-accent-color: #DAF7A6;
+        --secondary-accent-color: #FFC300;
+        --primary-content-color: #FF5733;
+        --secondary-content-color: #C70039;
+    }
+
+    html {
+        background-color: var(--main-background-color);
+    }
+    h1 {
+        color: var(--primary-content-color);
+    }
+    .flex-box-horizontal {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+    .flex-box-vertical{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+</style>
+<body onload="Reload()">
+    <div class="flex-box-vertical">
+        <header class="flex-box-horizontal">
+            <h1>Willkommen auf einem Ev3</h1>
+        </header>
+         
+        
+        <div class="flex-box-horizontal">
+            <div>
+                <form action="index.html" method="post">
+                    <label for="fname">First name:</label><br>
+                    <input type="text" id="fname" name="fname" value="John"><br>
+                    <label for="lname">Last name:</label><br>
+                    <input type="text" id="lname" name="lname" value="Doe"><br><br>
+                    <button type="submit" value="Submit">Submit</button>
+                </form>
+            </div>
+            <div>
+            </div>
+        </div>
+        <div class="flex-box-horizontal">
+            <div class="flex-box-vertical">
+                <div id="input_port-1"></div>
+                <div id="input_port-2"></div>
+                <div id="input_port-3"></div>
+                <div id="input_port-4"></div>
+            </div>
+            <div class="flex-box-vertical">
+                <div id="output_port-A"></div>
+                <div id="output_port-B"></div>
+                <div id="output_port-C"></div>
+                <div id="output_port-D"></div>
+            </div>  
+        </div>
+    </div>
+</body>
+</html>
