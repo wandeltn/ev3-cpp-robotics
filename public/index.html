@@ -13,18 +13,19 @@
         for (let value in out.sensor_values) {
             console.log(value);
             console.log(out.sensor_values[value]);
-            document.getElementById(value).innerHTML = out.sensor_values[value];
+            document.getElementById(value + "-content").innerHTML = out.sensor_values[value];
+            document.getElementById(value + "-label").innerHTML = value;
         }
     }).catch(err => console.error(err));
 </script>
 <style>
     :root {
-        --main-background-color: #212f3c;
-        --secondary-background-color: #1c2833;
+        --main-background-color: #1c2833;
+        --secondary-background-color: #212f3c;
         --primary-accent-color: #DAF7A6;
-        --secondary-accent-color: #FFC300;
+        --secondary-accent-color: #C70039;
         --primary-content-color: #FF5733;
-        --secondary-content-color: #C70039;
+        --secondary-content-color: #FFC300;
     }
 
     html {
@@ -43,6 +44,35 @@
         display: flex;
         flex-direction: column;
         justify-content: space-around;
+        flex-flow: column;
+    }
+    .sensor_value-content{
+        color: var(--secondary-content-color);
+    }
+    .sensor-value-box{
+        border: var(--primary-accent-color) solid 1px;
+        border-radius: 8px;
+        background-color: var(--secondary-background-color);
+        flex-grow: 2;
+        justify-content: space-around;
+    }
+    .sensor_value {
+        margin: 4px;
+        color: var(--primary-content-color);
+    }
+    .sensor_value-content {
+        margin-left: 10px;
+    }
+    .flex-box-vertical div svg {
+        background-color: #C70039;
+        width: 100%;
+    }
+    #flex-item-field {
+        flex-grow: 4;
+    }
+    body div {
+        justify-content: space-between;
+        flex-grow: 2;
     }
 </style>
 <body onload="Reload()">
@@ -53,32 +83,71 @@
          
         
         <div class="flex-box-horizontal">
-            <div>
-                <form action="index.html" method="post">
-                    <label for="fname">First name:</label><br>
-                    <input type="text" id="fname" name="fname" value="John"><br>
-                    <label for="lname">Last name:</label><br>
-                    <input type="text" id="lname" name="lname" value="Doe"><br><br>
-                    <button type="submit" value="Submit">Submit</button>
-                </form>
+            <form action="index.html" method="post">
+                <label for="dest_x">Destination x</label><br>
+                <input type="number" id="dest_x" name="dest_x" value="65"><br>
+                <label for="dest_y">Destination y</label><br>
+                <input type="number" id="dest_y" name="dest_y" value="185"><br><br>
+
+                <select>
+                    <option value="vector">Vector</option>
+                    <option value="direction">Direction</option>
+                </select>
+
+                <button type="submit" value="Submit">Submit</button>
+            </form>
+ 
+            <div class="sensor-value-box flex-box-horizontal">
+                <div class="flex-box-vertical">
+                    <div class="sensor_value flex-box-horizontal">
+                        <div class="sensor-value-label" id="input_port-1-label">sensor_label</div>
+                        <div class="sensor_value-content" id="input_port-1">-0</div>
+                    </div>
+                    
+                    <div class="sensor_value flex-box-horizontal">
+                        <div class="sensor-value-label" id="input_port-2-label">sensor_label</div>
+                        <div class="sensor_value-content" id="input_port-2">-0</div>
+                    </div>
+                    
+                    <div class="sensor_value flex-box-horizontal">
+                        <div class="sensor-value-label" id="input_port-3-label">sensor_label</div>
+                        <div class="sensor_value-content" id="input_port-3">-0</div>
+                    </div>
+                    
+                    <div class="sensor_value flex-box-horizontal">
+                        <div class="sensor-value-label" id="input_port-4-label">sensor_label</div>
+                        <div class="sensor_value-content" id="input_port-4">-0</div>
+                    </div>
+                </div>
+                <div class="flex-box-vertical">
+                    <div class="sensor_value flex-box-horizontal">
+                        <div class="sensor-value-label" id="output_port-A-label">sensor_label</div>
+                        <div class="sensor_value-content" id="output_port-A">-0</div>
+                    </div>
+                    
+                    <div class="sensor_value flex-box-horizontal">
+                        <div class="sensor-value-label" id="output_port-B-label">sensor_label</div>
+                        <div class="sensor_value-content" id="output_port-B">-0</div>
+                    </div>
+                    
+                    <div class="sensor_value flex-box-horizontal">
+                        <div class="sensor-value-label" id="output_port-C-label">sensor_label</div>
+                        <div class="sensor_value-content" id="output_port-C">-0</div>
+                    </div>
+                    
+                    <div class="sensor_value flex-box-horizontal">
+                        <div class="sensor-value-label" id="output_port-D-label">sensor_label</div>
+                        <div class="sensor_value-content" id="output_port-D">-0</div>
+                    </div>
+                </div>
             </div>
-            <div>
-            </div>
+            
         </div>
-        <div class="flex-box-horizontal">
-            <div class="flex-box-vertical">
-                <div id="input_port-1"></div>
-                <div id="input_port-2"></div>
-                <div id="input_port-3"></div>
-                <div id="input_port-4"></div>
-            </div>
-            <div class="flex-box-vertical">
-                <div id="output_port-A"></div>
-                <div id="output_port-B"></div>
-                <div id="output_port-C"></div>
-                <div id="output_port-D"></div>
-            </div>  
-        </div>
+        <div id="flex-item-field">
+            <svg width="300" height="100%">
+                
+            </svg>
+        </div>  
     </div>
 </body>
 </html>

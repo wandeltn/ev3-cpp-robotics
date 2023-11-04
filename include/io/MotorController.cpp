@@ -177,16 +177,16 @@ void MotorController::watchGyro(std::map<subscriber_port, int> sensor_values, st
     if (state == MOVEMENT_TURNING) {
         double distanceToTarget = shortestSignedDistanceBetweenCircularValues(_location.getHeading(), _gyroTarget);
         std::cout << "distance to target: " << distanceToTarget << std::endl;
-        std::cout << "offset: " << _turningGyroTargetOffset << "\n";
+        // std::cout << "offset: " << _turningGyroTargetOffset << "\n";
         if (
-            (_turningRight && distanceToTarget >= -_turningGyroTargetOffset)
-            || (!_turningRight && distanceToTarget <= _turningGyroTargetOffset)
+            (_turningRight && (distanceToTarget >= -_turningGyroTargetOffset))
+            || (!_turningRight && (distanceToTarget <= _turningGyroTargetOffset))
         ) {
             setStop(motor_drive_left);
             setStop(motor_drive_right);
             _turnReached.store(true);
             std::cout << "Stopped turning at: " << _location.getHeading() << std::endl;
-            _turningGyroTargetOffset = round((double)(_turningGyroTargetOffset + shortestSignedDistanceBetweenCircularValues(_gyroTarget, _location.getHeading())) / 2);
+            // _turningGyroTargetOffset = round((double)(_turningGyroTargetOffset + shortestSignedDistanceBetweenCircularValues(_gyroTarget, _location.getHeading())) / 2);
             state = MOVEMENT_IDLE;
         }
     }

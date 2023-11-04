@@ -18,7 +18,7 @@
 #endif
 
 
-Robot rt{};
+Robot rt{false};
 
 void signal_callback(int signum) {
     std::cout << "Exiting..:" << signum << std::endl;
@@ -32,11 +32,14 @@ int main() {
     std::cout << "Starting in main" << "\n";
 
     // rt.moveToPosition({400, 800});
-    // rt.moveToPosition(Vector{65,200});
+    rt.moveToPosition(Vector{65,200});
+    rt.moveToPosition({200, 200});
+    rt.moveToPosition({200, 185});
+    rt.moveToPosition({65, 185});
     // rt.moveToPosition(50, 90);
     // rt.moveToPosition(50, 180);
     // rt.moveToPosition(50, 270);
-    // rt.moveToPosition(0, 0);
+    // rt.moveToPosition(50, 0);
     // rt.moveStraight(200);
     // rt.rotateTo(50);
     // rt.rotateTo(0);

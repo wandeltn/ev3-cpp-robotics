@@ -17,7 +17,7 @@
 
 #define FIELD_SIZE_X            2000
 #define FIELD_SIZE_Y            1000
-#define VEHICLE_WIDTH_MM        260
+#define VEHICLE_WIDTH_MM        263 //255
 #define COLOR_SENSOR_CACHE_SIZE 20
 
 

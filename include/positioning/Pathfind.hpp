@@ -34,12 +34,12 @@ private:
     void saveToFile(Vector start, Vector end, std::vector<Vector> path);
     std::vector<Vector> readFromFile(Vector start, Vector end);
 
-    std::vector<std::string> explode(const std::string& string, const char& c);
 
 public:
     Pathfind();
     Pathfind(std::shared_ptr<Window> window);
 
+    static std::vector<std::string> explode(const std::string& string, const char& c);
     std::vector<Vector> findPath(Vector start, Vector end);
     std::vector<Vector> reconstruct_path(std::vector<Vector> total_path);
     std::vector<Vector> optimizePath(std::vector<Vector> unoptimizedPath);

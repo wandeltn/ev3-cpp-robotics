@@ -9,15 +9,15 @@ Line::Line()
 Line::Line(Vector start, Vector end): start_point{start}, end_point{end}
 {
     this->direction_vector = end - start;
-    // std::cout << "Line::Line() direction_vector: " << direction_vector << "\n";
-    // std::cout << "Line::Line() end: " << end << "\n";
-    // std::cout << "Line::Line() start: " << start << std::endl;
+    std::cout << "Line::Line() direction_vector: " << direction_vector << "\n";
+    std::cout << "Line::Line() end: " << end << "\n";
+    std::cout << "Line::Line() start: " << start << std::endl;
     _length = direction_vector ^ direction_vector;
     if (_length != 0) {
     }
-        direction_vector = direction_vector / _length;
-    // std::cout << "Line::Line() _length: " << _length << std::endl;
-    // std::cout << "Line::Line() new_direction_vector: " << direction_vector << "\n";
+    direction_vector = direction_vector / _length;
+    std::cout << "Line::Line() _length: " << _length << std::endl;
+    std::cout << "Line::Line() new_direction_vector: " << direction_vector << "\n";
 }
 
 Vector Line::getIntersect(const Line& line)

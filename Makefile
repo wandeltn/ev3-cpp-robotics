@@ -43,7 +43,9 @@ dist-clean: clean
 
 
 FILES_HTML = $(shell find . -name *.html)
-SCP_HTML = robot@192.168.178.74:public/
+# SCP = robot@192.168.139.61:
+SCP = robot@192.168.178.74:
+SCP_HTML = $(SCP)public/
 
 .PHONY : html
 html : $(LAST_PUSH_HTML)
@@ -54,7 +56,7 @@ $(LAST_PUSH_HTML) : $(FILES_HTML)
 
 
 FILES = $(appname)
-SCP = robot@192.168.178.74:
+
 
 .PHONY : push
 push : $(LAST_PUSH)

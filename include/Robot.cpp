@@ -28,7 +28,9 @@ Robot::Robot(bool startServer)
 
 Robot::~Robot()
 {
-    _server.stop();
+    if (enableServer) {
+        _server.stop();
+    }
     serverStarted = false;
 }
 

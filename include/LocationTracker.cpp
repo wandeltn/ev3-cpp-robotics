@@ -110,6 +110,7 @@ const Vector LocationTracker::getLocation()
 
 int LocationTracker::getHeading()
 {
+    std::cout << _heading_motor << "\n";
     return _heading_gyro;
 }
 
