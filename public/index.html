@@ -57,14 +57,13 @@
         justify-content: space-around;
     }
     .sensor_value {
-        margin: 4px;
+        margin: auto;
         color: var(--primary-content-color);
     }
     .sensor_value-content {
         margin-left: 10px;
     }
     .flex-box-vertical div svg {
-        background-color: #C70039;
         width: 100%;
     }
     #flex-item-field {
@@ -73,6 +72,11 @@
     body div {
         justify-content: space-between;
         flex-grow: 2;
+    }
+    svg{
+        display: block;
+        width: auto;
+        height: auto;
     }
 </style>
 <body onload="Reload()">
@@ -144,8 +148,8 @@
             
         </div>
         <div id="flex-item-field">
-            <svg width="300" height="100%">
-                
+            <svg width="2000" height="1000">
+                <line x1="0" y1="0" x2="100%" y2="100%" style="stroke:rgb(255,0,0);stroke-width:2"></line>
             </svg>
         </div>  
     </div>

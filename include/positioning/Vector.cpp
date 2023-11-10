@@ -12,7 +12,12 @@ double Vector::getDistanceTo(Vector point)
     return (sqrt(pow(distanceBetween.x, 2) + pow(distanceBetween.y, 2)));
 }
 
-Vector Vector::operator+(const Vector& summand)
+double Vector::getAngle()
+{
+    return atan2(this->y, this->x)*180/M_PI;
+}
+
+Vector Vector::operator+(const Vector &summand)
 {
     return Vector{x + summand.x, y + summand.y};
 }

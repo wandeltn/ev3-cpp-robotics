@@ -26,7 +26,7 @@ void RobotMovement::updateMovement()
     {
         if (_pendingActions.size() && !actionAvailable)
         {
-            // std::cout << "getting new aciton" << std::endl;
+            std::cout << "getting new aciton" << std::endl;
             currentAction = _pendingActions.front();
             _pendingActions.pop_front();
             actionAvailable = true;
@@ -54,7 +54,7 @@ void RobotMovement::updateMovement()
                 {
                     if (_pendingActions.size())
                     {
-                        // std::cout << "resetting action state" << std::endl;
+                        std::cout << "resetting action state" << std::endl;
                         currentlyTurning = true;
                         actionCompleted = false;
                     } else {

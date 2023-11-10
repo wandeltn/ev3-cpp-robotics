@@ -43,8 +43,8 @@ dist-clean: clean
 
 
 FILES_HTML = $(shell find . -name *.html)
-# SCP = robot@192.168.139.61:
-SCP = robot@192.168.178.74:
+SCP = robot@192.168.191.61:
+# SCP = robot@192.168.178.74:
 SCP_HTML = $(SCP)public/
 
 .PHONY : html
@@ -61,8 +61,9 @@ FILES = $(appname)
 .PHONY : push
 push : $(LAST_PUSH)
 
-$(LAST_PUSH) : $(FILES)
-	scp $? $(SCP)
+$(LAST_PUSH):
+	sudo docker run --rm -it --mount type=bind,source="$(shell pwd)",target=/home/compiler ev3cc make
+	scp $(appname) $(SCP)
 	touch $(LAST_PUSH)
 
 include .depend

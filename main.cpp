@@ -32,11 +32,11 @@ int main() {
     std::cout << "Starting in main" << "\n";
 
     // rt.moveToPosition({400, 800});
-    rt.moveToPosition(Vector{65,200});
+    // rt.moveToPosition(Vector{65,200});
     rt.moveToPosition({200, 200});
-    rt.moveToPosition({200, 185});
-    rt.moveToPosition({65, 185});
-    // rt.moveToPosition(50, 90);
+    // rt.moveToPosition({200, 185});
+    // rt.moveToPosition({65, 185});
+    rt.moveToPosition(50, 90);
     // rt.moveToPosition(50, 180);
     // rt.moveToPosition(50, 270);
     // rt.moveToPosition(50, 0);
@@ -45,7 +45,7 @@ int main() {
     // rt.rotateTo(0);
 
     rt.finishQueue();
-    while (true) {
-        std::this_thread::sleep_for(std::chrono::seconds(3));
-    }
+    // while (true) {
+    //     std::this_thread::sleep_for(std::chrono::seconds(3));
+    // }
 }

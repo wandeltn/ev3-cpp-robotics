@@ -12,7 +12,7 @@ Line::Line(Vector start, Vector end): start_point{start}, end_point{end}
     std::cout << "Line::Line() direction_vector: " << direction_vector << "\n";
     std::cout << "Line::Line() end: " << end << "\n";
     std::cout << "Line::Line() start: " << start << std::endl;
-    _length = direction_vector ^ direction_vector;
+    _length = getLength();
     if (_length != 0) {
     }
     direction_vector = direction_vector / _length;
@@ -22,7 +22,7 @@ Line::Line(Vector start, Vector end): start_point{start}, end_point{end}
 
 Vector Line::getIntersect(const Line& line)
 {
-    double lambda1 = (start_point.y * line.direction_vector.x - line.start_point.y * line.direction_vector.x - start_point.x * line.direction_vector.y + line.start_point.x * line.direction_vector.y) /
+    double lambda1 = (start_point.y * line.direction_vector.x - line.start_point.y * line.direction_vector.x - start_point.x * line.direction_vector.y + line.start_point.x * line.direction_vector.y) / 
         (line.direction_vector.x * line.direction_vector.y - direction_vector.y * line.direction_vector.x);
     double intersect_x = start_point.x + lambda1 * direction_vector.x;
     double intersect_y = start_point.y + lambda1 * direction_vector.y;

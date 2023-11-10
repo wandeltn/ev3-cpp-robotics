@@ -9,6 +9,7 @@ class Vector {
         Vector(double x = 0, double y = 0);
 
         double getDistanceTo(Vector point);
+        double getAngle();
         
         Vector operator+(const Vector& summand);
         Vector operator-(const Vector& subtrahend);

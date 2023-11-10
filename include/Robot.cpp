@@ -38,9 +38,10 @@ void Robot::moveToPosition(Vector target)
 {
     std::vector<Vector> path = _pathfind.findPath(_destination, target);
     _drm.pushToScreen();
-    const Vector& prevNode = getLocation();
+    
     for (const Vector& node : path) {
-        goToLocation(MovementAction{{prevNode, node}, 400});
+        std::cout << node << "\n";
+        goToLocation(MovementAction{node, 400});
     }
     _destination = target;
 }

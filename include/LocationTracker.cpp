@@ -7,9 +7,11 @@ MovementAction::MovementAction(int distance, int direction, int speed)
     this->speed = speed;
 }
 
-MovementAction::MovementAction(Line line, int speed)
+MovementAction::MovementAction(Vector line, int speed)
 {
-    this->distance = line.getLength();
+    std::cout << "MovementAction::line" << line << "\n";
+    this->distance = sqrt(pow(line.x - LocationTracker::getLocation().x, 2) + pow(line.y - LocationTracker::getLocation().y, 2));
+    std::cout << "this->distance: " << this->distance << "\n"; 
     direction = line.getAngle();
     this->speed = speed;
 
