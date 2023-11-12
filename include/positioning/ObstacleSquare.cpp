@@ -29,4 +29,16 @@ void ObstacleSquare::paint(std::shared_ptr<Window> window)
     window->drawRect(_upperLeft, _lowerRight, DISPLAY_DARK);
 }
 
-
+std::string ObstacleSquare::writeOut()
+{
+    return std::string(
+        "SQ:" + 
+        std::to_string(_upperLeft.x) + 
+        "/" + 
+        std::to_string(_upperLeft.y) +
+        ";" + 
+        std::to_string(_lowerRight.x) + 
+        "/" + 
+        std::to_string(_lowerRight.y)
+    );
+}

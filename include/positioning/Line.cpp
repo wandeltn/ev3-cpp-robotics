@@ -66,16 +66,26 @@ double Line::getLength() const
 
 double Line::getAngle() const
 {
-    double result = atan2(direction_vector.y, direction_vector.x);
-    std::cout << "getAngle() directionVector:" << direction_vector << "\n";
-    std::cout << "getAngle() atan2:" << result << "\n";
-    result = result * 180 / M_PI;
-    if (result < 0) {
-        result = 360 + result;
-    }
-    // std::cout << "dir_x: " << direction_vector.x << " dir_y: " << direction_vector.y << std::endl;
-    std::cout << "getAngle(): " << result << std::endl;
-    assertm((result <= 360), "Angle out of range in Line::getAngle");
+//     double result = atan2(direction_vector.y, direction_vector.x);
+//     std::cout << "getAngle() directionVector:" << direction_vector << "\n";
+//     std::cout << "getAngle() atan2:" << result << "\n";
+//     result = result * 180 / M_PI;
+//     if (result < 0) {
+//         result = 360 + result;
+//     }
+//     // std::cout << "dir_x: " << direction_vector.x << " dir_y: " << direction_vector.y << std::endl;
+//     std::cout << "getAngle(): " << result << std::endl;
+//     assertm((result <= 360), "Angle out of range in Line::getAngle");
+
+    Vector zeroed = Vector{end_point.x - start_point.x, end_point.y - start_point.y};
+
+    double result = acos((zeroed^Vector{1, 0}) / this->getLength()) * 180 / M_PI;
+    std::cout << "Vector::zeroed: " << zeroed << "\n";
+    std::cout << "Vector::getAngle(): " << result << "\n";
+    std::cout << "Vector dotproduct: " << (zeroed^Vector{1, 0}) << "\n";
+    std::cout << "Vector::getLength(): " << this->getLength() << "\n";
+    std::cout << "Vector before acos: " << ((zeroed^Vector{1, 0}) / this->getLength()) << "\n";
+
     return result;
 }
 

@@ -7,10 +7,10 @@ MovementAction::MovementAction(int distance, int direction, int speed)
     this->speed = speed;
 }
 
-MovementAction::MovementAction(Vector line, int speed)
+MovementAction::MovementAction(Line line, int speed)
 {
-    std::cout << "MovementAction::line" << line << "\n";
-    this->distance = sqrt(pow(line.x - LocationTracker::getLocation().x, 2) + pow(line.y - LocationTracker::getLocation().y, 2));
+    std::cout << "MovementAction::line" << line.end_point << "\n";
+    this->distance = sqrt(pow(line.end_point.x - LocationTracker::getLocation().x, 2) + pow(line.end_point.y - LocationTracker::getLocation().y, 2));
     std::cout << "this->distance: " << this->distance << "\n"; 
     direction = line.getAngle();
     this->speed = speed;
@@ -96,7 +96,10 @@ void LocationTracker::updateLocation(std::map<subscriber_port, int> sensor_value
 
         // check for line under left color sensor
         if (sensor_values[sensor_color_left] <= _colorSensorTriggerValue) {
-
+            
+        }
+        if (sensor_values[sensor_color_right] <= _colorSensorTriggerValue) {
+            
         }
 
         

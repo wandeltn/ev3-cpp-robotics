@@ -12,10 +12,19 @@ double Vector::getDistanceTo(Vector point)
     return (sqrt(pow(distanceBetween.x, 2) + pow(distanceBetween.y, 2)));
 }
 
-double Vector::getAngle()
+double Vector::getLength()
 {
-    return atan2(this->y, this->x)*180/M_PI;
+    return sqrt(pow(this->x, 2) + pow(this->y, 2));
 }
+
+// double Vector::getAngle()
+// {
+//     double result = acos(*this^Vector{1, 0} / this->getLength()) * 180 / M_PI;
+//     std::cout << "Vector::getAngle(): " << result << "\n";
+//     std::cout << "Vector::getLength(): " << this->getLength() << "\n";
+//     std::cout << "Vector before acos: " << (*this^Vector{1, 0} / this->getLength()) << "\n";
+//     return result;
+// }
 
 Vector Vector::operator+(const Vector &summand)
 {
@@ -37,9 +46,14 @@ Vector Vector::operator*(const double factor)
     return Vector{x * factor, y * factor};
 }
 
-double Vector::operator^(const Vector& multiplicand)
+Vector Vector::operator*(const Vector& multiplicand)
 {
     return (x * multiplicand.x) + (y * multiplicand.y); 
+}
+
+double Vector::operator^(const Vector &multiplicand)
+{
+    return (this->x * multiplicand.x) + (this->y * multiplicand.y);
 }
 
 bool Vector::operator==(const Vector& comparison)

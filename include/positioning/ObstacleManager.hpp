@@ -19,6 +19,7 @@ class ObstacleManager {
 
     public:
         ObstacleManager();
+        ~ObstacleManager();
         static void appendObstacle(std::shared_ptr<BaseObstacle> obstacle);
         static bool checkForIntersect(const Line& line);
         static void paint(std::shared_ptr<Window> window);

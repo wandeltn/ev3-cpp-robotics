@@ -23,7 +23,7 @@
 
 struct MovementAction {
     MovementAction(int distance, int direction, int speed);
-    MovementAction(Vector line, int speed);
+    MovementAction(Line line, int speed);
     MovementAction();
 
     double distance;

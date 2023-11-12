@@ -14,6 +14,7 @@ class ObstacleSquare : public BaseObstacle {
 
         bool checkForIntersect(const Line& line) override;
         void paint(std::shared_ptr<Window> window) override;
+        std::string writeOut() override;
 };
 
 #endif // __OBSTACLESQUARE_H__

@@ -59,8 +59,10 @@ void MotorController::rotateTo(const int angle)
     std::cout << "MotorController::rotateTo() using target: " << _gyroTarget << "\n";
     std::cout << "MotorController::rotateTo() using _turningGyroTargetOffset: " << _turningGyroTargetOffset << "\n";
 
+#ifndef NO_MOTOR
     sendCommand(motor_drive_left, MotorCommandRunForever);
     sendCommand(motor_drive_right, MotorCommandRunForever);
+#endif
 
     _turnReached.store(false);
     
@@ -117,8 +119,10 @@ void MotorController::moveStraight(const int distance, bool reverse)
         fprintf(fp_left_pos, "%d", distance);
         fprintf(fp_right_pos, "%d", distance);
 
+#ifndef NO_MOTOR
         fprintf(fp_left_com, "run-to-rel-pos");
         fprintf(fp_right_com, "run-to-rel-pos");
+#endif
     }
 
     fclose(fp_left_pos);
@@ -144,6 +148,7 @@ void MotorController::setMotorSpeed(std::string motor, int speed)
     if (fp == NULL) {
         std::cout << "failed to set speed: " << motor << std::endl;
     } else {
+
         fprintf(fp, "%d", speed);
         fclose(fp);
     }

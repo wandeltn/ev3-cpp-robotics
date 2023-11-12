@@ -11,6 +11,7 @@ class BaseObstacle {
         BaseObstacle() = default;
         virtual bool checkForIntersect(const Line& line) = 0;
         virtual void paint(std::shared_ptr<Window> window) = 0;
+        virtual std::string writeOut() = 0;
 };
 
 #endif // __BASEOBSTACLE_H__

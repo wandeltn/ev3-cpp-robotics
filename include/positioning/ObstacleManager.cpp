@@ -14,6 +14,18 @@ ObstacleManager::ObstacleManager()
     
 }
 
+ObstacleManager::~ObstacleManager()
+{
+    std::ofstream ofs;
+
+    ofs.open("./obstacles.list", std::ios::trunc);
+
+    for (std::shared_ptr<BaseObstacle> obstacle : _obstacles) {
+        ofs << obstacle->writeOut() << "\n";
+    }
+
+    ofs.close();
+}
 
 void ObstacleManager::appendObstacle(std::shared_ptr<BaseObstacle> obstacle)
 {
