@@ -18,7 +18,7 @@
 #endif
 
 
-Robot rt{false};
+Robot rt{true};
 
 void signal_callback(int signum) {
     std::cout << "Exiting..:" << signum << std::endl;
@@ -45,7 +45,7 @@ int main() {
     // rt.rotateTo(0);
 
     rt.finishQueue();
-    // while (true) {
-        // std::this_thread::sleep_for(std::chrono::seconds(3));
-    // }
+    while (true) {
+        std::this_thread::sleep_for(std::chrono::seconds(3));
+    }
 }

@@ -10,6 +10,7 @@ class Vector {
 
         double getDistanceTo(Vector point);
         double getLength();
+        void moveDistanceInDirection(double direction, double distance);
         // double getAngle();
         
         Vector operator+(const Vector& summand);

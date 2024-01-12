@@ -13,6 +13,7 @@
 #include "positioning/Line.hpp"
 #include "positioning/LineManager.hpp"
 #include "positioning/PolyFit.hpp"
+#include "positioning/ColorSensor.hpp"
 
 
 #define FIELD_SIZE_X            2000
@@ -29,6 +30,7 @@ struct MovementAction {
     double distance;
     int direction;
     int speed;
+    Line line;
 };
 
 
@@ -46,6 +48,7 @@ class LocationTracker : public DeviceCommunicator {
 
     protected:
         static std::deque<MovementAction> _pendingActions;
+        static MovementAction currentAction;
 
     private:
 

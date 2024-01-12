@@ -3,7 +3,6 @@
 bool RobotMovement::currentlyTurning = true;
 bool RobotMovement::actionCompleted = false;
 bool RobotMovement::actionAvailable = false;
-MovementAction RobotMovement::currentAction;
 
 
 RobotMovement::RobotMovement() : LocationTracker(65, 185)

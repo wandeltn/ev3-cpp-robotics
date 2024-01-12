@@ -4,3 +4,4 @@ bin/*
 .depend
 .last_push
 .last_push_html
+.bash_history

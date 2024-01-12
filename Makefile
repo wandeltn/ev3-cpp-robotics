@@ -43,7 +43,7 @@ dist-clean: clean
 
 
 FILES_HTML = $(shell find . -name *.html)
-SCP = robot@192.168.191.61:
+SCP = robot@ev3dev.local:
 # SCP = robot@192.168.178.74:
 SCP_HTML = $(SCP)public/
 

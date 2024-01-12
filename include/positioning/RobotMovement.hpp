@@ -27,7 +27,6 @@ class RobotMovement : public MotorController, public LocationTracker {
         static bool actionAvailable;
         static bool actionCompleted;
         static bool currentlyTurning;
-        static MovementAction currentAction;
 
 
 };

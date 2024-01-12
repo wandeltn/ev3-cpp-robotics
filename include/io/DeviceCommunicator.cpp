@@ -43,7 +43,7 @@ void DeviceCommunicator::readPorts()
         MOTORS_DIRECTORY
     };
 
-    for (const std::string sensor_type : sensor_types) {
+    for (const std::string& sensor_type : sensor_types) {
         DIR *directory = opendir(sensor_type.c_str());
         struct dirent *entry = readdir(directory);
         while ((entry = readdir(directory)) != nullptr) {

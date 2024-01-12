@@ -5,6 +5,16 @@ MovementAction::MovementAction(int distance, int direction, int speed)
     this->distance = distance;
     this->direction = direction;
     this->speed = speed;
+    this->line = Line{
+        {
+            std::numeric_limits<double>::infinity(),
+            std::numeric_limits<double>::infinity()
+        },
+        {
+            std::numeric_limits<double>::infinity(),
+            std::numeric_limits<double>::infinity()
+        }
+    };
 }
 
 MovementAction::MovementAction(Line line, int speed)
@@ -23,6 +33,7 @@ MovementAction::MovementAction()
 }
 
 std::deque<MovementAction> LocationTracker::_pendingActions{};
+MovementAction LocationTracker::currentAction;
 SensorNotifier LocationTracker::_notifier{};
 LineManager LocationTracker::_lineManager{};
 PolyFit LocationTracker::_polyfit{};
@@ -66,8 +77,7 @@ void LocationTracker::updateLocation(std::map<subscriber_port, int> sensor_value
 
         double movedPulses = ((sensor_values[motor_drive_right] - prev_values[motor_drive_right]) + (sensor_values[motor_drive_left] - prev_values[motor_drive_left])) / 2;
         if (movedPulses <= 100) {
-            _position.x += (cos(_heading_gyro * (M_PI / 180))) * motorPulsesToMm(movedPulses);
-            _position.y -= (sin(_heading_gyro * (M_PI / 180))) * motorPulsesToMm(movedPulses);
+            _position.moveDistanceInDirection(_heading_gyro, motorPulsesToMm(movedPulses));
             // std::cout << _position << std::endl;
             // std::cout << "moved pulses: " << movedPulses << std::endl;
         } else {
@@ -94,9 +104,13 @@ void LocationTracker::updateLocation(std::map<subscriber_port, int> sensor_value
 
         AddValuesToCache(sensor_values);
 
+        double headingColor = 0;
+        Vector positionColor{};
+
+
         // check for line under left color sensor
         if (sensor_values[sensor_color_left] <= _colorSensorTriggerValue) {
-            
+            ColorSensor::notifyLineFound(sensor_color_left, _heading_gyro, _position, currentAction.line, &headingColor, &positionColor);
         }
         if (sensor_values[sensor_color_right] <= _colorSensorTriggerValue) {
             
@@ -121,8 +135,7 @@ int LocationTracker::getHeading()
 
 void LocationTracker::sendForwardMovementUpdate(uint distanceInPulses)
 {
-    _positionByCommand.x -= (cos(_heading_gyro * (M_PI / 180))) * motorPulsesToMm(distanceInPulses);
-    _positionByCommand.y -= (sin(_heading_gyro * (M_PI / 180))) * motorPulsesToMm(distanceInPulses);
+    _positionByCommand.moveDistanceInDirection(_heading_gyro, motorPulsesToMm(distanceInPulses));
 
     std::cout << "Position By Command: " << _positionByCommand << "\n";
 }

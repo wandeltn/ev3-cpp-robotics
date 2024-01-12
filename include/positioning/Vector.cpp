@@ -17,6 +17,12 @@ double Vector::getLength()
     return sqrt(pow(this->x, 2) + pow(this->y, 2));
 }
 
+void Vector::moveDistanceInDirection(double direction, double distance)
+{
+    this->x += (cos(direction * (M_PI / 180))) * distance;
+    this->y += (sin(direction * (M_PI / 180))) * distance;
+}
+
 // double Vector::getAngle()
 // {
 //     double result = acos(*this^Vector{1, 0} / this->getLength()) * 180 / M_PI;

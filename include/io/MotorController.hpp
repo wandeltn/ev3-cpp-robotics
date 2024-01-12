@@ -12,7 +12,7 @@
 #include "../LocationTracker.hpp"
 
 #define assertm(exp, msg) assert(((void)msg, exp))
-#define NO_MOTOR
+// #define NO_MOTOR
 
 struct MotorPolarityInversed{};
 struct MotorPolarityNormal{};
